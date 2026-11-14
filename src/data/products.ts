@@ -518,8 +518,27 @@ export const products: Product[] = [
   },
 
   // =========================================================================
-  // SPIGEN & ZIRHLI KILIF / EKRAN KORUMA
+  // TELEFON KILIFLARI & KAPAKLAR
   // =========================================================================
+  {
+    id: 'prod-case-magsafe-silicone',
+    title: 'Apple iPhone MagSafe Orijinal Sıvı Silikon Kılıf Serisi',
+    brand: 'Apple',
+    category: 'kilif-kapak',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Doku',
+    badge: 'MagSafe Manyetik',
+    image: '/images/products/case-magsafe-silicone.jpg',
+    specs: {
+      color: 'Gece Yarısı Lacivert / Zümrüt Yeşili / Bordo',
+      warranty: 'Orijinal Birebir Uyum',
+      features: ['Kadife Dokulu Sıvı Likit Silikon', 'İç Kısımda Yumuşak Mikrofiber Astar', 'N52 Güçlü MagSafe Manyetik Halka', 'Darbe Emici Köşe Geometrisi']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Telefonunuza ipeksi bir dokunuş katan, içi kadife mikrofiber kaplı ve tüm MagSafe aksesuarlarıyla tam kenetlenen orijinal silikon kılıf.'
+  },
   {
     id: 'prod-spigen-tough-armor',
     title: 'Spigen Tough Armor MagSafe Askeri Düzey Zırhlı Kılıf',
@@ -559,47 +578,283 @@ export const products: Product[] = [
     description: 'Cihazınızın orijinal rengini gösteren, sararmayan ve MagSafe aksesuarlarıyla tam kenetlenen kılıf.'
   },
   {
-    id: 'prod-spigen-ezfit-screen',
-    title: 'Spigen Glas.tR EZ Fit Kolay Montajlı 9D Ekran Koruyucu Cam',
+    id: 'prod-case-leather-wallet',
+    title: 'Lüks Hakiki Deri Cüzdanlı & Kartlıklı Mıknatıslı Kapak Kılıf',
     brand: 'Spigen',
-    category: 'ekran-koruyucu',
+    category: 'kilif-kapak',
     condition: 'sifir',
-    conditionBadge: 'Orijinal Aksesuar',
-    badge: '9H Sertlik & Kolay Kalıp',
-    image: '/images/products/screen-protector.jpg',
+    conditionBadge: 'El İşçiliği Deri',
+    badge: 'Cüzdan & Stand Fonksiyonu',
+    image: '/images/products/case-leather-wallet.jpg',
     specs: {
-      color: 'HD Şeffaf / 9D Gizlilik',
-      warranty: 'Mağazada Ücretsiz Uygulama',
-      features: ['Hizasız Montaj Aparatı Dahil', 'Oleofobik Parmak İzi Tutmaz Kaplama', 'Dokunmatik Hassasiyeti Kaybettirmez']
+      color: 'Klasik Kahve / Taba Deri / Siyah',
+      warranty: 'Aşınmaya Karşı Dayanıklı',
+      features: ['3 Adet Kredi Kartı Bölmesi & Para Cebi', 'Güçlü Mıknatıslı Kilit Dili', 'Yatay Video İzleme Standı', 'Özel Dikişli Kenar Takviyesi']
     },
     inStock: true,
-    featured: true,
+    featured: false,
     bestSeller: true,
-    description: 'Sıfır baloncuk garantili montaj kalıbı ve 9H elmas dayanıklılığında temperli ekran camı.'
+    description: 'Telefon, cüzdan ve kartlığı tek bir şık gövdede birleştiren, yatay stand olabilen el işçiliği dikişli lüks deri kapak.'
   },
   {
-    id: 'prod-spigen-lens-protector',
-    title: 'Spigen Optik Safir Kamera Lens Koruyucu (Parlama Önleyici)',
-    brand: 'Spigen',
-    category: 'ekran-koruyucu',
+    id: 'prod-case-armor-heavy',
+    title: 'Darbeye Dayanıklı Ağır Hizmet Zırh Kılıf (360 Döner Halkalı)',
+    brand: 'Baseus',
+    category: 'kilif-kapak',
     condition: 'sifir',
-    conditionBadge: 'Orijinal Aksesuar',
-    badge: 'Safir Cam',
-    image: '/images/products/lens-protector.jpg',
+    conditionBadge: 'Ekstra Dayanıklı',
+    badge: 'Darbe Emici Zırh',
+    image: '/images/products/case-armor.jpg',
     specs: {
-      color: 'Titanyum Çerçeveli',
+      color: 'Asker Yeşili / Mat Siyah / Titanyum Gri',
       warranty: 'Birebir Uyum',
-      features: ['Kamera Çizilmelerine Son', 'Fotoğraf Kalitesini Etkilemez', 'Gece Çekiminde Yansıma Yapmaz']
+      features: ['360° Dönen Yüzük Tutucu & Stand', 'Araç İçi Mıknatıslı Tutuculara Uyumlu', 'Hava Kanallı Köşe Koruma Yastıkları']
     },
     inStock: true,
     featured: false,
     bestSeller: false,
-    description: 'Telefonunuzun arka kamera lenslerini çizik ve kırılmalara karşı birebir korur.'
+    description: 'Düşme riskini sıfıra indiren parmak tutma halkası, araç mıknatısına kenetlenen metal göbek ve kalın zırh yapısı.'
+  },
+  {
+    id: 'prod-case-silicone-soft',
+    title: 'Pastel Koleksiyon Ultra İnce Kadife Likit Silikon Kılıflar',
+    brand: 'Apple',
+    category: 'kilif-kapak',
+    condition: 'sifir',
+    conditionBadge: 'Zengin Renk Yelpazesi',
+    badge: 'Ultra İnce Tasarım',
+    image: '/images/products/case-silicone.jpg',
+    specs: {
+      color: 'Buz Mavisi / Lavanta / Pudra / Nane Yeşili / Gece Siyahı',
+      warranty: 'Kolay Temizlenebilir',
+      features: ['Leke ve Parmak İzi Tutmaz Yüzey', 'Kamera Lensini Koruyan Yükseltilmiş Kenarlar', 'Tüy Kadar Hafif ve İnce']
+    },
+    inStock: true,
+    featured: false,
+    bestSeller: false,
+    description: 'Cihaza ağırlık katmayan, yumuşacık bebek teni dokusunda ve kirlendiğinde kolayca silinebilen canlı renkli silikon kılıflar.'
   },
 
   // =========================================================================
-  // ANKER & HIZLI ŞARJ / GÜÇ ÇÖZÜMLERİ
+  // EKRAN & LENS KORUYUCULAR
   // =========================================================================
+  {
+    id: 'prod-screen-privacy-9d',
+    title: '9D Hayalet Gizlilik Ekran Koruyucu Cam (Anti-Spy Privacy)',
+    brand: 'Spigen',
+    category: 'ekran-koruyucu',
+    condition: 'sifir',
+    conditionBadge: 'Mağazada Ücretsiz Uygulama',
+    badge: '45° Yandan Görünmez',
+    image: '/images/products/screen-privacy-9d.jpg',
+    specs: {
+      color: '9D Tam Kavisli Gizlilik Siyah',
+      warranty: 'Hava Kabarcığı Bırakmaz',
+      features: ['Sağdan ve Soldan 45° Açıda Ekran Kararır', 'Karşıdan Bakıldığında Kristal Netlik', '9H Elmas Çizilmezlik Sertliği', 'Oleofobik Parmak İzi Önleyici']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Toplu taşımada, kafede ve kalabalıkta yanınızdakilerin telefon ekranınızı görmesini tamamen engelleyen profesyonel hayalet gizlilik camı.'
+  },
+  {
+    id: 'prod-screen-matte-ceramic',
+    title: 'Mat Seramik Kırılmaz Esnek Ekran Koruyucu (Oyuncu Camı)',
+    brand: 'Baseus',
+    category: 'ekran-koruyucu',
+    condition: 'sifir',
+    conditionBadge: 'Kırılmaz & Esnek',
+    badge: 'Parlama ve Yansıma Yapmaz',
+    image: '/images/products/screen-matte-ceramic.jpg',
+    specs: {
+      color: 'İpeksi Mat Şeffaf',
+      warranty: 'Kenarları Çatlamayan Hibrit Seramik',
+      features: ['Güneş Işığında Yansıma Yapmayan Mat Kaplama', 'Asla Kırılmaz ve Parçalanmaz Esnek Yapı', 'Mobil Oyunlar İçin Süper Kaygan Doku', 'Sıfır Parmak İzi Garantisi']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Kenarları çatlayan camlara son! Asla kırılmayan esnek seramik yapısı ve güneşte parlama yapmayan ipeksi mat dokusuyla kesintisiz kullanım.'
+  },
+  {
+    id: 'prod-spigen-ezfit-screen',
+    title: 'Spigen Glas.tR EZ Fit Kolay Montaj Kalıplı 9H Temperli Cam',
+    brand: 'Spigen',
+    category: 'ekran-koruyucu',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Aksesuar',
+    badge: '9H Sertlik & Sıfır Hata Kalıbı',
+    image: '/images/products/screen-protector.jpg',
+    specs: {
+      color: 'Ultra Kristal HD Şeffaf',
+      warranty: 'Orijinal Spigen Lisanslı',
+      features: ['Otomatik Hizalama Montaj Aparatı Dahil', '9H Askeri Düzey Çizilme Direnci', 'Dokunmatik Tepkisini Asla Kaybettirmez']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Özel montaj tepsisi sayesinde tek saniyede sıfır toz ve sıfır baloncukla kusursuz oturan Spigen orijinal ekran camı.'
+  },
+  {
+    id: 'prod-screen-lens-diamond',
+    title: 'Elmas Parıltılı Safir Bağımsız Kamera Lens Koruyucu Halkalar',
+    brand: 'Benks',
+    category: 'ekran-koruyucu',
+    condition: 'sifir',
+    conditionBadge: 'Safir Optik Cam',
+    badge: 'Titanyum Çerçeve & Çizilmez',
+    image: '/images/products/screen-lens-diamond.jpg',
+    specs: {
+      color: 'Doğal Titanyum / Altın / Siyah / Elmas Simli',
+      warranty: 'Birebir Lens Uyumu',
+      features: ['Her Kamera Lensi İçin Bağımsız Koruyucu Halka', 'Fotoğraf ve Video Çekim Netliğini Korur', 'Gece Flaş Çekimlerinde Parlama Yapmaz', '9H Safir Çizilme Dayanıklılığı']
+    },
+    inStock: true,
+    featured: false,
+    bestSeller: true,
+    description: 'Telefonun arka kamera çıkıntılarını masa temasından ve düşmelerden koruyan, telefonunuzla birebir aynı renkte titanyum çerçeveli safir lens koruyucu.'
+  },
+  {
+    id: 'prod-spigen-lens-protector',
+    title: 'Spigen Optik Safir Kamera Lens Koruyucu (AR Kaplamalı)',
+    brand: 'Spigen',
+    category: 'ekran-koruyucu',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Aksesuar',
+    badge: 'Safir Kristal',
+    image: '/images/products/lens-protector.jpg',
+    specs: {
+      color: 'Titanyum Çerçeveli Şeffaf',
+      warranty: 'Orijinal Spigen Garantili',
+      features: ['Kamera Çizilmelerine ve Çatlamalarına Son', 'Optik Anti-Reflective Yansıma Önleyici', 'Kılıf Kullanımıyla %100 Uyumlu']
+    },
+    inStock: true,
+    featured: false,
+    bestSeller: false,
+    description: 'Telefonunuzun arka kamera lenslerini çizik ve kırılmalara karşı birebir koruyan orijinal Spigen lens koruyucusu.'
+  },
+
+  // =========================================================================
+  // KULAKLIK & SES SİSTEMLERİ
+  // =========================================================================
+  {
+    id: 'prod-airpods-pro2',
+    title: 'Apple AirPods Pro 2. Nesil (MagSafe USB-C Şarj Kutulu)',
+    brand: 'Apple',
+    category: 'ses-kulaklik',
+    condition: 'sifir',
+    conditionBadge: 'Sıfır Kapalı Kutu',
+    badge: 'Aktif Gürültü Engelleme (ANC)',
+    image: '/images/products/airpods-pro2.jpg',
+    specs: {
+      color: 'Beyaz (MagSafe USB-C Kutu)',
+      warranty: '2 Yıl Apple Türkiye Garantili',
+      features: ['Apple H2 Ses Çipi', '2 Kat Daha Güçlü Aktif Gürültü Engelleme', 'Kişiselleştirilmiş Uzamsal Ses & Şeffaf Mod', 'Kutusuyla 30 Saate Varan Pil Ömrü']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Apple’ın efsanevi kulaklığı. Dış dünyadaki gürültüyü tamamen kesen ANC teknolojisi ve kristal netliğinde ses performansı.'
+  },
+  {
+    id: 'prod-jbl-wave-buds',
+    title: 'JBL Wave Buds Gerçek Kablosuz TWS Bluetooth Kulaklık',
+    brand: 'JBL',
+    category: 'ses-kulaklik',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Aksesuar',
+    badge: 'Derin Pure Bass',
+    image: '/images/products/airpods-tws.jpg',
+    specs: {
+      color: 'Mat Siyah / Kutulu Beyaz',
+      warranty: '2 Yıl Resmi Distribütör Garantili',
+      features: ['JBL Deep Bass Güçlü Ses Sürücüleri', '32 Saat Toplam Pil Ömrü (8s Kulaklık + 24s Kutu)', 'IP54 Suya ve Toza Dayanıklılık', 'VoiceAware Akıllı Mikrofon']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'JBL kalitesinde güçlü baslar, tere dayanıklı ergonomik kulak içi tasarım ve 32 saate varan kesintisiz müzik deneyimi.'
+  },
+  {
+    id: 'prod-headphones-overear-jbl',
+    title: 'JBL Tune 520BT / 720BT Kablosuz Kulak Üstü Kulaklık',
+    brand: 'JBL',
+    category: 'ses-kulaklik',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Kutulu',
+    badge: '57 Saat Kesintisiz Pil',
+    image: '/images/products/headphones-overear-jbl.jpg',
+    specs: {
+      color: 'Mat Siyah / Derin Mavi / Beyaz',
+      warranty: '2 Yıl Resmi Distribütör Garantili',
+      features: ['JBL Pure Bass Ses İmzası', 'Bluetooth 5.3 & Çift Cihaza Aynı Anda Bağlantı', '5 Dakika Hızlı Şarjla 3 Saat Kullanım', 'Katlanabilir Hafif ve Konforlu Yastıklar']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Tek şarjla tam 57 saat pil süresi sunan, başınızı ağrıtmayan yumuşak yastıklı ve katlanabilir seyahat dostu kablosuz kulaklık.'
+  },
+  {
+    id: 'prod-speaker-bt',
+    title: 'JBL Go / Clip Taşınabilir IPX7 Su Geçirmez Bluetooth Hoparlör',
+    brand: 'JBL',
+    category: 'ses-kulaklik',
+    condition: 'sifir',
+    conditionBadge: 'Taşınabilir Güç',
+    badge: 'IPX7 Su Geçirmez',
+    image: '/images/products/speaker-bt.jpg',
+    specs: {
+      color: 'Siyah / Kamuflaj / Kırmızı',
+      warranty: '2 Yıl Distribütör Garantili',
+      features: ['Kompakt Cep ve Çanta Boyutu', 'Dahili Metal Asma Klipsi', 'Suya ve Toza Tam Dayanıklı Gövde', '10 Saate Varan Kesintisiz Müzik']
+    },
+    inStock: true,
+    featured: false,
+    bestSeller: false,
+    description: 'Piknikte, kampta, havuz başında veya odanızda güçlü JBL sesini dilediğiniz her yere taşıyın.'
+  },
+
+  // =========================================================================
+  // HIZLI ŞARJ, KABLO VE GÜÇ ÇÖZÜMLERİ
+  // =========================================================================
+  {
+    id: 'prod-cable-typec-100w-led',
+    title: 'Baseus 100W PD Dijital LED Göstergeli Örgülü Type-C to Type-C Kablo',
+    brand: 'Baseus',
+    category: 'sarj-kablo',
+    condition: 'sifir',
+    conditionBadge: 'Akıllı Çipli',
+    badge: '100W Hız & Canlı LED Ekran',
+    image: '/images/products/cable-typec-100w-led.jpg',
+    specs: {
+      color: 'Tunç Siyahı Çinko Alaşım',
+      warranty: '2 Yıl Değişim Garantili',
+      features: ['Kablo Başlığında Anlık Watt Güç Göstergesi', '100W Power Delivery (Laptop, Tablet & Telefon)', 'Kırılmaz Balistik Naylon Örgü', 'E-Marker Akıllı Batarya Koruma Çipi']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Telefonunuzun ya da dizüstü bilgisayarınızın kaç watt güçle şarj olduğunu anlık ekranda gösteren en üst düzey akıllı hızlı şarj kablosu.'
+  },
+  {
+    id: 'prod-cable-multi-3in1',
+    title: '3’ü 1 Arada Zırhlı Örgülü Çoklu Hızlı Şarj Kablosu (Type-C + Lightning + Micro)',
+    brand: 'Baseus',
+    category: 'sarj-kablo',
+    condition: 'sifir',
+    conditionBadge: 'Tek Kablo Tüm Cihazlar',
+    badge: '3 Çıkışlı Zırhlı Kablo',
+    image: '/images/products/cable-multi-3in1.jpg',
+    specs: {
+      color: 'Kırmızı-Siyah Örgülü / Alüminyum Gövde',
+      warranty: '2 Yıl Garanti',
+      features: ['Type-C + Apple Lightning + Micro-USB Uçlar', '3 Cihazı Aynı Anda Şarj Edebilir', '3.5A Hızlı Akım İletimi', 'Kırılmalara Karşı Güçlendirilmiş Boğaz Yapısı']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Evde, ofiste ve araçta kablo kalabalığına son! Apple iPhone, Samsung ve tüm diğer aksesuarları tek kablo üzerinden aynı anda şarj edin.'
+  },
   {
     id: 'prod-anker-gan-65w',
     title: 'Anker 735 GaNPrime 65W Hızlı Şarj Cihazı (2x Type-C + 1x USB-A)',
@@ -618,6 +873,25 @@ export const products: Product[] = [
     featured: true,
     bestSeller: true,
     description: 'Küçük boyutta devasa 65W güç. iPhone, Samsung, MacBook veya tabletinizi tek adaptörle hızlı şarj edin.'
+  },
+  {
+    id: 'prod-samsung-45w-adapter',
+    title: 'Samsung Orijinal 45W Süper Hızlı Şarj Adaptörü & 5A Type-C Kablo Seti',
+    brand: 'Samsung',
+    category: 'sarj-kablo',
+    condition: 'sifir',
+    conditionBadge: 'Orijinal Kutusunda',
+    badge: '45W Super Fast Charging 2.0',
+    image: '/images/products/samsung-45w.png',
+    specs: {
+      color: 'Mat Siyah / Beyaz',
+      warranty: '2 Yıl Samsung Türkiye Garantili',
+      features: ['Galaxy S25 Ultra, S24 Ultra & Plus Tam Uyum', 'PD 3.0 PPS Güç Dağıtım Standardı', 'Kutu İçi 1.8m 5A Kalın Type-C Kablo Dahil']
+    },
+    inStock: true,
+    featured: true,
+    bestSeller: true,
+    description: 'Samsung amiral gemisi telefonlarınızı 30 dakikada %70’in üzerinde şarj eden orijinal kapalı kutu 45W hızlı şarj seti.'
   },
   {
     id: 'prod-anker-nano-30w',
@@ -676,10 +950,6 @@ export const products: Product[] = [
     bestSeller: false,
     description: 'Dolaşmayan, kırılmayan, bükülmelere karşı ömürlük dayanıklılıkta şarj kablosu.'
   },
-
-  // =========================================================================
-  // BASEUS, JBL & AKILLI ARAÇ / MASAÜSTÜ AKSESUARLARI
-  // =========================================================================
   {
     id: 'prod-baseus-car-mount',
     title: 'Baseus MagSafe Manyetik Araç İçi Kablosuz Şarjlı Telefon Tutucu',
@@ -700,22 +970,22 @@ export const products: Product[] = [
     description: 'Aracınızda telefonunuzu tek elle sabitleyin ve seyahat boyunca kablosuz hızlı şarj edin.'
   },
   {
-    id: 'prod-jbl-wave-buds',
-    title: 'JBL Wave Buds Gerçek Kablosuz TWS Bluetooth Kulaklık',
-    brand: 'JBL',
-    category: 'ses-kulaklik',
+    id: 'prod-wireless-charger-stand',
+    title: '15W Qi Hızlı Kablosuz Masaüstü Şarj Standı & Gece Modu',
+    brand: 'Baseus',
+    category: 'sarj-kablo',
     condition: 'sifir',
-    conditionBadge: 'Orijinal Aksesuar',
-    badge: 'Derin Bas',
-    image: '/images/products/airpods-tws.jpg',
+    conditionBadge: 'Kablosuz Konfor',
+    badge: '15W Hızlı Şarj',
+    image: '/images/products/wireless-charger.jpg',
     specs: {
-      color: 'Siyah / Beyaz',
-      warranty: '2 Yıl Resmi Distribütör Garantili',
-      features: ['JBL Deep Bass Ses', '32 Saat Toplam Pil Ömrü', 'IP54 Su ve Toz Dayanıklılığı', 'VoiceAware Mikrofon']
+      color: 'Mat Siyah / Titanyum Gümüş',
+      warranty: '2 Yıl Garanti',
+      features: ['Hem Yatay Hem Dikey Konumda Şarj', 'Yabancı Cisim Algılama (FOD) Emniyeti', 'Kaymaz Silikon Taban']
     },
     inStock: true,
-    featured: true,
-    bestSeller: true,
-    description: 'JBL kalitesinde derin baslar ve 32 saate varan kesintisiz müzik deneyimi.'
+    featured: false,
+    bestSeller: false,
+    description: 'Masanızda çalışırken veya yatak başucunuzda telefonunuzu standa bırakın, kablo takma derdi olmadan anında şarj olsun.'
   }
 ];

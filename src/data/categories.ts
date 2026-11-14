@@ -24,7 +24,7 @@ export const categories: Category[] = [
     name: 'Telefon Kılıfları & Kapaklar',
     slug: 'telefon-kiliflari',
     iconName: 'Zap',
-    itemCount: 1,
+    itemCount: 6,
     description: 'MagSafe manyetik kılıflar, silikon kapaklar ve darbeye dayanıklı zırhlı kılıflar',
     subcategories: ['MagSafe Kılıflar', 'Darbeye Dayanıklı Zırhlı Kılıflar', 'Ultra İnce Şeffaf Silikon', 'Deri Cüzdanlı Kapaklar']
   },
@@ -33,7 +33,7 @@ export const categories: Category[] = [
     name: 'Ekran & Lens Koruyucular',
     slug: 'ekran-koruyucular',
     iconName: 'Sparkles',
-    itemCount: 1,
+    itemCount: 5,
     description: '9D hayalet gizlilik camları, temperli kırılmaz camlar ve safir kamera lens koruyucuları',
     subcategories: ['9D Hayalet Gizlilik Camı', 'Kırılmaz Temperli Cam', 'Safir Kamera Lens Koruyucu', 'Mat Çizilmez Koruyucu']
   },
@@ -42,7 +42,7 @@ export const categories: Category[] = [
     name: 'Hızlı Şarj & Kablolar',
     slug: 'sarj-aletleri-kablolar',
     iconName: 'Headphones',
-    itemCount: 1,
+    itemCount: 9,
     description: 'GaN yeni nesil hızlı şarj adaptörleri, örgülü Type-C ve Lightning kablolar',
     subcategories: ['GaN 65W/35W Hızlı Şarj', '20W/30W Hızlı Adaptör', 'Örgülü Type-C Kablo', 'Lightning Kablo', 'MagSafe Kablosuz Şarj']
   },
@@ -51,7 +51,7 @@ export const categories: Category[] = [
     name: 'Kulaklık & Ses Sistemleri',
     slug: 'kulaklik-ve-ses',
     iconName: 'Headphones',
-    itemCount: 0,
+    itemCount: 4,
     description: 'TWS kablosuz bluetooth kulaklıklar ve taşınabilir hoparlörler',
     subcategories: ['TWS Bluetooth Kulaklık', 'Gürültü Engelleyici (ANC) Kulaklık', 'Bluetooth Hoparlör', 'Kulak İçi Kablolu']
   }
