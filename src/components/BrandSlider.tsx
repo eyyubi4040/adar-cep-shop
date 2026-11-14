@@ -136,7 +136,7 @@ export const BrandSlider: React.FC<BrandSliderProps> = ({ onSelectCategory, onSe
           </div>
 
           <a
-            href="#vitrin"
+            href="/vitrin"
             className="text-xs font-bold text-primary hover:text-gray-900 transition flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 px-3.5 py-2 rounded-lg"
           >
             <span>Tüm Modelleri Gör</span>

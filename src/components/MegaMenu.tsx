@@ -78,7 +78,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ onSelectCategory, onClose })
               Mevcut telefonunu mağazamızda değerinde nakite çevir veya yeni cihazla takas et.
             </p>
             <a
-              href="#degerleme"
+              href="/takas"
               onClick={onClose}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00f9fd] hover:underline"
             >

@@ -91,7 +91,8 @@ export const TradeInCalculator: React.FC = () => {
   );
 
   return (
-    <div id="degerleme" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-[#f3f4f6]">
+    <div id="degerleme" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-[#f3f4f6] relative">
+      <div id="takas" className="absolute -top-24 left-0 pointer-events-none" />
       <div className="w-full px-2 sm:px-4 max-w-[1448px] mx-auto">
 
         {/* Header Block */}

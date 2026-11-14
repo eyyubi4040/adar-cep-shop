@@ -120,7 +120,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory }) => {
                     </button>
                   </li>
                   <li>
-                    <a href="#degerleme" className="hover:text-primary transition-colors">
+                    <a href="/takas" className="hover:text-primary transition-colors">
                       Eski Telefonunu Nakit Sat & Takas Yap
                     </a>
                   </li>

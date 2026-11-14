@@ -30,7 +30,7 @@ export const FaqSection: React.FC = () => {
   ];
 
   return (
-    <div id="relation-607" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-white">
+    <div id="sss" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-white">
       <div className="w-full px-2 sm:px-4 max-w-[1000px] mx-auto">
         
         {/* Title */}

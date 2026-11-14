@@ -101,7 +101,7 @@ export const BannerPromoGrid: React.FC<BannerPromoGridProps> = ({ onSelectCatego
               </div>
 
               <a
-                href="#degerleme"
+                href="/takas"
                 className="adar-discover-btn bg-white hover:bg-gray-100 text-gray-900 text-xs font-bold px-5 py-2.5 rounded-custom transition-all shadow-md flex items-center gap-2 cursor-pointer"
               >
                 <span>Fiyat Teklifi Al</span>

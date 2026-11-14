@@ -92,8 +92,8 @@ export const Header: React.FC<HeaderProps> = ({
     { label: 'Ekran Koruyucular', catId: 'ekran-koruyucu', badge: '9D Cam' },
     { label: 'Şarj & Kablo', catId: 'sarj-kablo', badge: null },
     { label: 'Kulaklık & Ses', catId: 'ses-kulaklik', badge: null },
-    { label: 'Cihazını Sat & Takas', href: '#degerleme', badge: 'Nakit Alım' },
-    { label: 'Mağazamız & İletişim', href: '#magaza', badge: null },
+    { label: 'Cihazını Sat & Takas', href: '/takas', badge: 'Nakit Alım' },
+    { label: 'Mağazamız & İletişim', href: '/magaza', badge: null },
   ];
 
   return (
@@ -148,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
                 <span className="text-[#5B5A5C]">|</span>
                 <a
-                  href="#magaza"
+                  href="/magaza"
                   className="flex items-center gap-1 hover:text-primary transition"
                 >
                   <MapPin className="w-3.5 h-3.5 text-primary" />
@@ -299,7 +299,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                 {/* Store Location Button */}
                 <a
-                  href="#magaza"
+                  href="/magaza"
                   className="border border-gray-200 hover:border-primary hover:text-primary text-gray-800 text-xs font-semibold px-3 py-2 rounded-full hidden xl:flex items-center gap-1.5 transition-colors"
                   title="Kırşehir Mağaza Adresi ve Harita"
                 >

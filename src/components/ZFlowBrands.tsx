@@ -60,7 +60,7 @@ export const ZFlowBrands: React.FC<ZFlowBrandsProps> = ({ onSelectBrand }) => {
             </div>
           </div>
           <a
-            href="#vitrin"
+            href="/vitrin"
             className="shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-primary underline transition-colors hover:text-gray-900"
           >
             <span>Tüm Modelleri Gör</span>
@@ -95,7 +95,7 @@ export const ZFlowBrands: React.FC<ZFlowBrandsProps> = ({ onSelectBrand }) => {
 
               <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
                 <a
-                  href="#vitrin"
+                  href="/vitrin"
                   className="text-xs font-bold text-white group-hover:text-primary flex items-center gap-1 transition-colors"
                 >
                   <span>Modelleri İncele</span>

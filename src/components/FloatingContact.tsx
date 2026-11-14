@@ -64,7 +64,7 @@ export const FloatingContact: React.FC<FloatingContactProps> = ({ hide = false }
             </a>
 
             <a
-              href="#magaza"
+              href="/magaza"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-xl text-xs font-semibold justify-center transition-colors"
             >

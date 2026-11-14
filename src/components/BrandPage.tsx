@@ -414,8 +414,15 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
             <a
-              href="#degerleme"
-              onClick={onBack}
+              href="/takas"
+              onClick={(e) => {
+                e.preventDefault();
+                onBack();
+                setTimeout(() => {
+                  const el = document.getElementById('degerleme');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
               className="bg-primary hover:bg-[#006cb3] text-white text-xs font-bold px-5 py-3 rounded-xl transition shadow-md cursor-pointer flex items-center gap-2"
             >
               <span>Eski Cihazını Değerle</span>
