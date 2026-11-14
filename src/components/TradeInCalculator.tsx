@@ -74,7 +74,7 @@ export const TradeInCalculator: React.FC = () => {
   return (
     <div id="degerleme" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-[#f3f4f6]">
       <div className="w-full px-2 sm:px-4 max-w-[1448px] mx-auto">
-        
+
         {/* Header Block */}
         <div className="w-full mb-6 border-b border-gray-300 pb-3 flex flex-wrap items-end justify-between gap-4">
           <div className="block-title">
@@ -94,13 +94,13 @@ export const TradeInCalculator: React.FC = () => {
         <div className="bg-white rounded-custom shadow-md border border-gray-200 overflow-hidden">
           <div className="p-6 sm:p-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
+
               {/* Left Column: Form Controls */}
               <div className="lg:col-span-7 space-y-5">
-                
+
                 {/* Step 1: Brand Selection */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
                     1. Telefon Markanızı Seçin
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -109,11 +109,10 @@ export const TradeInCalculator: React.FC = () => {
                         key={b}
                         type="button"
                         onClick={() => handleBrandChange(b)}
-                        className={`py-2 px-2.5 rounded-custom text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                          brand === b
-                            ? 'bg-primary text-white shadow-xs'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
-                        }`}
+                        className={`py-2 px-2.5 rounded-custom text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${brand === b
+                            ? 'bg-[#0084d6] text-white shadow-xs'
+                            : 'bg-white text-gray-800 hover:bg-gray-100 border border-gray-300'
+                          }`}
                       >
                         <BrandLogo brand={b} className="h-3.5 w-auto" monochrome={brand === b} />
                         <span>{b}</span>
@@ -124,16 +123,16 @@ export const TradeInCalculator: React.FC = () => {
 
                 {/* Step 2: Model Selection */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
                     2. Cihaz Modelini Seçin
                   </label>
                   <select
                     value={model}
                     onChange={(e) => setModel(e.target.value)}
-                    className="w-full bg-[#f8f9fa] border border-gray-300 rounded-custom px-4 py-2.5 text-xs sm:text-sm font-semibold text-gray-800 outline-none focus:border-primary"
+                    className="w-full bg-white border border-gray-300 rounded-custom px-4 py-2.5 text-xs sm:text-sm font-bold text-gray-900 outline-none focus:border-primary shadow-xs"
                   >
                     {modelsByBrand[brand].map((m) => (
-                      <option key={m} value={m}>
+                      <option key={m} value={m} className="text-gray-900 font-medium">
                         {m}
                       </option>
                     ))}
@@ -143,13 +142,13 @@ export const TradeInCalculator: React.FC = () => {
                 {/* Step 3: Condition & Battery */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
                       3. Kasa & Kozmetik Durumu
                     </label>
                     <select
                       value={condition}
                       onChange={(e) => setCondition(e.target.value)}
-                      className="w-full bg-[#f8f9fa] border border-gray-300 rounded-custom px-3 py-2 text-xs font-medium text-gray-800 outline-none focus:border-primary"
+                      className="w-full bg-white border border-gray-300 rounded-custom px-3 py-2 text-xs font-bold text-gray-900 outline-none focus:border-primary shadow-xs"
                     >
                       <option value="Kozmetik 10/10 - Hatasız & Çiziksiz">Kozmetik 10/10 - Çiziksiz & Temiz</option>
                       <option value="Kozmetik 9/10 - Kılcal Çizikler Mevcut">Kozmetik 9/10 - Kılcal Çizikler</option>
@@ -159,13 +158,13 @@ export const TradeInCalculator: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
                       4. Pil Sağlığı Durumu
                     </label>
                     <select
                       value={battery}
                       onChange={(e) => setBattery(e.target.value)}
-                      className="w-full bg-[#f8f9fa] border border-gray-300 rounded-custom px-3 py-2 text-xs font-medium text-gray-800 outline-none focus:border-primary"
+                      className="w-full bg-white border border-gray-300 rounded-custom px-3 py-2 text-xs font-bold text-gray-900 outline-none focus:border-primary shadow-xs"
                     >
                       <option value="%85 - %100 Arası Orijinal">%85 - %100 Arası Orijinal</option>
                       <option value="%80 - %84 Arası Orijinal">%80 - %84 Arası Orijinal</option>
@@ -177,7 +176,7 @@ export const TradeInCalculator: React.FC = () => {
 
                 {/* Step 4: Box / Invoice */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
                     5. Kutu & Fatura Durumu
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -186,11 +185,10 @@ export const TradeInCalculator: React.FC = () => {
                         key={status}
                         type="button"
                         onClick={() => setBoxStatus(status)}
-                        className={`py-2 px-3 rounded text-xs font-semibold transition cursor-pointer text-center ${
-                          boxStatus === status
-                            ? 'bg-dark text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
+                        className={`py-2 px-3 rounded text-xs font-bold transition cursor-pointer text-center ${boxStatus === status
+                            ? 'bg-[#111827] text-white shadow-xs'
+                            : 'bg-white text-gray-800 hover:bg-gray-100 border border-gray-300'
+                          }`}
                       >
                         {status}
                       </button>
@@ -201,54 +199,62 @@ export const TradeInCalculator: React.FC = () => {
               </div>
 
               {/* Right Column: Instant WhatsApp Proposal Card */}
-              <div className="lg:col-span-5 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white p-6 rounded-custom shadow-lg flex flex-col justify-between h-full">
-                <div>
-                  <div className="flex items-center justify-between pb-3 border-b border-gray-700 mb-4">
-                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+              <div
+                style={{ backgroundColor: '#0b132b', backgroundImage: 'linear-gradient(145deg, #0b132b 0%, #172554 100%)' }}
+                className="lg:col-span-5 !bg-[#0b132b] text-white p-6 sm:p-7 rounded-custom shadow-xl border border-sky-900/50 flex flex-col justify-between h-full relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-48 h-48 bg-[#0084d6]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-700/80 mb-4">
+                    <span className="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                       Seçilen Cihaz Özeti
                     </span>
-                    <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">
+                    <span className="text-[11px] bg-white/15 px-2.5 py-0.5 rounded text-gray-100 font-bold border border-white/10">
                       Kırşehir Merkez
                     </span>
                   </div>
 
                   <div className="mb-4">
-                    <div className="text-xs text-gray-400">Değerleme Modeli:</div>
-                    <div className="text-xl font-black text-white">{brand} {model}</div>
-                  </div>
-
-                  <div className="space-y-2 text-xs text-gray-300 mb-6 bg-black/30 p-3 rounded">
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Kozmetik:</span>
-                      <span className="font-semibold text-white">{condition}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Pil:</span>
-                      <span className="font-semibold text-white">{battery}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Aksesuar/Kutu:</span>
-                      <span className="font-semibold text-white">{boxStatus}</span>
+                    <div className="text-xs text-sky-300 font-semibold mb-1">Değerleme Modeli:</div>
+                    <div className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                      {brand} <span className="text-[#00f9fd]">{model}</span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-300 leading-relaxed mb-4">
+                  <div className="space-y-2.5 text-xs text-gray-100 mb-5 bg-[#030712]/80 border border-white/15 p-4 rounded-xl shadow-inner">
+                    <div className="flex justify-between items-center pb-2 border-b border-white/10">
+                      <span className="text-gray-300 font-medium">Kozmetik Durum:</span>
+                      <span className="font-bold text-white text-right">{condition}</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-2 border-b border-white/10">
+                      <span className="text-gray-300 font-medium">Pil Sağlığı:</span>
+                      <span className="font-bold text-emerald-400 text-right">{battery}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 font-medium">Kutu & Fatura:</span>
+                      <span className="font-bold text-white text-right">{boxStatus}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-gray-200 leading-relaxed mb-5 font-normal">
                     Adar Cep Shop uzmanlarımız cihazınızın piyasa koşullarına göre en yüksek nakit değerlemesini hemen çıkarsın.
                   </p>
                 </div>
 
-                <div>
+                <div className="relative z-10 pt-2 border-t border-white/10">
                   <a
                     href={`https://wa.me/${storeInfo.whatsapp}?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-custom flex items-center justify-center gap-2 shadow-lg transition-colors text-sm"
+                    className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-black py-3.5 px-4 rounded-custom flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl transition-all text-sm cursor-pointer"
                   >
                     <WhatsAppIcon className="w-5 h-5 fill-white shrink-0" />
-                    <span>WhatsApp'tan Teklif İste</span>
+                    <span>WhatsApp'tan Nakit Teklif İste</span>
                   </a>
 
-                  <div className="text-[11px] text-gray-400 text-center mt-2">
+                  <div className="text-[11px] text-gray-300 text-center mt-2.5 font-medium">
                     * Kesin tutar Kırşehir mağazamızda fiziksel kontrol sonrası nakit olarak ödenir.
                   </div>
                 </div>

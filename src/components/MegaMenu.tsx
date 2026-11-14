@@ -65,19 +65,22 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ onSelectCategory, onClose })
           ))}
 
           {/* Right Promo Card inside Mega Menu (Adar style) */}
-          <div className="hidden lg:block bg-gradient-to-br from-[#0c1836] to-[#0f2854] p-5 rounded-xl text-white relative overflow-hidden">
+          <div
+            style={{ backgroundColor: '#0c1836', backgroundImage: 'linear-gradient(135deg, #0c1836 0%, #0f2854 100%)' }}
+            className="hidden lg:block !bg-[#0c1836] p-5 rounded-xl text-white relative overflow-hidden"
+          >
             <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-primary/20 rounded-full blur-2xl"></div>
             <span className="inline-block text-[10px] font-bold uppercase tracking-wider bg-primary text-white px-2 py-0.5 rounded mb-3">
               Kırşehir Mağaza
             </span>
-            <h5 className="font-bold text-base mb-2">2. El Telefonunu Nakit Sat</h5>
-            <p className="text-xs text-gray-300 mb-4 leading-relaxed">
+            <h5 className="font-bold text-base mb-2 text-white">2. El Telefonunu Nakit Sat</h5>
+            <p className="text-xs text-gray-200 mb-4 leading-relaxed">
               Mevcut telefonunu mağazamızda değerinde nakite çevir veya yeni cihazla takas et.
             </p>
             <a
               href="#degerleme"
               onClick={onClose}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#00f9fd] hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00f9fd] hover:underline"
             >
               Cihazını Değerle <ArrowRight className="w-3.5 h-3.5" />
             </a>

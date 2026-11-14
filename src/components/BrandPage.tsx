@@ -142,7 +142,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
   return (
     <div className="w-full bg-[#f8f9fa] min-h-screen pb-16 animate-fadeIn">
-      
+
       {/* 1. BREADCRUMB STRIP */}
       <div className="w-full bg-white border-b border-gray-200 py-3">
         <div className="max-w-[1448px] mx-auto px-4 flex items-center justify-between text-xs text-gray-600">
@@ -183,7 +183,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
         <div className="max-w-[1448px] mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            
+
             {/* Left Content */}
             <div className="max-w-2xl">
               <div className="flex items-center gap-3 mb-3">
@@ -259,11 +259,10 @@ export const BrandPage: React.FC<BrandPageProps> = ({
               <button
                 key={b.id}
                 onClick={() => onSelectBrand(b.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
-                  b.id === currentBrand.id
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${b.id === currentBrand.id
                     ? 'bg-primary text-white shadow-xs'
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
+                  }`}
               >
                 <BrandLogo brand={b.shortName} className="h-3.5 w-auto" monochrome={b.id === currentBrand.id} />
                 <span>{b.shortName}</span>
@@ -283,52 +282,48 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
       {/* 4. MAIN CATALOG BODY */}
       <div className="max-w-[1448px] mx-auto px-4 mt-8">
-        
+
         {/* Filter and Search Bar */}
         <div className="bg-white rounded-2xl border border-gray-200 p-4 mb-6 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
-          
+
           {/* Condition Pills */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <button
               onClick={() => setSelectedCondition('all')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
-                selectedCondition === 'all'
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${selectedCondition === 'all'
                   ? 'bg-primary text-white shadow-xs'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
+                }`}
             >
               Tüm Modeller ({products.filter(p => p.brand.toLowerCase() === currentBrand.name.toLowerCase() || (currentBrand.id === 'spigen' && (p.brand.toLowerCase() === 'spigen' || p.brand.toLowerCase() === 'armorglass')) || (currentBrand.id === 'xiaomi' && (p.brand.toLowerCase() === 'xiaomi' || p.title.toLowerCase().includes('redmi')))).length})
             </button>
 
             <button
               onClick={() => setSelectedCondition('sifir')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
-                selectedCondition === 'sifir'
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${selectedCondition === 'sifir'
                   ? 'bg-primary text-white shadow-xs'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
+                }`}
             >
               Sıfır Kapalı Kutu
             </button>
 
             <button
               onClick={() => setSelectedCondition('ikinci-el')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
-                selectedCondition === 'ikinci-el'
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${selectedCondition === 'ikinci-el'
                   ? 'bg-primary text-white shadow-xs'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
+                }`}
             >
               Garantili 2. El
             </button>
 
             <button
               onClick={() => setSelectedCondition('aksesuar')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
-                selectedCondition === 'aksesuar'
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${selectedCondition === 'aksesuar'
                   ? 'bg-primary text-white shadow-xs'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-              }`}
+                }`}
             >
               Orijinal Aksesuarlar
             </button>
@@ -400,16 +395,19 @@ export const BrandPage: React.FC<BrandPageProps> = ({
         )}
 
         {/* Bottom Trade-in Banner for this Brand */}
-        <div className="mt-12 bg-gradient-to-r from-[#0c1836] to-[#0f2854] text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-gray-800">
+        <div
+          style={{ backgroundColor: '#0c1836', backgroundImage: 'linear-gradient(90deg, #0c1836 0%, #0f2854 100%)' }}
+          className="mt-12 !bg-[#0c1836] text-white rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-gray-800"
+        >
           <div className="max-w-xl text-center md:text-left">
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00f9fd] uppercase tracking-wider mb-2">
               <Zap className="w-4 h-4" />
               <span>Kırşehir İçi Takas & Nakit Alım</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-black text-white mb-2">
               Eski Telefonunu Getir, {currentBrand.name} Modellerine Geç!
             </h3>
-            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-normal">
               Mevcut telefonunuzu Adar Cep Shop Kırşehir mağazamıza getirin, 15 dakikada ücretsiz ekspertiz yapıp en yüksek değerden nakit alalım veya dilediğiniz sıfır/2. el {currentBrand.name} modeliyle takas edelim.
             </p>
           </div>

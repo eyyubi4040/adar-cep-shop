@@ -104,15 +104,18 @@ export const TechnicalService: React.FC = () => {
         </div>
 
         {/* Bottom Contact Strip */}
-        <div className="bg-gradient-to-r from-dark to-[#1f2937] text-white rounded-custom p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
+        <div
+          style={{ backgroundColor: '#111827', backgroundImage: 'linear-gradient(90deg, #111827 0%, #1f2937 100%)' }}
+          className="!bg-[#111827] text-white rounded-custom p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-gray-800"
+        >
           <div>
-            <span className="text-[10px] uppercase font-bold text-primary bg-white/10 px-2.5 py-1 rounded inline-block mb-2">
+            <span className="text-[10px] uppercase font-bold text-[#00f9fd] bg-white/10 px-2.5 py-1 rounded inline-block mb-2">
               Kırşehir Merkez Onarım Merkezi
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold mb-1">
+            <h3 className="text-xl sm:text-2xl font-bold mb-1 text-white">
               Cihazınızda Bir Problem mi Var? Hemen Danışın!
             </h3>
-            <p className="text-xs sm:text-sm text-gray-300 max-w-xl">
+            <p className="text-xs sm:text-sm text-gray-200 max-w-xl">
               Modelinizi ve arızayı belirtin, Adar Cep Shop teknisyenlerimiz size anında çözüm ve onarım süresi bildirsin.
             </p>
           </div>
@@ -132,7 +135,7 @@ export const TechnicalService: React.FC = () => {
 
             <a
               href={`tel:${storeInfo.phoneRaw}`}
-              className="bg-white hover:bg-gray-100 text-dark text-xs font-bold px-5 py-3 rounded-custom flex items-center gap-2 transition-colors"
+              className="bg-white hover:bg-gray-100 text-gray-900 text-xs font-bold px-5 py-3 rounded-custom flex items-center gap-2 transition-colors shadow-xs"
             >
               <Phone className="w-4 h-4 text-primary" />
               <span>{storeInfo.phone}</span>
