@@ -46,7 +46,7 @@ export const TechnicalService: React.FC = () => {
   return (
     <div id="servis" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-white">
       <div className="w-full px-2 sm:px-4 max-w-[1448px] mx-auto">
-        
+
         {/* Title */}
         <div className="w-full mb-8 border-b border-gray-200 pb-3 flex flex-wrap items-end justify-between gap-4">
           <div className="block-title">
@@ -135,7 +135,7 @@ export const TechnicalService: React.FC = () => {
               className="bg-white hover:bg-gray-100 text-dark text-xs font-bold px-5 py-3 rounded-custom flex items-center gap-2 transition-colors"
             >
               <Phone className="w-4 h-4 text-primary" />
-              <span>0538 522 93 40</span>
+              <span>{storeInfo.phone}</span>
             </a>
           </div>
         </div>

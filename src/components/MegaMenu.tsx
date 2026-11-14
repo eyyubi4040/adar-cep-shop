@@ -95,7 +95,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ onSelectCategory, onClose })
             <span className="hover:text-primary cursor-pointer" onClick={() => { onSelectCategory('sarj-kablo'); onClose(); }}>GaN 35W Hızlı Şarj</span>
           </div>
           <span className="text-primary font-medium">
-            Kırşehir Adar Cep Shop • 0538 522 93 40
+            Kırşehir Adar Cep Shop • 0546 743 14 37
           </span>
         </div>
       </div>
