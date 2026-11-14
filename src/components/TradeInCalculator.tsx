@@ -3,68 +3,87 @@ import { Smartphone, CheckCircle, HelpCircle, ArrowRight, ShieldAlert } from 'lu
 import { storeInfo } from '../data/storeInfo';
 import { BrandLogo, WhatsAppIcon } from './BrandLogos';
 
+const modelsByBrand: Record<string, string[]> = {
+  Apple: [
+    'iPhone 16 Pro Max',
+    'iPhone 16 Pro',
+    'iPhone 16 Plus',
+    'iPhone 16',
+    'iPhone 15 Pro Max',
+    'iPhone 15 Pro',
+    'iPhone 15 Plus',
+    'iPhone 15',
+    'iPhone 14 Pro Max',
+    'iPhone 14 Pro',
+    'iPhone 14',
+    'iPhone 13 Pro Max',
+    'iPhone 13 Pro',
+    'iPhone 13',
+    'iPhone 12 Pro Max',
+    'iPhone 12 Pro',
+    'iPhone 12',
+    'iPhone 11 Pro Max',
+    'iPhone 11'
+  ],
+  Samsung: [
+    'Galaxy S25 Ultra',
+    'Galaxy S24 Ultra',
+    'Galaxy S24+',
+    'Galaxy S24',
+    'Galaxy S23 Ultra',
+    'Galaxy S23',
+    'Galaxy S22 Ultra',
+    'Galaxy S22',
+    'Galaxy A55 5G',
+    'Galaxy A54 5G',
+    'Galaxy A35 5G',
+    'Galaxy Z Fold 6',
+    'Galaxy Z Flip 6',
+    'Galaxy Z Flip 5'
+  ],
+  Xiaomi: [
+    'Xiaomi 14 Ultra',
+    'Xiaomi 14',
+    'Xiaomi 13T Pro',
+    'Xiaomi 13T',
+    'Redmi Note 13 Pro+ 5G',
+    'Redmi Note 13 Pro',
+    'Redmi Note 13',
+    'Redmi Note 12 Pro',
+    'Poco X6 Pro',
+    'Poco F6'
+  ],
+  Oppo: [
+    'Oppo Reno 11 Pro 5G',
+    'Oppo Reno 11F 5G',
+    'Oppo Reno 10 5G',
+    'Oppo Reno 8',
+    'Oppo A98 5G',
+    'Oppo A78',
+    'Oppo A58'
+  ]
+};
+
 export const TradeInCalculator: React.FC = () => {
   const [brand, setBrand] = useState('Apple');
-  const [model, setModel] = useState('iPhone 13 128GB');
+  const [model, setModel] = useState(modelsByBrand.Apple[0]);
   const [condition, setCondition] = useState('Kozmetik 10/10 - Hatasız & Çiziksiz');
   const [battery, setBattery] = useState('%85 - %100 Arası Orijinal');
   const [boxStatus, setBoxStatus] = useState('Kutu & Fatura Mevcut');
 
-  const modelsByBrand: Record<string, string[]> = {
-    Apple: [
-      'iPhone 16 Pro Max',
-      'iPhone 16 Pro',
-      'iPhone 16',
-      'iPhone 15 Pro Max',
-      'iPhone 15 Pro',
-      'iPhone 15',
-      'iPhone 14 Pro Max',
-      'iPhone 14 Pro',
-      'iPhone 14',
-      'iPhone 13 Pro Max',
-      'iPhone 13',
-      'iPhone 12 Pro',
-      'iPhone 12',
-      'iPhone 11'
-    ],
-    Samsung: [
-      'Galaxy S25 Ultra',
-      'Galaxy S24 Ultra',
-      'Galaxy S24+',
-      'Galaxy S23 Ultra',
-      'Galaxy S23',
-      'Galaxy S22',
-      'Galaxy A55 5G',
-      'Galaxy A54 5G',
-      'Galaxy Z Flip 5'
-    ],
-    Xiaomi: [
-      'Xiaomi 14 Ultra',
-      'Xiaomi 13T Pro',
-      'Redmi Note 13 Pro+ 5G',
-      'Redmi Note 13 Pro',
-      'Redmi Note 12 Pro'
-    ],
-    Oppo: [
-      'Oppo Reno 11 Pro 5G',
-      'Oppo Reno 11F 5G',
-      'Oppo Reno 10 5G',
-      'Oppo Reno 8',
-      'Oppo A98 5G',
-      'Oppo A78',
-      'Oppo A58'
-    ]
-  };
+  const availableModels = modelsByBrand[brand] || [];
+  const currentModel = availableModels.includes(model) ? model : (availableModels[0] || '');
 
   const handleBrandChange = (newBrand: string) => {
     setBrand(newBrand);
-    setModel(modelsByBrand[newBrand][0]);
+    const brandModels = modelsByBrand[newBrand] || [];
+    setModel(brandModels[0] || '');
   };
 
   const whatsappMessage = encodeURIComponent(
     `Merhaba Adar Cep Shop Kırşehir, eski telefonumu nakit satmak / takas yapmak istiyorum.\n\n` +
     `• Marka: ${brand}\n` +
-    `• Model: ${model}\n` +
+    `• Model: ${currentModel}\n` +
     `• Kasa Durumu: ${condition}\n` +
     `• Pil Sağlığı: ${battery}\n` +
     `• Kutu Durumu: ${boxStatus}\n\n` +
@@ -127,11 +146,11 @@ export const TradeInCalculator: React.FC = () => {
                     2. Cihaz Modelini Seçin
                   </label>
                   <select
-                    value={model}
+                    value={currentModel}
                     onChange={(e) => setModel(e.target.value)}
                     className="w-full bg-white border border-gray-300 rounded-custom px-4 py-2.5 text-xs sm:text-sm font-bold text-gray-900 outline-none focus:border-primary shadow-xs"
                   >
-                    {modelsByBrand[brand].map((m) => (
+                    {availableModels.map((m) => (
                       <option key={m} value={m} className="text-gray-900 font-medium">
                         {m}
                       </option>
@@ -219,7 +238,7 @@ export const TradeInCalculator: React.FC = () => {
                   <div className="mb-4">
                     <div className="text-xs text-sky-300 font-semibold mb-1">Değerleme Modeli:</div>
                     <div className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                      {brand} <span className="text-[#00f9fd]">{model}</span>
+                      {brand} <span className="text-[#00f9fd]">{currentModel}</span>
                     </div>
                   </div>
 
