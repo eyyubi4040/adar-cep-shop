@@ -5,6 +5,8 @@ export const storeInfo = {
   phone: '0546 743 14 37',
   phoneRaw: '905467431437',
   whatsapp: '905467431437',
+  instagram: 'https://www.instagram.com/adar_cepshop/',
+  instagramHandle: '@adar_cepshop',
   whatsappMessage: 'Merhaba Adar Cep Shop, web sitenizden ulaşıyorum. Modeller ve stok durumu hakkında bilgi almak istiyorum.',
   city: 'Kırşehir',
   district: 'Merkez',

@@ -14,7 +14,7 @@ import {
 import { storeInfo } from '../data/storeInfo';
 import { products } from '../data/products';
 import { MegaMenu } from './MegaMenu';
-import { WhatsAppWhiteIcon } from './BrandLogos';
+import { WhatsAppWhiteIcon, InstagramIcon } from './BrandLogos';
 import type { Product } from '../types';
 
 interface HeaderProps {
@@ -108,8 +108,19 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               </div>
 
-              {/* Right: Working Hours & Store Address */}
+              {/* Right: Instagram, Working Hours & Store Address */}
               <div className="hidden lg:flex items-center justify-end gap-3 text-[11px] text-gray-300">
+                <a
+                  href={storeInfo.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 hover:text-pink-400 transition"
+                  title="Adar Cep Shop Instagram"
+                >
+                  <InstagramIcon className="w-3.5 h-3.5 text-pink-400 shrink-0" />
+                  <span className="font-semibold text-gray-200 hover:text-pink-400">{storeInfo.instagramHandle}</span>
+                </a>
+                <span className="text-[#5B5A5C]">|</span>
                 <div className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-primary" />
                   <span>Pzt-Cmt: 09:00 - 20:30</span>
@@ -446,6 +457,15 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <WhatsAppWhiteIcon className="w-4 h-4 shrink-0" />
                   <span>WhatsApp ile İletişim</span>
+                </a>
+                <a
+                  href={storeInfo.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white py-2.5 rounded-custom text-xs font-bold flex items-center justify-center gap-2 shadow-xs"
+                >
+                  <InstagramIcon className="w-4 h-4 fill-white shrink-0" />
+                  <span>Instagram: {storeInfo.instagramHandle}</span>
                 </a>
                 <a
                   href={`tel:${storeInfo.phoneRaw}`}

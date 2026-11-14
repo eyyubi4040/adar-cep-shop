@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Phone, Clock, Navigation, ShieldCheck } from 'lucide-react';
 import { storeInfo } from '../data/storeInfo';
-import { WhatsAppIcon } from './BrandLogos';
+import { WhatsAppIcon, InstagramIcon } from './BrandLogos';
 
 export const StoreSection: React.FC = () => {
   return (
@@ -81,7 +81,7 @@ export const StoreSection: React.FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="pt-6 border-t border-gray-100 mt-6 grid grid-cols-2 gap-3">
+            <div className="pt-6 border-t border-gray-100 mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
               <a
                 href={`https://wa.me/${storeInfo.whatsapp}?text=${encodeURIComponent('Merhaba Adar Cep Shop, mağaza konumunuz hakkında bilgi almak istiyorum.')}`}
                 target="_blank"
@@ -90,6 +90,16 @@ export const StoreSection: React.FC = () => {
               >
                 <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
                 <span>WhatsApp</span>
+              </a>
+
+              <a
+                href={storeInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-95 text-white text-xs font-bold py-2.5 px-3 rounded-custom flex items-center justify-center gap-1.5 transition shadow-xs text-center"
+              >
+                <InstagramIcon className="w-4 h-4 fill-white shrink-0" />
+                <span>@adar_cepshop</span>
               </a>
 
               <a
