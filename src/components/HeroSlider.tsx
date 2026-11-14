@@ -232,7 +232,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                     className="w-full shrink-0 relative flex flex-wrap"
                   >
                     {/* Slide Frame (Fill container completely edge to edge) */}
-                    <div className="adar-hero-frame w-full flex flex-wrap relative overflow-hidden rounded-custom bg-[#0a0f1d] aspect-[1/1] sm:aspect-[2.6/1] min-h-[320px] sm:min-h-[440px] border border-white/10">
+                    <div className="adar-hero-frame w-full flex flex-wrap relative overflow-hidden rounded-custom bg-[#0a0f1d] aspect-[4/3] sm:aspect-[2.6/1] min-h-[360px] sm:min-h-[440px] border border-white/10">
 
                       {/* Background Banner Image or Video - Full Edge-to-Edge Cover */}
                       {slide.video ? (
@@ -275,7 +275,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                         </picture>
                       )}
 
-                      {/* Explicit Linear Gradient Overlay for 100% High Text Contrast and Readability */}
+                      {/* Explicit Linear Gradient Overlay:
+                          Desktop: Left-to-right fade for text column.
+                          Mobile: Soft bottom-up fade only, keeping top 70% completely clear for the photo/video! */}
                       <div
                         className="absolute inset-0 z-[1] pointer-events-none hidden sm:block"
                         style={{
@@ -287,13 +289,13 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                       <div
                         className="absolute inset-0 z-[1] pointer-events-none block sm:hidden"
                         style={{
-                          background: 'linear-gradient(180deg, rgba(8,12,24,0.94) 0%, rgba(8,12,24,0.82) 55%, rgba(8,12,24,0.5) 100%)'
+                          background: 'linear-gradient(to top, rgba(8,12,24,0.95) 0%, rgba(8,12,24,0.75) 40%, rgba(8,12,24,0.2) 65%, transparent 85%)'
                         }}
                       />
 
                       {/* Mute/Sound Toggle for Slides with Video */}
                       {slide.video && (
-                        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
+                        <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
                           <button
                             type="button"
                             onClick={(e) => {
@@ -301,17 +303,17 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                               setIsMuted(!isMuted);
                             }}
                             aria-label={isMuted ? 'Sesi Aç' : 'Sesi Kapat'}
-                            className="p-2 sm:px-3 sm:py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-2 transition-all shadow-md cursor-pointer hover:border-[#0084d6]"
+                            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-1.5 sm:gap-2 transition-all shadow-md cursor-pointer hover:border-[#0084d6]"
                             title={isMuted ? 'Videoyu Sesli Oynat' : 'Sesi Kapat'}
                           >
                             {isMuted ? (
                               <>
-                                <VolumeX className="w-4 h-4 text-gray-300" />
+                                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300" />
                                 <span className="hidden sm:inline text-[11px] font-medium">Sesi Aç</span>
                               </>
                             ) : (
                               <>
-                                <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" />
+                                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 animate-pulse" />
                                 <span className="hidden sm:inline text-[11px] font-medium text-emerald-400">Ses Açık</span>
                               </>
                             )}
@@ -319,18 +321,20 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                         </div>
                       )}
 
-                      {/* Slide Content Layer */}
-                      <div className="absolute inset-0 z-[2] flex flex-col justify-center px-6 sm:px-12 md:px-16 max-w-2xl">
+                      {/* Slide Content Layer:
+                          On Mobile: Bottom-anchored with concise essentials so visual is unobstructed.
+                          On Desktop: Vertically centered full-feature presentation. */}
+                      <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center px-4 sm:px-12 md:px-16 pb-10 sm:pb-0 max-w-2xl">
 
                         {/* Badges Row with Brand Vector Icons */}
-                        <div className="inline-flex items-center gap-2 mb-2 sm:mb-3 flex-wrap">
-                          <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded shadow-xs">
+                        <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-3 flex-wrap">
+                          <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 sm:px-3 sm:py-1 rounded shadow-xs">
                             {slide.badgeIcon}
                             <span>{slide.badge}</span>
                           </span>
 
                           {slide.video && (
-                            <span className="inline-flex items-center gap-1.5 bg-black/70 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white/20 shadow-xs">
+                            <span className="hidden sm:inline-flex items-center gap-1.5 bg-black/70 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white/20 shadow-xs">
                               {slide.videoBrandIcon}
                               <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -347,23 +351,23 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
 
                         {/* Title */}
                         <h1
-                          className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight mb-2 sm:mb-3 drop-shadow-lg"
+                          className="text-base sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight mb-1 sm:mb-3 drop-shadow-lg"
                           style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.9)' }}
                         >
                           {slide.title}
                         </h1>
 
-                        {/* Subtitle */}
+                        {/* Subtitle - Desktop only to keep mobile visual clean and visible */}
                         <p
-                          className="text-xs sm:text-base text-gray-200 font-normal leading-relaxed mb-3 sm:mb-4 max-w-xl drop-shadow-md line-clamp-2 sm:line-clamp-3"
+                          className="hidden sm:block text-xs sm:text-base text-gray-200 font-normal leading-relaxed mb-3 sm:mb-4 max-w-xl drop-shadow-md line-clamp-2 sm:line-clamp-3"
                           style={{ textShadow: '0 1px 6px rgba(0,0,0,0.85)' }}
                         >
                           {slide.subtitle}
                         </p>
 
-                        {/* Interactive Scene Switcher with Tailored Icons */}
+                        {/* Interactive Scene Switcher with Tailored Icons - Desktop only to avoid clutter on mobile */}
                         {slide.scenes && (
-                          <div className="flex flex-wrap items-center gap-1.5 mb-3 sm:mb-5">
+                          <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-3 sm:mb-5">
                             <span className="text-[11px] text-gray-300 font-medium mr-1 hidden sm:inline-block">
                               Sahne:
                             </span>
@@ -388,13 +392,13 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                         )}
 
                         {/* Action Buttons Row with Professional Icons */}
-                        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 mt-1 sm:mt-0">
                           <button
                             onClick={() => handleCtaClick(slide.categoryId)}
-                            className="bg-primary hover:bg-[#006cb3] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-custom transition-all shadow-md flex items-center gap-2 cursor-pointer group/btn"
+                            className="bg-primary hover:bg-[#006cb3] text-white text-xs sm:text-sm font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-custom transition-all shadow-md flex items-center gap-1.5 sm:gap-2 cursor-pointer group/btn"
                           >
                             <span>{slide.ctaText}</span>
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover/btn:translate-x-1" />
                           </button>
 
                           {slide.fullFilm && (
@@ -404,13 +408,14 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                                 e.stopPropagation();
                                 setIsFilmModalOpen(true);
                               }}
-                              className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-custom transition-all flex items-center gap-2 shadow-sm cursor-pointer group/film"
+                              className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 text-xs sm:text-sm font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-custom transition-all flex items-center gap-1.5 sm:gap-2 shadow-sm cursor-pointer group/film"
                               title="Apple Resmi Lansman Tanıtım Filmini İzle"
                             >
-                              <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
-                                <Play className="w-3 h-3 fill-white text-white translate-x-0.5" />
+                              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
+                                <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white translate-x-0.5" />
                               </div>
-                              <span>Apple Tanıtım Filmi (02:52)</span>
+                              <span className="hidden xs:inline sm:inline">Tanıtım Filmi</span>
+                              <span className="inline xs:hidden sm:hidden">Film</span>
                             </button>
                           )}
 
@@ -426,20 +431,20 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
             <button
               onClick={prevSlide}
               aria-label="Önceki Slayt"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 size-11 rounded-full bg-black/60 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
+              className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-11 rounded-full bg-black/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
             >
-              <ChevronLeft className="w-6 h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
+              <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
             </button>
             <button
               onClick={nextSlide}
               aria-label="Sonraki Slayt"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 size-11 rounded-full bg-black/60 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
+              className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-11 rounded-full bg-black/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
             >
-              <ChevronRight className="w-6 h-6 transition-transform group-hover/arrow:translate-x-0.5" />
+              <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:translate-x-0.5" />
             </button>
 
             {/* Slide Pagination Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15">
+            <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/40 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/15">
               {slides.map((s, idx) => (
                 <button
                   key={s.id}
