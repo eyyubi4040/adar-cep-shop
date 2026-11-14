@@ -1,0 +1,5780 @@
+/* =========================================================
+   ADAR İZLEME KODLARI - TEK DOSYA (PERFORMANS DÜZENLEMESİ)
+
+   İçerik:
+   1) Global "YENİ" etiketi (sade, düz, animasyonsuz)
+   2) Mega menü hareketli ikonlar (sadece transform animasyonu)
+   3) Mega menü B2B mesaj kutusu (CSS + JS)
+
+   Kural: Sonsuz animasyonlar yalnızca transform / opacity
+   değiştirir. filter, box-shadow, text-shadow animasyonu YOK
+   (bunlar her karede yeniden boyama yapar ve telefonu çökertir).
+   ========================================================= */
+
+
+/* =========================================================
+   1) GLOBAL "YENİ" ETİKETİ
+   ========================================================= */
+
+html body [data-qa="product-new"] {
+	position: relative !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	height: auto !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	margin: 0 0 0 5px !important;
+	padding: 4px 9px !important;
+	border: 0 !important;
+	border-radius: 4px !important;
+	background: #0084d6 !important;
+	box-shadow: none !important;
+	filter: none !important;
+	clip-path: none !important;
+	-webkit-clip-path: none !important;
+	color: transparent !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	pointer-events: none !important;
+}
+
+html body [data-qa="product-new"]::before {
+	content: "YENİ" !important;
+	position: static !important;
+	transform: none !important;
+	animation: none !important;
+	background: transparent !important;
+	color: #fff !important;
+	font-family: "Montserrat", Arial, sans-serif !important;
+	font-size: 11px !important;
+	line-height: 1 !important;
+	font-weight: 700 !important;
+	letter-spacing: .3px !important;
+	white-space: nowrap !important;
+	text-shadow: none !important;
+	filter: none !important;
+}
+
+html body [data-qa="product-new"]::after {
+	content: none !important;
+}
+
+@media (max-width: 640px) {
+
+	html body [data-qa="product-new"] {
+		margin-left: 3px !important;
+		padding: 3px 7px !important;
+	}
+
+	html body [data-qa="product-new"]::before {
+		font-size: 9px !important;
+	}
+
+}
+
+
+/* =========================================================
+   2) MEGA MENÜ İKONLARI (animasyonsuz, sabit)
+   (Panelde "CSS Class" alanına adar-menu-new / adar-menu-discount /
+   adar-menu-outlet yazılan menü öğeleri)
+   ========================================================= */
+
+.adar-menu-new>a::before,
+.adar-menu-new>span::before,
+.adar-menu-new>label::before,
+a.adar-menu-new::before,
+span.adar-menu-new::before,
+label.adar-menu-new::before,
+
+.adar-menu-discount>a::before,
+.adar-menu-discount>span::before,
+.adar-menu-discount>label::before,
+a.adar-menu-discount::before,
+span.adar-menu-discount::before,
+label.adar-menu-discount::before,
+
+.adar-menu-outlet>a::before,
+.adar-menu-outlet>span::before,
+.adar-menu-outlet>label::before,
+a.adar-menu-outlet::before,
+span.adar-menu-outlet::before,
+label.adar-menu-outlet::before {
+	display: inline-block;
+	margin-right: 7px;
+	line-height: 1;
+	font-size: 15px;
+	vertical-align: middle;
+	filter:
+		drop-shadow(0 1px 1px rgba(0, 0, 0, .32)) drop-shadow(0 2px 3px rgba(0, 0, 0, .16));
+}
+
+/* ⭐ YENİ ÜRÜNLER */
+.adar-menu-new>a::before,
+.adar-menu-new>span::before,
+.adar-menu-new>label::before,
+a.adar-menu-new::before,
+span.adar-menu-new::before,
+label.adar-menu-new::before {
+	content: "⭐";
+}
+
+/* ⚡ İNDİRİMLİ FIRSAT ÜRÜNLERİ */
+.adar-menu-discount>a::before,
+.adar-menu-discount>span::before,
+.adar-menu-discount>label::before,
+a.adar-menu-discount::before,
+span.adar-menu-discount::before,
+label.adar-menu-discount::before {
+	content: "⚡";
+}
+
+/* 💫 OUTLET ÜRÜNLER */
+.adar-menu-outlet>a::before,
+.adar-menu-outlet>span::before,
+.adar-menu-outlet>label::before,
+a.adar-menu-outlet::before,
+span.adar-menu-outlet::before,
+label.adar-menu-outlet::before {
+	content: "💫";
+}
+
+
+/* =========================================================
+   MOBİLDE YOUTUBE BÖLÜMÜNÜ GİZLE (test)
+   Geri açmak için bu bloğu sil ve en üstteki script'te
+   MOBIL_YOUTUBE_KAPALI değerini false yap.
+   ========================================================= */
+
+@media (max-width: 1023px) {
+	#relation-611 {
+		display: none !important;
+	}
+}
+
+
+/* =========================================================
+   3) MEGA MENÜ B2B MESAJ KUTUSU - CSS
+
+   Tüm tarayıcılarla uyumlu sürüm:
+   - "inset" kısayolu yok (eski Safari/iOS'ta çalışmıyordu; sol kırmızı
+     şerit ve nabız halkası kayboluyordu) -> top/right/bottom/left
+   - flex "gap" yok (Safari 14.1 öncesi desteklemiyor; öğeler yapışıyordu)
+     -> margin ile aralık
+   - 590 / 750 gibi standart dışı yazı kalınlığı yok -> 600 / 700
+   - box-sizing sabit (genişlik taşması olmasın)
+   - satır kısaltma için hem -webkit-line-clamp hem standart line-clamp
+   - değişken (--zr...) desteklemeyen tarayıcı için her renkte düz yedek değer
+
+   Adar Plus: <html> üzerinde "adar-plus-uye" sınıfı varsa tüm kırmızı
+   ayrıntılar mor olur (sınıfı Plus üyede üst bilgi şablonu ekler).
+   ========================================================= */
+
+.adar-b2b-tip,
+.adar-b2b-tip *,
+.adar-b2b-tip *:before,
+.adar-b2b-tip *:after {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.adar-b2b-tip {
+	--zr: #0084d6;
+	--zrd: #006cb3;
+	--zr-rgb: 0, 132, 214;
+	--zr-light: #38bdf8;
+	--zr-dark: #005a96;
+	--zr-bg: #f0f9ff;
+	--ink: #17171B;
+	--muted: #72727A;
+	--line: #ECECF0;
+
+	position: relative;
+	width: 100%;
+	min-height: 104px;
+	display: -ms-grid;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 250px;
+	-webkit-box-align: stretch;
+	align-items: stretch;
+	grid-gap: 10px;
+	gap: 10px;
+	margin-top: 3px;
+	padding: 9px 10px 9px 13px;
+	overflow: hidden;
+	border: 1px solid #ECECF0;
+	border: 1px solid var(--line);
+	border-radius: 13px;
+	background: #f0f9ff;
+	background:
+		radial-gradient(circle at 0 50%, rgba(0, 132, 214, .07), transparent 30%),
+		linear-gradient(135deg, #fff 0%, #f0f9ff 55%, #f8f8fa 100%);
+	background:
+		radial-gradient(circle 110px at 0 100%, rgba(var(--zr-rgb), .10), transparent 70%),
+		radial-gradient(circle at 0 50%, rgba(var(--zr-rgb), .07), transparent 30%),
+		linear-gradient(135deg, #fff 0%, var(--zr-bg) 55%, #f8f8fa 100%);
+	-webkit-box-shadow: 0 6px 17px rgba(17, 24, 39, .05), inset 0 1px 0 #fff;
+	box-shadow: 0 6px 17px rgba(17, 24, 39, .05), inset 0 1px 0 #fff;
+	isolation: isolate;
+	-webkit-tap-highlight-color: rgba(0, 132, 214, .15);
+}
+
+/* Sol şerit */
+.adar-b2b-tip:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 3px;
+	background: #0084d6;
+	background: -webkit-linear-gradient(top, #38bdf8, #0084d6, #005a96);
+	background: linear-gradient(180deg, #38bdf8, #0084d6, #005a96);
+	background: linear-gradient(180deg, var(--zr-light), var(--zr), var(--zr-dark));
+	z-index: 3;
+}
+
+/* Sağ üstteki ince halkalar */
+.adar-b2b-tip:after {
+	content: "";
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	right: 210px;
+	top: -73px;
+	border: 1px solid rgba(0, 132, 214, .06);
+	border: 1px solid rgba(var(--zr-rgb), .06);
+	border-radius: 50%;
+	-webkit-box-shadow: 0 0 0 16px rgba(0, 132, 214, .016), 0 0 0 32px rgba(0, 132, 214, .01);
+	box-shadow: 0 0 0 16px rgba(0, 132, 214, .016), 0 0 0 32px rgba(0, 132, 214, .01);
+	-webkit-box-shadow: 0 0 0 16px rgba(var(--zr-rgb), .016), 0 0 0 32px rgba(var(--zr-rgb), .01);
+	box-shadow: 0 0 0 16px rgba(var(--zr-rgb), .016), 0 0 0 32px rgba(var(--zr-rgb), .01);
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Süs öğeleri artık HTML'de değil CSS'te: içi boş <span> öğelerini T-Soft HTML alanı siler. Eski HTML'de kalmış olanlar gizlenir. */
+.adar-b2b-tip__glow,
+.adar-b2b-tip__pulse {
+	display: none !important;
+}
+
+.adar-b2b-tip__content {
+	min-width: 0;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	padding-left: 2px;
+}
+
+.adar-b2b-tip__meta {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	min-height: 17px;
+	margin-bottom: 3px;
+}
+
+.adar-b2b-tip__meta>*+* {
+	margin-left: 6px;
+}
+
+.adar-b2b-tip__badge {
+	position: relative;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: 3px 7px;
+	border-radius: 999px;
+	background: #0084d6;
+	background: var(--zr);
+	color: #fff;
+	font-size: 8px;
+	line-height: 1;
+	font-weight: 800;
+	letter-spacing: .5px;
+	white-space: nowrap;
+	-webkit-box-shadow: 0 3px 8px rgba(0, 132, 214, .15);
+	box-shadow: 0 3px 8px rgba(0, 132, 214, .15);
+	-webkit-box-shadow: 0 3px 8px rgba(var(--zr-rgb), .15);
+	box-shadow: 0 3px 8px rgba(var(--zr-rgb), .15);
+}
+
+/* Nabız noktası + halkası (transform + opacity animasyonu; box-shadow animasyonu yok) */
+.adar-b2b-tip__badge:before {
+	content: "";
+	display: block;
+	width: 5px;
+	height: 5px;
+	-ms-flex: 0 0 5px;
+	-webkit-box-flex: 0;
+	flex: 0 0 5px;
+	margin-right: 5px;
+	border-radius: 50%;
+	background: #fff;
+}
+
+.adar-b2b-tip__badge:after {
+	content: "";
+	position: absolute;
+	left: 7px;
+	top: 50%;
+	width: 5px;
+	height: 5px;
+	margin-top: -2.5px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .52);
+	pointer-events: none;
+	-webkit-animation: adarB2BPulse 1.8s ease-out infinite;
+	animation: adarB2BPulse 1.8s ease-out infinite;
+}
+
+@-webkit-keyframes adarB2BPulse {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		opacity: .52
+	}
+
+	75%,
+	100% {
+		-webkit-transform: scale(3);
+		transform: scale(3);
+		opacity: 0
+	}
+}
+
+@keyframes adarB2BPulse {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		opacity: .52
+	}
+
+	75%,
+	100% {
+		-webkit-transform: scale(3);
+		transform: scale(3);
+		opacity: 0
+	}
+}
+
+.adar-b2b-tip__context {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	min-width: 0;
+	color: #72727A;
+	color: var(--muted);
+	font-size: 8.5px;
+	font-weight: 700;
+	letter-spacing: .15px;
+	text-transform: uppercase;
+}
+
+/* Mesaj alanı 3 satıra kadar yer ayırır: mesaj değişince kutu zıplamaz */
+.adar-b2b-tip__message-wrap {
+	min-height: 46px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.adar-b2b-tip__message {
+	max-width: 900px;
+	margin: 0;
+	color: #17171B;
+	color: var(--ink);
+	font-size: 11.5px;
+	line-height: 1.38;
+	font-weight: 600;
+	letter-spacing: -.04px;
+}
+
+.adar-b2b-tip__links {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	min-height: 15px;
+	margin: 2px -4px -2px;
+	opacity: 0;
+	-webkit-transform: translateY(2px);
+	transform: translateY(2px);
+	-webkit-transition: opacity .16s ease, -webkit-transform .16s ease;
+	transition: opacity .16s ease, transform .16s ease;
+}
+
+.adar-b2b-tip__links.is-visible {
+	opacity: 1;
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+
+.adar-b2b-tip__link {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin: 2px 4px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #0084d6;
+	color: var(--zr);
+	font-size: 8.5px;
+	line-height: 1.2;
+	font-weight: 700;
+	text-decoration: none !important;
+	-webkit-transition: color .15s ease, -webkit-transform .15s ease;
+	transition: color .15s ease, transform .15s ease;
+}
+
+.adar-b2b-tip__link>*+* {
+	margin-left: 3px;
+}
+
+.adar-b2b-tip__link:hover {
+	color: #006cb3 !important;
+	color: var(--zrd) !important;
+	-webkit-transform: translateX(2px);
+	transform: translateX(2px);
+}
+
+.adar-b2b-tip__product {
+	position: relative;
+	min-width: 0;
+	display: -ms-grid;
+	display: grid;
+	grid-template-columns: 54px minmax(0, 1fr);
+	grid-gap: 8px;
+	gap: 8px;
+	-webkit-box-align: center;
+	align-items: center;
+	padding: 6px 7px;
+	border: 1px solid #eeeef1;
+	border-radius: 10px;
+	background: #fff;
+	background: rgba(255, 255, 255, .95);
+	color: inherit !important;
+	text-decoration: none !important;
+	-webkit-box-shadow: 0 4px 12px rgba(17, 24, 39, .04), inset 0 1px 0 #fff;
+	box-shadow: 0 4px 12px rgba(17, 24, 39, .04), inset 0 1px 0 #fff;
+	-webkit-transition: border-color .16s ease, box-shadow .16s ease, -webkit-transform .16s ease;
+	transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.adar-b2b-tip__product:hover {
+	-webkit-transform: translateY(-1px);
+	transform: translateY(-1px);
+	border-color: rgba(0, 132, 214, .24);
+	border-color: rgba(var(--zr-rgb), .24);
+	-webkit-box-shadow: 0 6px 15px rgba(17, 24, 39, .06), 0 0 0 2px rgba(0, 132, 214, .025);
+	box-shadow: 0 6px 15px rgba(17, 24, 39, .06), 0 0 0 2px rgba(0, 132, 214, .025);
+	-webkit-box-shadow: 0 6px 15px rgba(17, 24, 39, .06), 0 0 0 2px rgba(var(--zr-rgb), .03);
+	box-shadow: 0 6px 15px rgba(17, 24, 39, .06), 0 0 0 2px rgba(var(--zr-rgb), .03);
+}
+
+.adar-b2b-tip__product-image {
+	width: 54px;
+	height: 54px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	overflow: hidden;
+	border: 1px solid #f1f1f3;
+	border-radius: 8px;
+	background: #fff;
+}
+
+.adar-b2b-tip__product-image img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	-o-object-fit: contain;
+	object-fit: contain;
+	-webkit-transition: -webkit-transform .18s ease;
+	transition: transform .18s ease;
+}
+
+.adar-b2b-tip__product:hover .adar-b2b-tip__product-image img {
+	-webkit-transform: scale(1.04);
+	transform: scale(1.04);
+}
+
+.adar-b2b-tip__product-info {
+	min-width: 0;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+
+.adar-b2b-tip__product-top {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	min-width: 0;
+	margin-bottom: 2px;
+}
+
+.adar-b2b-tip__product-top>*+* {
+	margin-left: 4px;
+}
+
+.adar-b2b-tip__product-label {
+	color: #a1a1aa;
+	font-size: 6.8px;
+	font-weight: 800;
+	letter-spacing: .5px;
+	white-space: nowrap;
+}
+
+.adar-b2b-tip__product-brand {
+	min-width: 0;
+	overflow: hidden;
+	color: #0084d6;
+	color: var(--zr);
+	font-size: 8.5px;
+	font-weight: 800;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.adar-b2b-tip__product-name {
+	display: -webkit-box;
+	overflow: hidden;
+	max-height: 2.6em;
+	color: #27272a;
+	font-size: 9px;
+	line-height: 1.27;
+	font-weight: 700;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+
+.adar-b2b-tip__product-cta {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-top: 2px;
+	color: #0084d6;
+	color: var(--zr);
+	font-size: 8px;
+	font-weight: 800;
+}
+
+.adar-b2b-tip__product-cta>span {
+	margin-left: 3px;
+}
+
+.adar-b2b-tip__shuffle {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 5;
+	width: 21px;
+	height: 21px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	border: 1px solid rgba(0, 132, 214, .09);
+	border: 1px solid rgba(var(--zr-rgb), .12);
+	border-radius: 999px;
+	background: #fff;
+	background: rgba(255, 255, 255, .95);
+	color: #0084d6;
+	color: var(--zr);
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font: inherit;
+	-webkit-box-shadow: 0 2px 6px rgba(17, 24, 39, .035);
+	box-shadow: 0 2px 6px rgba(17, 24, 39, .035);
+	-webkit-transition: background .15s ease, color .15s ease, -webkit-transform .15s ease;
+	transition: background .15s ease, color .15s ease, transform .15s ease;
+}
+
+.adar-b2b-tip__shuffle svg {
+	width: 12px;
+	height: 12px;
+	display: block;
+}
+
+.adar-b2b-tip__shuffle:hover {
+	background: #0084d6;
+	background: var(--zr);
+	color: #fff;
+	-webkit-transform: rotate(14deg);
+	transform: rotate(14deg);
+}
+
+.adar-b2b-tip__shuffle:focus,
+.adar-b2b-tip__product:focus,
+.adar-b2b-tip__link:focus {
+	outline: 2px solid rgba(0, 132, 214, .35);
+	outline: 2px solid rgba(var(--zr-rgb), .35);
+	outline-offset: 1px;
+}
+
+.adar-b2b-tip__shuffle:focus:not(:focus-visible),
+.adar-b2b-tip__product:focus:not(:focus-visible),
+.adar-b2b-tip__link:focus:not(:focus-visible) {
+	outline: 0;
+}
+
+/* ADAR PLUS: kırmızı ayrıntıların hepsi mor (renkler yukarıdaki değişkenlerden gelir) */
+html.adar-plus-uye .adar-b2b-tip {
+	--zr: #7c3aed !important;
+	--zrd: #6d28d9 !important;
+	--zr-rgb: 124, 58, 237 !important;
+	--zr-light: #a78bfa !important;
+	--zr-dark: #5b21b6 !important;
+	--zr-bg: #faf7ff !important;
+	-webkit-tap-highlight-color: rgba(124, 58, 237, .15);
+}
+
+@media(max-width:1180px) {
+	.adar-b2b-tip {
+		grid-template-columns: minmax(0, 1fr) 215px;
+	}
+
+	.adar-b2b-tip__message {
+		font-size: 11px;
+	}
+
+	.adar-b2b-tip__product {
+		grid-template-columns: 48px minmax(0, 1fr);
+	}
+
+	.adar-b2b-tip__product-image {
+		width: 48px;
+		height: 48px;
+	}
+}
+
+@media(max-width:1023px) {
+	.adar-b2b-tip {
+		grid-template-columns: 1fr;
+		grid-gap: 7px;
+		gap: 7px;
+		padding: 9px 11px;
+	}
+
+	.adar-b2b-tip__product {
+		grid-template-columns: 46px minmax(0, 1fr);
+	}
+
+	.adar-b2b-tip__product-image {
+		width: 46px;
+		height: 46px;
+	}
+}
+
+@media(max-width:640px) {
+	.adar-b2b-tip {
+		border-radius: 11px;
+	}
+
+	.adar-b2b-tip__message {
+		font-size: 10.5px;
+	}
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+	.adar-b2b-tip *,
+	.adar-b2b-tip *:before,
+	.adar-b2b-tip *:after {
+		-webkit-animation-duration: .01ms !important;
+		animation-duration: .01ms !important;
+		-webkit-animation-iteration-count: 1 !important;
+		animation-iteration-count: 1 !important;
+		-webkit-transition-duration: .01ms !important;
+		transition-duration: .01ms !important;
+	}
+}
+
+
+/* ==================================== */
+
+
+iframe {
+	height: revert-layer !important;
+}
+
+
+/* ==================================== */
+
+
+[data-qa="order-product-base-price"],
+[data-qa="order-payment-information"] .flex-col.gap-y-3.text-xs.border-b.border-gray-100.pb-3,
+.order-summary-general .order-total-product-price,
+.order-summary-general .order-total-discount-price,
+.order-product-price .line-through {
+	display: none !important;
+}
+
+
+/* ==================================== */
+
+
+.adar-see-all {
+	transition: color 0.2s ease;
+}
+
+.adar-see-all:hover {
+	color: #0084d6 !important;
+}
+
+
+/* ==================================== */
+
+
+/* Google'ın tanımıyla AYNI ağırlık değerleri yazılır (aralık değil): tarayıcı aynı ağırlıkta son tanımı seçer, yoksa Google'ın display=swap tanımı kazanır */
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 100;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 100;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 200;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 200;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 300;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 300;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 500;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 600;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 800;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 800;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 900;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WdhyyTh89ZNpQ.woff2) format('woff2');
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 900;
+	font-display: block;
+	src: url(https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea,
+optgroup {
+	font-family: Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.lg-outer .lg-dropdown a {
+	font-family: Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+
+/* ==================================== */
+
+
+/* Plus rozeti */
+.adar-plus-rozet {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	margin-inline-start: 6px;
+	padding: 1px 9px 1px 6px;
+	border-radius: 999px;
+	font-size: 10.5px;
+	font-weight: 800;
+	letter-spacing: .06em;
+	line-height: 1.5;
+	color: #fff;
+	vertical-align: middle;
+	background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+	box-shadow: 0 2px 8px rgba(124, 58, 237, .35), inset 0 1px 0 rgba(255, 255, 255, .25);
+	transition: transform .15s, box-shadow .15s;
+}
+
+.adar-plus-rozet::before {
+	content: "+";
+	font-size: 14px;
+	font-weight: 900;
+	line-height: 1;
+	color: #fff;
+}
+
+.adar-plus-rozet:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 5px 14px rgba(236, 72, 153, .45), inset 0 1px 0 rgba(255, 255, 255, .25);
+}
+
+/* =========================================================
+	   ÜYE MENÜSÜ (MENU_CUSTOM_8) - kullanıcı adına gelince açılan kutu
+	   ========================================================= */
+
+/* Kutu, kullanıcı adının sağ kenarına hizalanır (dar ekranda taşmasın) */
+.dropdown-body.adar-member-dropdown {
+	inset-inline-start: auto !important;
+	inset-inline-end: 0 !important;
+	transform: none !important;
+	translate: none !important;
+}
+
+/* Üstteki küçük ok, kutunun sağ tarafına gelir */
+.dropdown-body.adar-member-dropdown>div::after {
+	inset-inline-start: auto !important;
+	inset-inline-end: 36px !important;
+	translate: none !important;
+	transform: translateY(-50%) rotate(45deg) !important;
+}
+
+.adar-member-panel {
+	width: 288px;
+	max-width: calc(100vw - 32px);
+	max-height: calc(100vh - 140px);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 4px;
+	text-align: start;
+}
+
+.adar-member-group {
+	padding: 8px 8px 6px;
+}
+
+.adar-member-group+.adar-member-group {
+	border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.adar-member-title {
+	margin: 0 0 4px;
+	padding: 0 6px;
+	font-size: 13px;
+	line-height: 1.3;
+	font-weight: 700;
+	color: #17171B;
+}
+
+.adar-member-link {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 8px 6px;
+	border-radius: 8px;
+	font-size: 12.5px;
+	line-height: 1.2;
+	font-weight: 500;
+	color: inherit;
+	cursor: pointer;
+	transition: background-color .15s ease, color .15s ease;
+}
+
+.adar-member-link:hover,
+.adar-member-link:focus-visible {
+	background-color: #f3f4f6;
+	color: #0084d6;
+}
+
+.adar-member-link img,
+.adar-member-link svg {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	object-fit: contain;
+}
+
+.adar-member-logout {
+	font-weight: 600;
+}
+
+
+/* ==================================== */
+
+@media (min-width: 1024px) {
+	.zg-aramakutu {
+		max-width: 22rem !important;
+	}
+}
+
+/* ==================================== */
+
+
+/* Masaüstü: menü sekmeleri sığmayınca beliren yatay kaydırma çubuğu sekme ile açılan menü arasında boşluk oluşturup menüyü kapatıyordu. Çubuk gizlenir (fare tekerleği/dokunmatik yüzey ile yine kayar), boşluk kalmaz. */
+@media (min-width: 1024px) {
+	header nav[data-toggle="menu"] {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	header nav[data-toggle="menu"]::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+}
+
+/* Mobil menü: Menü başlığının altında 3 kare hızlı sayfa butonu */
+.zh-hizli {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+	padding: 12px 16px;
+	border-bottom: 1px solid #e5e7eb;
+	background: #fff;
+}
+
+.zh-hizli a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	aspect-ratio: 1 / 1;
+	padding: 6px;
+	border: 1px solid #e5e7eb;
+	border-radius: 14px;
+	background: #f8f9fb;
+	color: #1f2937;
+	text-align: center;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.2;
+	text-decoration: none;
+	transition: background .15s, border-color .15s, transform .12s;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.zh-hizli a:active {
+	background: #fdecef;
+	border-color: #0084d6;
+	color: #0084d6;
+	transform: scale(.97);
+}
+
+.zh-hizli a span:first-child {
+	font-size: 28px;
+	line-height: 1;
+}
+
+
+/* ==================================== */
+
+
+/* Adar Plus: üstüne gelince (hover) kırmızı yerine mor. Otomatik üretildi (uret-plus-hover.js). */
+@media (hover:hover) and (pointer:fine) {
+	html .\!btn.btn-outline-primary:hover {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .btn.btn-outline-primary:hover {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .selection-dropdown .selection-li:hover {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+}
+
+html .dropdown:hover [data-event=hover] {
+	--tw-text-opacity: 1 !important;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1)) !important
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .\*\:btn>.btn-outline-primary:hover {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .hover\:border-primary:hover {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .hover\:border-primary\/30:hover {
+		border-color: rgba(124, 58, 237, .3)
+	}
+
+	html .hover\:\!bg-primary\/10:hover {
+		background-color: rgba(124, 58, 237, .1) !important
+	}
+
+	html .hover\:bg-primary:hover {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .hover\:bg-primary-600:hover {
+		--tw-bg-opacity: 1;
+		background-color: rgba(109, 40, 217, var(--tw-bg-opacity, 1))
+	}
+
+	html .hover\:\!text-primary:hover {
+		--tw-text-opacity: 1 !important;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1)) !important
+	}
+
+	html .hover\:text-primary:hover {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .hover\:text-primary\/80:hover {
+		color: rgba(124, 58, 237, .8)
+	}
+
+	html .hover\:\[filter\:drop-shadow\(300px_0_0_\#0084d6\)\]:hover {
+		filter: drop-shadow(300px 0 0 #7c3aed)
+	}
+
+	html .hover\:after\:border-primary:hover:after {
+		content: var(--tw-content);
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+}
+
+html .active\:text-primary:active {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .group\/product:hover .group-hover\/product\:border-primary {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .group:hover .group-hover\:\!border-primary {
+		--tw-border-opacity: 1 !important;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1)) !important
+	}
+
+	html .group:hover .group-hover\:border-primary {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .group:hover .group-hover\:\!bg-primary {
+		--tw-bg-opacity: 1 !important;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1)) !important
+	}
+
+	html .group:hover .group-hover\:bg-primary {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .group:hover .group-hover\:bg-primary\/10 {
+		background-color: rgba(124, 58, 237, .1)
+	}
+
+	html .group\/category:hover .group-hover\/category\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .group:hover .group-hover\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .group:hover .group-hover\:shadow-primary\/20 {
+		--tw-shadow-color: rgba(124, 58, 237, .2);
+		--tw-shadow: var(--tw-shadow-colored)
+	}
+}
+
+html .\[\&\:hover\:after\]\:border-primary:hover:after {
+	--tw-border-opacity: 1;
+	border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+}
+
+html .\[\&\>\*\:hover\]\:text-primary>:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+html .\[\&\>div\:hover\]\:text-primary>div:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+html .\[\&\>span\:hover\]\:bg-primary>span:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+}
+
+html .\[\&\>span\:hover\]\:text-primary>span:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+html .\[\&_a\:hover\]\:border-primary a:hover {
+	--tw-border-opacity: 1;
+	border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+}
+
+html .\[\&_a\:hover\]\:bg-primary a:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+}
+
+html .\[\&_a\:hover\]\:text-primary a:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+html .\[\&_button\:hover\]\:text-primary button:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+html .\[\&_span\:hover\]\:text-primary span:hover {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .active .group:hover .\[\.active_\&\]\:group-hover\:border-b-primary {
+		--tw-border-opacity: 1;
+		border-bottom-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .active .group:hover .\[\.active_\&\]\:group-hover\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+}
+
+html .active .group:hover .\[\.active_\.group\:hover_\&\]\:text-primary {
+	--tw-text-opacity: 1;
+	color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+}
+
+/* Mobil/dokunmatik: aynı efektler basılınca (:active) mor. */
+@media (hover:none) {
+	html .\!btn.btn-outline-primary:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+
+	html .btn.btn-outline-primary:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+
+	html .selection-dropdown .selection-li:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .dropdown:active [data-event=hover] {
+		--tw-text-opacity: 1 !important;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1)) !important
+	}
+
+	html .\*\:btn>.btn-outline-primary:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1));
+		--tw-text-opacity: 1;
+		color: rgb(255 255 255/var(--tw-text-opacity, 1))
+	}
+
+	html .hover\:border-primary:active {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .hover\:border-primary\/30:active {
+		border-color: rgba(124, 58, 237, .3)
+	}
+
+	html .hover\:\!bg-primary\/10:active {
+		background-color: rgba(124, 58, 237, .1) !important
+	}
+
+	html .hover\:bg-primary:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .hover\:bg-primary-600:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(109, 40, 217, var(--tw-bg-opacity, 1))
+	}
+
+	html .hover\:\!text-primary:active {
+		--tw-text-opacity: 1 !important;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1)) !important
+	}
+
+	html .hover\:text-primary:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .hover\:text-primary\/80:active {
+		color: rgba(124, 58, 237, .8)
+	}
+
+	html .hover\:\[filter\:drop-shadow\(300px_0_0_\#0084d6\)\]:active {
+		filter: drop-shadow(300px 0 0 #7c3aed)
+	}
+
+	html .hover\:after\:border-primary:active:after {
+		content: var(--tw-content);
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .active\:text-primary:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .group\/product:active .group-hover\/product\:border-primary {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .group:active .group-hover\:\!border-primary {
+		--tw-border-opacity: 1 !important;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1)) !important
+	}
+
+	html .group:active .group-hover\:border-primary {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .group:active .group-hover\:\!bg-primary {
+		--tw-bg-opacity: 1 !important;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1)) !important
+	}
+
+	html .group:active .group-hover\:bg-primary {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .group:active .group-hover\:bg-primary\/10 {
+		background-color: rgba(124, 58, 237, .1)
+	}
+
+	html .group\/category:active .group-hover\/category\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .group:active .group-hover\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .group:active .group-hover\:shadow-primary\/20 {
+		--tw-shadow-color: rgba(124, 58, 237, .2);
+		--tw-shadow: var(--tw-shadow-colored)
+	}
+
+	html .\[\&\:active\:after\]\:border-primary:active:after {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .\[\&\>\*\:active\]\:text-primary>:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .\[\&\>div\:active\]\:text-primary>div:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .\[\&\>span\:active\]\:bg-primary>span:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .\[\&\>span\:active\]\:text-primary>span:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .\[\&_a\:active\]\:border-primary a:active {
+		--tw-border-opacity: 1;
+		border-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .\[\&_a\:active\]\:bg-primary a:active {
+		--tw-bg-opacity: 1;
+		background-color: rgba(124, 58, 237, var(--tw-bg-opacity, 1))
+	}
+
+	html .\[\&_a\:active\]\:text-primary a:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .\[\&_button\:active\]\:text-primary button:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .\[\&_span\:active\]\:text-primary span:active {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .active .group:active .\[\.active_\&\]\:group-hover\:border-b-primary {
+		--tw-border-opacity: 1;
+		border-bottom-color: rgba(124, 58, 237, var(--tw-border-opacity, 1))
+	}
+
+	html .active .group:active .\[\.active_\&\]\:group-hover\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+
+	html .active .group:active .\[\.active_\.group\:active_\&\]\:text-primary {
+		--tw-text-opacity: 1;
+		color: rgba(124, 58, 237, var(--tw-text-opacity, 1))
+	}
+}
+
+/* Adar Plus teması — mor #7c3aed · indigo #4f46e5 · pembe #ec4899. Yalnız Plus rozetli üyede yüklenir (twig: plusRozet).
+   plus-hover.css (otomatik: sitenin kırmızı hover'ları mora) ile birlikte gömülür. */
+html {
+	-webkit-tap-highlight-color: rgba(124, 58, 237, .28);
+}
+
+/* Üye menüsü: üstüne gelince koyu pembe-indigo gradyan dolgu + beyaz yazı (gri yerine) */
+html .adar-member-link:hover,
+html .adar-member-link:focus-visible,
+html span.hover\:bg-gray-100[data-toggle="logout"]:hover {
+	background: linear-gradient(120deg, #3730a3 0%, #7e22ce 55%, #be185d 100%) !important;
+	color: #fff !important;
+}
+
+html .adar-member-link {
+	transition: background .15s ease, color .15s ease;
+}
+
+/* Üye menüsünde gradyan dolguda içerideki yazı ve ikonlar da beyaz */
+html .adar-member-link:hover *,
+html .adar-member-link:focus-visible *,
+html span.hover\:bg-gray-100[data-toggle="logout"]:hover * {
+	color: #fff !important;
+}
+
+html .adar-member-link:hover svg *,
+html .adar-member-link:focus-visible svg * {
+	stroke: #fff !important;
+}
+
+html .adar-member-link:hover svg [fill]:not([fill="none"]),
+html .adar-member-link:focus-visible svg [fill]:not([fill="none"]) {
+	fill: #fff !important;
+}
+
+/* Adar Plus logosu: yerleşim kutusu orijinal logonun yüksekliğinde kalır (header yükselmez); SVG'nin üst/alt şeffaf boşluğu kutunun dışına taşar.
+   Telefonda hamburger ikonunun hemen yanında durur. */
+html a.zp-logo-a[data-qa="logo-link"] {
+	position: relative !important;
+	display: block !important;
+	width: clamp(150px, 16vw, 260px) !important;
+	max-width: none !important;
+	height: min(51.2px, max(34px, 6vw)) !important;
+	max-height: none !important;
+	aspect-ratio: auto !important;
+}
+
+html a.zp-logo-a[data-qa="logo-link"] img.zp-logo {
+	position: absolute !important;
+	left: -9% !important;
+	top: 50% !important;
+	width: 100% !important;
+	height: auto !important;
+	aspect-ratio: 994 / 453.79;
+	max-width: none !important;
+	max-height: none !important;
+	transform: translateY(-44.5%);
+	pointer-events: none;
+}
+
+/* SVG'de görünen kısım resmin ortasında değil biraz üstte (%29-%61): kutunun ortasına hizalanır, üstten kesilmez */
+@media (max-width: 639px) {
+	html a.zp-logo-a[data-qa="logo-link"] {
+		width: min(40vw, 160px) !important;
+	}
+}
+
+/* Açık pembe basma/dokunma efekti (active:bg-primary-50) kalksın */
+html .active\:bg-primary-50:active {
+	background-color: transparent !important;
+}
+
+/* Ürün kartı: üstüne gelince mor çerçeve. Çerçeve kartın İÇİNDE çizilir (::after), bu yüzden vitrin/swiper'ın overflow:hidden kutusu
+   ya da oval köşeler onu KESEMEZ. Köşe yuvarlağı karttan miras alınır. */
+html .group[data-toggle="product"].rounded-custom {
+	position: relative;
+}
+
+html .group[data-toggle="product"].rounded-custom::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 6;
+	pointer-events: none;
+	box-sizing: border-box;
+	border: 2px solid transparent;
+	border-radius: inherit;
+	transition: border-color .2s ease;
+}
+
+@media (hover:hover) and (pointer:fine) {
+	html .group[data-toggle="product"].rounded-custom:hover::after {
+		border-color: #7c3aed;
+	}
+}
+
+@media (hover:none) {
+	html .group[data-toggle="product"].rounded-custom:active::after {
+		border-color: #7c3aed;
+	}
+}
+
+/* YENİ etiketi: mor dolgu. Vitrin şablonunun kendi `html body [data-qa=...]{background:#0084d6!important}` kuralını da geçer (özgüllük yükseltildi). */
+html:not(#zp) body [data-qa="product-new"][data-qa][data-qa],
+html:not(#zp) body [data-adar-showcase-root] [data-qa="product-new"][data-qa][data-qa],
+html:not(#zp) [data-toggle="product"] .absolute.start-2.top-2>span.bg-primary {
+	background: #7c3aed !important;
+	background-color: #7c3aed !important;
+	color: #fff !important;
+}
+
+/* Göz (hızlı görünüm) ve kalp düğmeleri: pembe dolgu */
+@media (hover:hover) and (pointer:fine) {
+
+	html [data-toggle="product"] [data-toggle="favourite"]:hover,
+	html [data-toggle="product"] [data-toggle="popup"][data-width="1280"]:hover {
+		background: #ec4899 !important;
+		color: #fff !important;
+	}
+
+	html [data-toggle="product"] [data-toggle="popup"][data-width="1280"]:hover svg path {
+		stroke: #fff !important;
+	}
+
+	html [data-toggle="product"] [data-toggle="favourite"]:hover svg path {
+		stroke: #fff !important;
+		fill: #fff !important;
+	}
+}
+
+@media (hover:none) {
+
+	html [data-toggle="product"] [data-toggle="favourite"]:active,
+	html [data-toggle="product"] [data-toggle="popup"][data-width="1280"]:active {
+		background: #ec4899 !important;
+		color: #fff !important;
+	}
+
+	html [data-toggle="product"] [data-toggle="popup"][data-width="1280"]:active svg path {
+		stroke: #fff !important;
+	}
+
+	html [data-toggle="product"] [data-toggle="favourite"]:active svg path {
+		stroke: #fff !important;
+		fill: #fff !important;
+	}
+}
+
+/* Favoriye eklenmiş kalp (dolu) pembe */
+html [data-toggle="favourite"].active svg path {
+	fill: #ec4899 !important;
+}
+
+/* Mobil: düğmelere basılınca mor dolgu */
+@media (hover:none) {
+	html .btn:active {
+		background-color: #7c3aed !important;
+		border-color: #7c3aed !important;
+		color: #fff !important;
+	}
+}
+
+/* Sepet / yan sepet "sil" (çöp kutusu) ikonları: kırmızı (text-red-500) yerine mor */
+html button[aria-label="delete product"] svg,
+html [data-qa="cart-product-remove"] svg,
+html [id^="cart-drawer-remove-btn"] svg,
+html [id^="qty-remove-btn"] svg,
+html button[aria-label*="delete" i] svg.text-red-500,
+html button[aria-label*="remove" i] svg.text-red-500,
+html button[aria-label*="sil" i] svg.text-red-500 {
+	color: #7c3aed !important;
+}
+
+html button[aria-label="delete product"]:hover svg,
+html [data-qa="cart-product-remove"]:hover svg {
+	color: #6d28d9 !important;
+}
+
+/* Üst çubukta kullanıcı adına (ya da açılan üye menüsüne) gelince: ad ve PLUS rozetindeki yazı (+ işareti dahil) altın sarısı olur.
+   Sitenin kendi `.dropdown:hover [data-event=hover]` kuralı bağlantıyı mora çevirdiği için renk doğrudan ad etiketine ve rozete yazılır. */
+html [data-qa="account-dropdown"] [data-toggle="header-account-name"] {
+	transition: color .18s ease;
+}
+
+html [data-qa="account-dropdown"] .adar-plus-rozet {
+	transition: transform .15s, box-shadow .15s, color .18s ease;
+}
+
+@media (hover:hover) and (pointer:fine) {
+
+	html [data-qa="account-dropdown"]:hover [data-toggle="header-account-name"],
+	html [data-qa="account-dropdown"]:hover .adar-plus-rozet,
+	html [data-qa="account-dropdown"]:hover .adar-plus-rozet::before {
+		color: #ffc83d !important;
+	}
+
+	html [data-qa="account-dropdown"]:hover .adar-plus-rozet {
+		text-shadow: 0 0 8px rgba(255, 200, 61, .45);
+	}
+}
+
+
+/* ==================================== */
+
+'ları) tarar ve mor kopyasını üretir:
+ - marka kırmızısı ARKA PLAN/DOLGU (düğmeler, oklar, etiketler) → mor (dinlenme hâli dahil);
+
+üstüne gelince/basılınca/seçilince/açılınca dolgusu mor olan öğenin yazısı BEYAZ,
+- kırmızı ÇERÇEVE/outline/halka ve SEÇİLİ/BASILI/ÜSTÜNE GELİNMİŞ/AÇIK (akordiyon) durum renkleri → mor,
+- düğmelerde hover'da siyah/koyu dolgu → koyu mor; açık pembe basma (active) dolgusu → kaldırılır,
+ - YENİ etiketi. Kırmızı YAZI/ikon renkleri (fiyat vb.) de mor olur. Fare üstündeyken düğme/bağlantı içindeki SVG ikonlar mor (dolgulu öğede beyaz) olur. Özgüllük (specificity) `html:not(#zp)` ile yükseltilir: sitedeki class'lı !important kuralları da ezilir.
+ Sonradan eklenen stiller (hızlı görünüm penceresi, özel şablonlar) de taranır. */ (function () {
+		'use strict';
+		if (window.__adarPlusMor) return;
+		window.__adarPlusMor=true;
+
+		// Marka kırmızısı (ve koyu/açık tonları: #0084d6, rgb(168,13,39), rgb(215,25,45)…) -> mor. Hata kırmızıları (#ef4444 gibi, g>45) değişmez.
+		function kirmiziMi(r, g, b) {
+			return r >=150 && g <=45 && b <=80 && r - g >=120;
+		}
+
+		function mora(v) {
+			return String(v) .replace(/(rgba?\(\s*)(\d {
+						1, 3
+
+					})(\s*[, ]\s*)(\d {
+						1, 3
+
+					})(\s*[, ]\s*)(\d {
+						1, 3
+
+					})/gi, function (m, a, r, b, g, c, bl) {
+					r=+r; g=+g; bl=+bl;
+					if ( !kirmiziMi(r, g, bl)) return m;
+					return a + (r >=190 ? '124' : '109') + b + (r >=190 ? '58' : '40') + c + (r >=190 ? '237' : '217');
+
+				}) .replace(/#([0-9a-f] {
+						6
+					}
+
+					|[0-9a-f] {
+						3
+
+					})\b/gi, function (m, h) {
+					if (h.length===3) h=h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+					var r=parseInt(h.slice(0, 2), 16), g=parseInt(h.slice(2, 4), 16), b=parseInt(h.slice(4, 6), 16);
+					return kirmiziMi(r, g, b) ? (r >=190 ? '#7c3aed' : '#6d28d9') : m;
+				});
+		}
+
+		function kirmiziVar(v) {
+			return mora(v) !==String(v);
+		}
+
+		function ilkRenk(v) {
+			var m=/rgba?\(\s*(\d {
+					1, 3
+
+				})[\s, ]+(\d {
+					1, 3
+
+				})[\s, ]+(\d {
+					1, 3
+				})/i.exec(v);
+			if (m) return [+m[1], +m[2], +m[3]];
+
+			m=/#([0-9a-f] {
+					6
+				})\b/i.exec(v);
+			if (m) return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)];
+			if (/\bblack\b/i.test(v)) return [0, 0, 0];
+			return null;
+		}
+
+		function koyu(v) {
+			var c=ilkRenk(v); return ! !c && c[0] < 75 && c[1] < 75 && c[2] < 75;
+		}
+
+		function acikPembe(v) {
+			var c=ilkRenk(v); return ! !c && c[0] >=240 && c[1] >=180 && c[1] <=235 && Math.abs(c[1] - c[2]) <=14;
+		}
+
+		// basma efekti açık pembe (255,208,203)
+		// Dolgu opak mı? (bg-primary/10 gibi saydam tonlarda beyaz yazı olmaz)
+		function opak(dekl, v) {
+			var m=/rgba?\(\s*\d+[\s, ]+\d+[\s, ]+\d+\s*[, \/]\s*([\d.]+%?)/i.exec(v);
+
+			if (m) {
+				var a=parseFloat(m[1]); if (/%$/.test(m[1])) a /=100; if ( !isNaN(a)) return a >=0.9;
+			}
+
+			if (/var\(--tw-bg-opacity/i.test(v)) {
+				for (var i=0; i < dekl.length; i++) if (dekl[i][0]==='--tw-bg-opacity') return parseFloat(dekl[i][1]) >=0.9;
+			}
+
+			return true;
+		}
+
+		var BG=/^background(-color|-image)?$/i;
+		var BUTONLU=/btn|button|arrow|swiper-button|adar-[\w-]*nav\b/i;
+		var KOYU_UTIL=/(hover|focus|active)\\:bg-(black|secondary|gray-[89]00|zinc-[89]00|neutral-[89]00|slate-[89]00)/i;
+		var DURUM=/hover|active|focus|checked|selected|current|chosen|picked|passive|open|expanded|aria-selected|aria-checked|\[data-state|\[data-active|\[data-selected/i; // üstüne gelinmiş, basılı, seçili, açık (details[open], aria-expanded) durumlar
+		var CERCEVE=/^(border|outline|box-shadow|-webkit-box-shadow|--tw-ring|--tw-shadow|--tw-border|caret-color)/i;
+		var RENK=/^(color|fill|stroke|-webkit-text-fill-color|text-decoration-color|accent-color)$/i; // kırmızı YAZI/ikon rengi (fiyatlar dahil) → mor
+		var OZEL=/product-new|btn-outline/i; // YENİ etiketi ve çerçeveli (outline) düğmeler: yazı/dolgu da mor
+
+		// Virgülle ayrılmış seçici listesini parantez/köşeli parantez içindeki virgülleri bölmeden ayır
+		function parcala(sel) {
+			var out=[], d=0, b=0, q='', s='';
+
+			for (var i=0; i < sel.length; i++) {
+				var c=sel[i];
+
+				if (q) {
+					s +=c; if (c===q && sel[i - 1] !=='\\') q=''; continue;
+				}
+
+				if (c==='"' || c==="'") {
+					q=c; s +=c; continue;
+				}
+
+				if (c==='(') d++; else if (c===')') d--; else if (c==='[') b++; else if (c===']') b--;
+
+				if (c===',' && !d && !b) {
+					out.push(s.trim()); s='';
+				}
+
+				else s +=c;
+			}
+
+			if (s.trim()) out.push(s.trim());
+			return out;
+		}
+
+		// Seçiciyi, hiçbir class/attribute kuralının geçemeyeceği özgüllüğe yükselt
+		function yukselt(p) {
+			if (/^html\b/i.test(p)) return 'html:not(#zp)' + p.slice(4);
+			if (/^:root\b/i.test(p)) return 'html:not(#zp)' + p.slice(5);
+			return 'html:not(#zp) ' + p;
+		}
+
+		// Bildirimleri kural metninden ayrıştır: içinde var() olan kısaltmalar (border-color:rgba(0,132,214,var(--x))) CSSOM'da boş görünür
+		function bildirimler(kural) {
+			var t=kural.cssText || '', a=t.indexOf('{'), z=t.lastIndexOf('}');
+			if (a < 0 || z < a) return [];
+			var g=t.slice(a + 1, z), out=[], d=0, q='', s='';
+
+			function ekle(x) {
+				var i=x.indexOf(':'); if (i < 1) return;
+				var ad=x.slice(0, i).trim().toLowerCase(), v=x.slice(i + 1).trim();
+				if (/ !\s*important\s*$/i.test(v)) v=v.replace(/ !\s*important\s*$/i, '').trim();
+				out.push([ad, v]);
+			}
+
+			for (var i=0; i < g.length; i++) {
+				var c=g[i];
+
+				if (q) {
+					s +=c; if (c===q && g[i - 1] !=='\\') q=''; continue;
+				}
+
+				if (c==='"' || c==="'") {
+					q=c; s +=c; continue;
+				}
+
+				if (c==='(') d++; else if (c===')') d--;
+
+				if (c===';' && !d) {
+					ekle(s); s='';
+				}
+
+				else s +=c;
+			}
+
+			ekle(s);
+			return out;
+		}
+
+		function kuralMetni(kural) {
+			var T=(window.CSSStyleRule && kural instanceof CSSStyleRule);
+
+			if (T) {
+				var sel=kural.selectorText || '';
+				if ( !sel) return '';
+				var dekl=bildirimler(kural), cikti='';
+
+				parcala(sel).forEach(function (p) {
+						var hal=DURUM.test(p), tikla=/:hover|:active|:focus/.test(p), d=[], beyaz=false;
+
+						dekl.forEach(function (x) {
+								var ad=x[0], v=x[1];
+
+								if (BG.test(ad)) {
+									if (kirmiziVar(v)) {
+										d.push(ad + ':' + mora(v)); if (hal && opak(dekl, v)) beyaz=true; return;
+									}
+
+									// kırmızı dolgu → mor (dinlenme hâli dahil)
+									if (tikla && acikPembe(v)) {
+										d.push(ad + ':transparent'); return;
+									}
+
+									// açık pembe basma efekti kalksın
+									if (tikla && koyu(v) && opak(dekl, v) && (BUTONLU.test(p) || KOYU_UTIL.test(p))) {
+										d.push(ad + ':#6d28d9'); beyaz=true;
+									}
+
+									// hover'da siyah dolgu → koyu mor
+									return;
+								}
+
+								if (kirmiziVar(v) && (hal || OZEL.test(p) || CERCEVE.test(ad) || RENK.test(ad))) d.push(ad + ':' + mora(v));
+							});
+						if ( !d.length) return;
+						var sade= !/::/.test(p);
+						if (beyaz && sade) d.push('color:#fff');
+
+						cikti +=yukselt(p) + '{' + d.map(function (z) {
+								return z + ' !important';
+							}).join(';') + '}\n';
+						if (beyaz && sade) cikti +=yukselt(p) + ' *{color:#fff !important}\n'; // dolgulu öğenin içindeki yazı/ikon da beyaz
+					});
+				return cikti;
+			}
+
+			if (window.CSSMediaRule && kural instanceof CSSMediaRule) {
+				var ic=''; for (var j=0; j < kural.cssRules.length; j++) ic +=kuralMetni(kural.cssRules[j]);
+				return ic ? '@media ' + kural.conditionText + '{\n' + ic + '}\n' : '';
+			}
+
+			if (window.CSSSupportsRule && kural instanceof CSSSupportsRule) {
+				var ic2=''; for (var k=0; k < kural.cssRules.length; k++) ic2 +=kuralMetni(kural.cssRules[k]);
+				return ic2 ? '@supports ' + kural.conditionText + '{\n' + ic2 + '}\n' : '';
+			}
+
+			return '';
+		}
+
+		var islenen=[], stil=null;
+
+		function tara() {
+			var yeni='';
+
+			for (var i=0; i < document.styleSheets.length; i++) {
+				var sh=document.styleSheets[i];
+				if (islenen.indexOf(sh) > -1) continue;
+				if (sh.ownerNode && sh.ownerNode.id==='zp-mor') continue;
+				var kurallar;
+
+				try {
+					kurallar=sh.cssRules;
+				}
+
+				catch (e) {
+					islenen.push(sh); continue;
+				}
+
+				// başka siteden (ör. yazı tipi) okunamaz
+				if ( !kurallar) continue;
+				islenen.push(sh);
+
+				for (var j=0; j < kurallar.length; j++) {
+					try {
+						yeni +=kuralMetni(kurallar[j]);
+					}
+
+					catch (e2) {
+						/* tek kural bozuksa geç */
+					}
+				}
+			}
+
+			if ( !yeni) return;
+
+			if ( !stil) {
+				stil=document.createElement('style'); stil.id='zp-mor'; (document.head || document.documentElement).appendChild(stil);
+			}
+
+			stil.textContent +=yeni;
+		}
+
+		// SVG'ye doğrudan yazılmış kırmızı fill="#0084d6" / stroke="#0084d6" öznitelikleri (CSS ile ulaşılamaz) → satır içi stil ile mor
+		function svgOznitelik() {
+			var l=document.querySelectorAll('svg [fill],svg [stroke]');
+
+			for (var i=0; i < l.length; i++) {
+				var e=l[i];
+
+				['fill', 'stroke'].forEach(function (a) {
+						var v=e.getAttribute(a);
+						if (v && kirmiziVar(v) && !e.style.getPropertyValue(a)) e.style.setProperty(a, mora(v));
+					});
+			}
+		}
+
+		var bekle=0;
+
+		function planla() {
+			if (bekle) return; bekle=setTimeout(function () {
+					bekle=0; tara(); svgOznitelik();
+				}
+
+				, 60);
+		}
+
+		tara(); svgOznitelik();
+
+		// Sonradan eklenen <style>/<link> (hızlı görünüm penceresi, tembel yüklenen bölümler)
+		new MutationObserver(function (liste) {
+				for (var i=0; i < liste.length; i++) {
+					var ek=liste[i].addedNodes;
+
+					for (var j=0; j < ek.length; j++) {
+						var n=ek[j];
+						if (n.nodeType !==1) continue;
+
+						if (n.tagName==='STYLE' || (n.tagName==='LINK' && /stylesheet/i.test(n.rel || ''))) {
+							if (n.id==='zp-mor') continue;
+							if (n.tagName==='LINK') n.addEventListener('load', planla);
+							planla();
+						}
+
+						else if (n.querySelector && (n.querySelector('style') || n.tagName==='svg' || n.querySelector('svg'))) planla();
+					}
+				}
+
+			}).observe(document.documentElement, {
+			childList: true, subtree: true
+		});
+	document.addEventListener('DOMContentLoaded', planla);
+	window.addEventListener('load', planla);
+
+	/* ---- Fare üstündeyken SVG ikonlar mora döner ----
+	   Düğme/bağlantı içindeki, rengi koyu ya da kırmızı olan SVG şekilleri (sabit stroke/fill yazılmış olanlar dahil) üstüne gelince mor olur;
+	   öğenin kendisi dolgulu (mor/gradyan) hâle geldiyse ikon BEYAZ olur. Fare çıkınca eski değer geri yazılır. Yalnız fareli cihazlarda. */
+	if (window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+		var ETKIN='a,button,[role="button"],.btn,summary,label,[data-toggle="favourite"],[data-toggle="popup"],[data-toggle="logout"],[data-toggle="drawer"],[data-toggle="collection"],[data-toggle="compare"]';
+		var SEKIL='svg path,svg circle,svg rect,svg line,svg polyline,svg polygon,svg ellipse';
+		var DISARI='[data-qa="logo-link"],.adar-plus-rozet,.zp-plus,.zp-logo';
+		var aktif=null, zaman=0;
+
+		function geriAl() {
+			if ( !aktif) return;
+
+			aktif.kayit.forEach(function (k) {
+					if (k.eski) k.el.style.setProperty(k.ozellik, k.eski, k.oncelik); else k.el.style.removeProperty(k.ozellik);
+				});
+			aktif=null;
+		}
+
+		function aciklik(c) {
+			var m=/rgba?\(\s*(\d+)[\s, ]+(\d+)[\s, ]+(\d+)/.exec(c); return m ? (0.299 * m[1] + 0.587 * m[2] + 0.114 * m[3]) / 255 : 1;
+		}
+
+		function boya(el) {
+			if ( !el.isConnected || !el.matches(':hover')) return;
+			var cs=getComputedStyle(el), m=/rgba?\(\s*\d+[\s, ]+\d+[\s, ]+\d+[\s, ]*([\d.]*)/.exec(cs.backgroundColor);
+			var dolgu=cs.backgroundImage !=='none' || (m && (m[1]==='' || parseFloat(m[1]) > 0.5) && aciklik(cs.backgroundColor) < 0.7); // beyaz/açık zeminde ikon mor, koyu/renkli dolguda beyaz
+			var renk=dolgu ? '#fff' : '#7c3aed';
+			var sekiller=el.querySelectorAll(SEKIL);
+			if ( !sekiller.length || sekiller.length > 24) return;
+			geriAl();
+			var kayit=[];
+
+			function yaz(s, ozellik, deger) {
+				kayit.push({
+					el: s, ozellik: ozellik, eski: s.style.getPropertyValue(ozellik), oncelik: s.style.getPropertyPriority(ozellik)
+				}); s.style.setProperty(ozellik, deger, 'important');
+		}
+
+		for (var i=0; i < sekiller.length; i++) {
+			var s=sekiller[i], c=getComputedStyle(s);
+			if (c.stroke && c.stroke !=='none' && aciklik(c.stroke) < 0.62) yaz(s, 'stroke', renk); // beyaz/açık çizgilere dokunma
+			if (c.fill && c.fill !=='none' && c.fill.indexOf('url(') < 0 && !/rgba\(0, 0, 0, 0\)/.test(c.fill) && aciklik(c.fill) < 0.62) yaz(s, 'fill', renk);
+		}
+
+		aktif= {
+			el: el, kayit: kayit
+		}
+
+		;
+	}
+
+	document.addEventListener('mouseover', function (e) {
+			var el=e.target && e.target.closest ? e.target.closest(ETKIN) : null;
+			if (el && el.closest(DISARI)) el=null;
+			if (el && el.matches('.group[data-toggle="product"]')) el=null;
+			if (aktif && aktif.el===el) return;
+			clearTimeout(zaman); geriAl();
+			if ( !el) return;
+
+			zaman=setTimeout(function () {
+					boya(el);
+				}
+
+				, 150); // geçiş (transition) bitsin, öğenin hover rengi oturmuş olsun
+		}
+
+		, true);
+
+	document.addEventListener('mouseout', function (e) {
+			var h=e.relatedTarget;
+
+			if (aktif && !(h && aktif.el.contains && aktif.el.contains(h))) {
+				clearTimeout(zaman); geriAl();
+			}
+		}
+
+		, true);
+}
+})();
+
+</script><script>
+
+/* Plus üyede kullanıcı adına ya da PLUS rozetine tıklayınca Adar Plus sayfasına (abonelik bilgileri) gider.
+   Ad ve rozet hesap sayfası bağlantısının (üst çubuk) İÇİNDE durduğu için tıklama yakalanır ve bağlantının kendi gidişi durdurulur.
+   Hesap sayfalarına açılan üye menüsünden (kullanıcı adının üstüne gelince açılır) ulaşılmaya devam eder. Ctrl/Cmd/Shift ya da orta tuşla yeni sekmede açılır.
+   Ayrıca <html>'e "adar-plus-uye" sınıfı eklenir: izleme kodlarındaki CSS (mega menü mesaj kutusu vb.) Plus üyede mor olsun diye bu sınıfı kullanır. */
+(function () {
+		'use strict';
+		if (window.__adarPlusRozet) return;
+		window.__adarPlusRozet=true;
+
+		try {
+			document.documentElement.classList.add('adar-plus-uye');
+		}
+
+		catch (e) {
+			/* eski tarayıcı */
+		}
+
+		var ADRES='/adar-plus', HEDEF='.adar-plus-rozet,[data-toggle="header-account-name"],[data-toggle="adar-member-name"]';
+
+		function hedef(e) {
+			return e.target && e.target.closest ? e.target.closest(HEDEF) : null;
+		}
+
+		function dur(e) {
+			e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+		}
+
+		document.addEventListener('click', function (e) {
+				if ( !hedef(e)) return;
+				dur(e);
+				if (e.ctrlKey || e.metaKey || e.shiftKey) window.open(ADRES, '_blank'); else window.location.href=ADRES;
+			}
+
+			, true);
+
+		document.addEventListener('auxclick', function (e) {
+				// orta tuş: yeni sekme
+				if (e.button !==1 || !hedef(e)) return;
+				dur(e); window.open(ADRES, '_blank');
+			}
+
+			, true);
+
+		function isle() {
+			var l=document.querySelectorAll(HEDEF), tr=document.documentElement.lang==='tr' || !document.documentElement.lang;
+
+			for (var i=0; i < l.length; i++) {
+				l[i].style.cursor='pointer'; l[i].title=tr ? 'Adar Plus abonelik bilgilerin' : 'Adar Plus subscription details';
+			}
+		}
+
+		isle();
+		if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', isle);
+	})();
+
+</script></template><script>
+
+/* Adar Plus durumu (otomatik): giriş yapmış üyenin Plus abonesi olup olmadığını, yönetim programının Firebase'e kendiliğinden yazdığı listeden öğrenir.
+   Listedeki kayıtlar KISALTILMIŞTIR: adarplus/uyelik/<sha256("zp-u:" + ÜYE NO ya da KOD büyük harf)> = 1. Üye yalnız kendi kaydına bakar (tek küçük istek).
+   Panele elle kod/liste yapıştırmak gerekmez: abone eklenince Plus açılır, abone silinince/bitince kapanır.
+   Kullanım (başka kodlar): window.adarPlus.dinle(function (plusMu, kaynak) { ... });  kaynak: 'onbellek' (önceki ziyaret, anında) | 'sunucu' (güncel) | 'giris-yok' | 'ag-yok'
+   Hızlı yol: önceki ziyaretin sonucu tarayıcıda saklanır, sayfa hemen o bilgiyle çizilir; sunucu cevabı farklıysa (abone eklendi/silindi) sayfa bir kez kendini yeniler. */
+(function () {
+		'use strict';
+		if (window.adarPlus) return;
+		var FB='https://adar-cihaz-filtre-verisi-default-rtdb.europe-west1.firebasedatabase.app/adarplus/uyelik/';
+		var ANAHTAR='zp-plus-v1';
+		var kaynak=document.getElementById('zp-uye') || document.getElementById('zp-uye-cari');
+		var id=kaynak ? String(kaynak.getAttribute('data-id') || '').trim() : '';
+		var kod=kaynak ? String(kaynak.getAttribute('data-kod') || '').trim() : '';
+		var kimlikler=[]; if (id) kimlikler.push(id); if (kod) kimlikler.push(kod);
+
+		var Z=window.adarPlus= {
+			giris: kimlikler.length > 0, durum: null, kaynak: '', dinle: dinle, yenile: yenile
+		}
+
+		;
+		var dinleyiciler=[];
+
+		function dep() {
+			try {
+				return window.localStorage;
+			}
+
+			catch (e) {
+				return null;
+			}
+		}
+
+		function oku() {
+			try {
+				var d=dep(), v=d && d.getItem(ANAHTAR); return v ? JSON.parse(v) : null;
+			}
+
+			catch (e) {
+				return null;
+			}
+		}
+
+		function yaz(n) {
+			try {
+				var d=dep(); if (d) d.setItem(ANAHTAR, JSON.stringify(n));
+			}
+
+			catch (e) {
+				/* kapalı olabilir */
+			}
+		}
+
+		function dinle(f) {
+			dinleyiciler.push(f); if (Z.durum !==null) {
+				try {
+					f(Z.durum, Z.kaynak);
+				}
+
+				catch (e) {
+					/* tek dinleyici bozulursa diğerleri çalışsın */
+				}
+			}
+		}
+
+		function bildir(v, k) {
+			Z.durum=v; Z.kaynak=k; dinleyiciler.slice().forEach(function (f) {
+					try {
+						f(v, k);
+					}
+
+					catch (e) {
+						/* yoksay */
+					}
+				});
+		}
+
+		// Durum değişince sayfa bir kez yenilenir (döngüye girmesin diye 30 sn içinde ikinci kez yenilemez)
+		function yenile() {
+			try {
+				var s=window.sessionStorage, t=Number(s.getItem('zp-plus-yenile') || 0); if (Date.now() - t < 30000) return; s.setItem('zp-plus-yenile', String(Date.now()));
+			}
+
+			catch (e) {
+				/* oturum deposu yoksa yine de yenile */
+			}
+
+			window.location.reload();
+		}
+
+		function ozet(x) {
+			return crypto.subtle.digest('SHA-256', new TextEncoder().encode('zp-u:' + x.toUpperCase())).then(function (b) {
+					return Array.prototype.map.call(new Uint8Array(b), function (v) {
+							return ('0' + v.toString(16)).slice(-2);
+						}).join('');
+				});
+		}
+
+		function sorgula() {
+			// true: Plus, false: değil, null: öğrenilemedi (ağ hatası) — hata "Plus değil" demek DEĞİLDİR
+			if ( !(window.crypto && crypto.subtle && window.TextEncoder && window.fetch && window.Promise)) return Promise.resolve(null);
+
+			var istekler=kimlikler.map(function (x) {
+					return ozet(x).then(function (h) {
+							var ac=window.AbortController ? new AbortController() : null, t=ac ? setTimeout(function () {
+									ac.abort();
+								}
+
+								, 5000) : 0;
+
+							return fetch(FB + h + '.json', {
+								cache: 'no-store', signal: ac ? ac.signal : undefined
+
+							}).then(function (r) {
+								clearTimeout(t); if ( !r.ok) throw new Error('http'); return r.json();
+							});
+
+					}).then(function (v) {
+						return {
+							tamam: true, v: ! !v
+						}
+
+						;
+					}
+
+					, function () {
+						return {
+							tamam: false
+						}
+
+						;
+					});
+			});
+
+		return Promise.all(istekler).then(function (l) {
+				if (l.some(function (r) {
+							return r.tamam && r.v;
+						})) return true;
+
+				return l.every(function (r) {
+						return r.tamam;
+					}) ? false : null;
+			});
+	}
+
+	if ( !Z.giris) {
+		bildir(false, 'giris-yok'); return;
+	}
+
+	var anahtar=kimlikler.join('|'), onbellek=oku();
+	if (onbellek && onbellek.k===anahtar) bildir( ! !onbellek.v, 'onbellek');
+
+	sorgula().then(function (v) {
+			if (v===null) {
+				if (Z.durum===null) bildir(false, 'ag-yok'); return;
+			}
+
+			yaz({
+				k: anahtar, v: v ? 1 : 0, t: Date.now()
+			}); // önce önbellek güncellenir; sayfa yenilenirse yeni durumla açılır
+		if (Z.durum !==v) bildir(v, 'sunucu'); else Z.kaynak='sunucu';
+	});
+})();
+
+</script><script>
+
+/* Adar Plus görünümünü KENDİLİĞİNDEN açar (üye Plus abonesiyse). Plus bilgisi plus-durum.js'ten gelir (program Firebase'e otomatik yazar; elle liste/kod yok).
+   Açılınca: üst çubukta ve mobil menüde "PLUS" rozeti, Adar Plus logosu, mor tema + Plus fiyatı + diğer Plus betikleri (hepsi aşağıdaki <template> içinde bekler).
+   Üye Plus'tan çıkarılmışsa (abonelik bitti/silindi/askıda) sayfa bir kez yenilenir ve Plus görünümü olmadan açılır. */
+(function () {
+		'use strict';
+		var Z=window.adarPlus; if ( !Z || window.__adarPlusEtkin) return;
+		window.__adarPlusEtkin=true;
+		var uygulandi=false;
+
+		function rozet() {
+			var s=document.createElement('span'); s.className='adar-plus-rozet'; s.title='Adar Plus abonesi'; s.textContent='PLUS'; return s;
+		}
+
+		function arayuz() {
+			var i, l=document.querySelectorAll('[data-toggle="header-account-name"]');
+
+			for (i=0; i < l.length; i++) {
+				var n=l[i].nextElementSibling; if ( !(n && n.classList.contains('adar-plus-rozet'))) l[i].parentNode.insertBefore(rozet(), l[i].nextSibling);
+			}
+
+			var m=document.querySelectorAll('[data-toggle="adar-member-name"]');
+			for (i=0; i < m.length; i++) if ( !m[i].querySelector('.adar-plus-rozet')) m[i].appendChild(rozet());
+			var a=document.querySelector('header a[data-qa="logo-link"]');
+
+			if (a && !a.classList.contains('zp-logo-a')) {
+				// Adar Plus logosu (açılmazsa onerror ile eski logoya döner)
+				var img=document.createElement('img'); img.src='/Data/EditorFiles/adar_plus-logo.svg'; img.alt='Adar Plus'; img.className='zp-logo';
+				var eski=document.createElement('span'); eski.style.display='none';
+				while (a.firstChild) eski.appendChild(a.firstChild);
+
+				img.onerror=function () {
+					img.style.display='none'; eski.style.display='block';
+				}
+
+				;
+				a.appendChild(img); a.appendChild(eski); a.classList.add('zp-logo-a');
+			}
+		}
+
+		function sablon() {
+			// bekleyen Plus stil ve betikleri (yalnız Plus üyede çalışsın diye <template> içinde durur)
+			var t=document.getElementById('zp-plus-sablon'); if ( !t || !t.content) return;
+			var d=Array.prototype.slice.call(t.content.childNodes);
+
+			for (var i=0; i < d.length; i++) {
+				var n=d[i]; if (n.nodeType !==1) continue;
+
+				if (n.tagName==='STYLE') {
+					var s=document.createElement('style'); s.className='zp-plus-stil'; s.textContent=n.textContent; (document.head || document.documentElement).appendChild(s);
+				}
+
+				else if (n.tagName==='SCRIPT') {
+					var sc=document.createElement('script'); sc.text=n.textContent; (document.body || document.documentElement).appendChild(sc);
+				}
+			}
+		}
+
+		function uygula() {
+			if (uygulandi) return; uygulandi=true;
+
+			try {
+				document.documentElement.classList.add('adar-plus-uye');
+			}
+
+			catch (e) {
+				/* eski tarayıcı */
+			}
+
+			try {
+				arayuz();
+			}
+
+			catch (e1) {
+				/* görünüm yine de devam etsin */
+			}
+
+			sablon();
+
+			try {
+				document.dispatchEvent(new CustomEvent('adar-plus-hazir'));
+			}
+
+			catch (e2) {
+				/* eski tarayıcı */
+			}
+		}
+
+		Z.dinle(function (plusMu) {
+				if (plusMu) uygula();
+				else if (uygulandi) Z.yenile(); // Plus bitti/silindi: Plus'sız görünüm için sayfa yenilenir
+			});
+	})();
+
+</script></div></div></div></div><main><div class="grid grid-cols-12 gap-x-4 lg:gap-x-6 "><div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12 2xl:col-span-12 flex"><div class="w-full flex flex-wrap folders place-content-start"><div id="relation-658" data-block-id="658" data-setting-id="658" data-block-source="storefront" data-theme-section="templates/adar2026/section/html-block/u-adar-kampanya-merkezi-katilim-popup-formu.twig" class="w-full flex flex-wrap folder-html-block">< !DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"></head><body>< !-- title: Adar Kampanya Popup --><div id="adar-campaign-host"></div><script>(function () {
+		var host=document.getElementById("adar-campaign-host");
+		if ( !host) return;
+
+		function getCookie(name) {
+			var m=document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+			return m ? decodeURIComponent(m[1]) : '';
+		}
+
+		var userId='', userData= {}
+
+		;
+
+		function scanEntry(entry) {
+			if ( !entry) return;
+			if (entry['2'] && entry['2'].user_id && !userId) userId=String(entry['2'].user_id);
+			if (entry['1']==='user_data' && entry['2']) userData=entry['2'];
+		}
+
+		function loadAdar() {
+			var customer= {
+				id: userId,
+				email: userData.email || getCookie('email') || '',
+				name: [userData.address && userData.address.first_name, userData.address && userData.address.last_name].filter(Boolean).join(' '),
+				company: '', phone: '', groupId: '', groupName: ''
+			}
+
+			;
+			if ( !customer.id && !customer.email) return;
+
+			window.ADAR_CAMPAIGN_CUSTOMER=Object.freeze(customer);
+
+			var s=document.createElement('script');
+			s.defer=true;
+			s.src='https://adar-kampanya-merkezi.web.app/popup/loader.js?v=1.3.7';
+			s.setAttribute('data-api-base', 'https://adar-kampanya-merkezi.web.app/api');
+			document.body.appendChild(s);
+		}
+
+		var dl=window.dataLayer=window.dataLayer || [];
+		for (var i=0; i < dl.length; i++) scanEntry(dl[i]);
+
+		if (userId) {
+			loadAdar(); return;
+		}
+
+		var origPush=dl.push;
+
+		dl.push=function () {
+			for (var i=0; i < arguments.length; i++) scanEntry(arguments[i]);
+			return origPush.apply(dl, arguments);
+		}
+
+		;
+
+		var tries=0;
+
+		var timer=setInterval(function () {
+				tries++;
+
+				if (userId || tries >=20) {
+					clearInterval(timer);
+					loadAdar();
+				}
+			}
+
+			, 250);
+	})();
+</script></body></html></div></div></div></div><div class="grid grid-cols-12 gap-x-4 lg:gap-x-6 "><div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12 2xl:col-span-12 flex"><div class="w-full flex flex-wrap folders place-content-start"><div id="relation-649" data-block-id="649" data-setting-id="649" data-block-source="storefront" data-theme-section="templates/default/section/html-block/default.twig" class="w-full flex flex-wrap folder-html-block"></div></div></div></div><div class="grid grid-cols-12 gap-x-4 lg:gap-x-6 "><div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12 2xl:col-span-12 flex"><div class="w-full flex flex-wrap folders place-content-start"><div id="relation-644" data-block-id="644" data-setting-id="644" data-block-source="storefront" data-theme-section="templates/adar2026/section/slider/u-adar2026-dengeli-hero-slider.twig" class="w-full flex flex-wrap folder-slider"><style>
+
+/* Alanın tamamı orantılı ölçeklenir; yükseklik bağımsız sıkıştırılmaz. */
+#hero-slider-644 {
+	width: 100%;
+	min-width: 0;
+	max-width: none !important;
+	background: #0a0f1d !important;
+}
+
+#hero-slider-644 .swiper-slide {
+	height: auto;
+	min-height: 0;
+}
+
+#hero-slider-644 .adar-hero-frame {
+	position: relative !important;
+	display: block !important;
+	width: 100% !important;
+	min-height: 0;
+	aspect-ratio: 2.6 / 1;
+	background: #0a0f1d !important;
+	overflow: hidden !important;
+}
+
+#hero-slider-644 .adar-hero-frame>picture,
+#hero-slider-644 .adar-hero-frame picture,
+#hero-slider-644 .adar-hero-frame>.hero-video,
+#hero-slider-644 .adar-hero-frame .hero-video,
+#hero-slider-644 .adar-hero-frame>div:first-child {
+	position: absolute !important;
+	inset: 0 !important;
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-height: 0;
+	aspect-ratio: auto !important;
+	background: #0a0f1d !important;
+	overflow: hidden !important;
+}
+
+#hero-slider-644 .adar-hero-frame>picture>img,
+#hero-slider-644 .adar-hero-frame picture img,
+#hero-slider-644 .adar-hero-frame img,
+#hero-slider-644 .hero-video video,
+#hero-slider-644 video {
+	position: absolute !important;
+	inset: 0 !important;
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-width: 100% !important;
+	min-height: 100% !important;
+	max-width: none !important;
+	max-height: none !important;
+	object-fit: cover !important;
+	object-position: center right;
+	background: #0a0f1d !important;
+}
+
+#hero-slider-644 .adar-hero-frame img[src*="ad.jpeg"] {
+	object-position: center 38% !important;
+}
+
+/* Buton metin katmanından bağımsız olarak sahnenin sağ altına sabitlenir. */
+#hero-slider-644 .adar-hero-button {
+	position: absolute;
+	right: clamp(16px, 2.5vw, 32px);
+	bottom: clamp(82px, 7vw, 105px) !important;
+	z-index: 10;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	max-width: calc(100% - clamp(24px, 4vw, 56px));
+	min-height: 44px;
+	padding: 12px 20px;
+	border: 1px solid rgb(255 255 255 / 28%);
+	border-radius: 12px;
+	background: linear-gradient(125deg, #e51c3e, #b5092b);
+	color: #fff;
+	font-size: clamp(12px, 1vw, 15px);
+	font-weight: 700;
+	line-height: 1.3;
+	text-align: center;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+	overflow: hidden;
+	isolation: isolate;
+	box-shadow: 0 6px 18px rgb(80 0 15 / 22%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: transform 220ms ease, box-shadow 220ms ease, opacity 220ms ease;
+}
+
+#hero-slider-644 .swiper-slide-active .adar-hero-button {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+#hero-slider-644 .adar-hero-button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(110deg, transparent 20%, rgb(255 255 255 / 35%) 50%, transparent 80%);
+	transform: translateX(-130%);
+	transition: transform 550ms ease;
+	pointer-events: none;
+}
+
+#hero-slider-644 .adar-hero-button-arrow {
+	flex-shrink: 0;
+	font-size: 20px;
+	transition: transform 220ms ease;
+}
+
+#hero-slider-644 .adar-hero-button-label {
+	min-width: 0;
+}
+
+#hero-slider-644 .adar-hero-button:focus-visible {
+	outline: 3px solid #fff;
+	outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	#hero-slider-644 .adar-hero-button:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 10px 24px rgb(80 0 15 / 32%);
+	}
+
+	#hero-slider-644 .adar-hero-button:hover::before {
+		transform: translateX(130%);
+	}
+
+	#hero-slider-644 .adar-hero-button:hover .adar-hero-button-arrow {
+		transform: translateX(4px);
+	}
+}
+
+#hero-slider-644 .adar-hero-button:active {
+	transform: translateY(0) scale(.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	#hero-slider-644 .adar-hero-button,
+	#hero-slider-644 .adar-hero-button::before,
+	#hero-slider-644 .adar-hero-button-arrow {
+		transition: none;
+		transform: none;
+	}
+
+	#hero-slider-644 .adar-hero-button::before {
+		display: none;
+	}
+}
+
+@media (max-width: 640px) {
+	#hero-slider-644 .adar-hero-frame {
+		aspect-ratio: 1 / 1;
+	}
+}
+
+
+/* ==================================== */
+
+
+@keyframes marquee {
+	0% {
+		transform: translateX(0%);
+	}
+
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes marquee2 {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(0%);
+	}
+}
+
+.marquee {
+	animation: marquee 50s linear infinite;
+}
+
+.marquee2 {
+	animation: marquee2 50s linear infinite;
+}
+
+
+/* ==================================== */
+
+
+/* =========================================================
+		   ADAR FLOW (Markaları Tanıyalım)
+
+		   MASAÜSTÜ (fare olan cihazlar, 1024px ve üstü):
+		   "Adar ile Kazan Kazan" mantığı. Slaytlar yan yana durur,
+		   farenin üstüne geldiği slayt genişleyerek AÇILIR, diğerleri
+		   daralır. Ok butonu ve sürükleme yoktur.
+
+		   MOBİL / TABLET / DOKUNMATİK: İlk flow.twig ile birebir aynı.
+		   Bu dosyadaki hiçbir CSS/JS mobil davranışı değiştirmez.
+		   (Tek fark: logo alanı kaldırıldı.)
+		   ========================================================= */
+
+@media (min-width: 1024px) and (hover: hover) {
+
+	[data-adar-flow] .swiper {
+		padding-bottom: .5rem !important;
+	}
+
+	/* Slider akışını yan yana esnek şeride çevir */
+	[data-adar-flow] .swiper-wrapper {
+		display: flex !important;
+		gap: 14px;
+		width: 100% !important;
+		height: clamp(320px, 32vw, 470px) !important;
+		transform: none !important;
+		cursor: default !important;
+	}
+
+	[data-adar-flow] .swiper-slide {
+		flex: 1 1 0% !important;
+		width: auto !important;
+		min-width: 0 !important;
+		height: 100% !important;
+		margin: 0 !important;
+		transition: flex .55s ease;
+	}
+
+	/* Açık slayt genişler */
+	[data-adar-flow] .swiper-slide.adar-flow-open {
+		flex: 3.2 1 0% !important;
+	}
+
+	/* Döngü kopyaları ve ilerleme çubuğu artık gereksiz */
+	[data-adar-flow] .swiper-slide-duplicate,
+	[data-adar-flow] .swiper-pagination {
+		display: none !important;
+	}
+
+	/* Temadaki "flow" efekti (kayma, genişletme, en-boy oranı) masaüstünde devre dışı */
+	[data-adar-flow] .swiper-slide {
+		aspect-ratio: auto !important;
+		overflow: hidden !important;
+	}
+
+	[data-adar-flow] .swiper-slide .flow-pane {
+		margin: 0 !important;
+		width: 100% !important;
+		height: 100% !important;
+		transition: none !important;
+		contain: none !important;
+	}
+
+	[data-adar-flow] .flow-pane picture {
+		width: 100% !important;
+		height: 100% !important;
+	}
+
+	[data-adar-flow] .flow-pane img {
+		width: 100% !important;
+		height: 100% !important;
+		object-fit: cover;
+	}
+
+	/* Koyu perde ve buton: yalnızca açık slaytta kalkar/görünür */
+	[data-adar-flow].adar-flow-hoverable .adar-flow-slide .adar-flow-dim {
+		opacity: 1 !important;
+	}
+
+	[data-adar-flow].adar-flow-hoverable .adar-flow-slide .adar-flow-info {
+		opacity: 0 !important;
+		visibility: hidden !important;
+	}
+
+	[data-adar-flow].adar-flow-hoverable .adar-flow-slide.adar-flow-open .adar-flow-dim {
+		opacity: 0 !important;
+	}
+
+	[data-adar-flow].adar-flow-hoverable .adar-flow-slide.adar-flow-open .adar-flow-info {
+		opacity: 1 !important;
+		visibility: visible !important;
+	}
+
+}
+
+
+/* ==================================== */
+
+
+/* =========================================================
+       ADAR SHOWCASE - NAVIGATION
+       ========================================================= */
+
+.adar-showcase-slider-area {
+	position: relative;
+}
+
+.adar-showcase-nav {
+	position: absolute;
+	top: 50%;
+	z-index: 40;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	border: 0;
+	border-radius: 999px;
+	background: #0084d6;
+	color: #fff;
+	box-shadow:
+		0 8px 24px rgba(0, 0, 0, .18),
+		0 2px 8px rgba(0, 0, 0, .08);
+	transform: translateY(-50%);
+	cursor: pointer;
+	transition:
+		background-color .25s ease,
+		box-shadow .25s ease,
+		transform .25s ease,
+		opacity .25s ease;
+}
+
+.adar-showcase-nav:hover {
+	background: #A80D27;
+	box-shadow:
+		0 12px 30px rgba(0, 0, 0, .24),
+		0 4px 12px rgba(0, 0, 0, .10);
+}
+
+.adar-showcase-nav:active {
+	transform:
+		translateY(-50%) scale(.92);
+}
+
+.adar-showcase-nav svg {
+	pointer-events: none;
+}
+
+.adar-showcase-nav-prev {
+	left: -23px;
+}
+
+.adar-showcase-nav-next {
+	right: -23px;
+}
+
+.adar-showcase-nav.is-disabled {
+	opacity: .28;
+	pointer-events: none;
+}
+
+/* =========================================================
+       TRACKPAD / DESKTOP
+       ========================================================= */
+
+.adar-showcase-swiper-ready {
+	cursor: grab;
+}
+
+.adar-showcase-swiper-ready:active {
+	cursor: grabbing;
+}
+
+/* =========================================================
+       TÜMÜNÜ GÖR KARTI
+       ========================================================= */
+
+.adar-showcase-all-slide {
+	height: auto;
+	display: flex;
+}
+
+.adar-showcase-all-card {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 100%;
+	overflow: hidden;
+	border: 2px solid #0084d6;
+	border-radius: var(--rounded-custom, 8px);
+	background:
+		linear-gradient(145deg,
+			#0084d6 0%,
+			#A70D27 55%,
+			#7F091E 100%);
+	color: #fff;
+	text-decoration: none;
+	box-shadow:
+		0 8px 24px rgba(0, 132, 214, .18);
+	transition:
+		transform .35s ease,
+		box-shadow .35s ease;
+}
+
+.adar-showcase-all-card::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(circle at 70% 25%,
+			rgba(255, 255, 255, .16),
+			transparent 34%);
+	pointer-events: none;
+}
+
+.adar-showcase-all-card:hover {
+	transform: translateY(-3px);
+	box-shadow:
+		0 16px 34px rgba(0, 132, 214, .26),
+		0 6px 16px rgba(0, 0, 0, .12);
+}
+
+.adar-showcase-all-inner {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 32px 20px;
+	text-align: center;
+}
+
+.adar-showcase-all-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 68px;
+	height: 68px;
+	margin-bottom: 18px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, .14);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	box-shadow:
+		inset 0 0 0 1px rgba(255, 255, 255, .18);
+	transition:
+		transform .35s ease,
+		background .35s ease;
+}
+
+.adar-showcase-all-card:hover .adar-showcase-all-icon {
+	transform:
+		translateX(5px) scale(1.06);
+	background:
+		rgba(255, 255, 255, .20);
+}
+
+.adar-showcase-all-title {
+	font-size: 20px;
+	line-height: 1.2;
+	font-weight: 700;
+	color: #fff;
+}
+
+.adar-showcase-all-text {
+	margin-top: 7px;
+	font-size: 13px;
+	line-height: 1.45;
+	font-weight: 400;
+	color:
+		rgba(255, 255, 255, .82);
+}
+
+/* =========================================================
+       MOBILE
+       ========================================================= */
+
+@media (max-width: 1023px) {
+	.adar-showcase-nav {
+		width: 40px;
+		height: 40px;
+	}
+
+	.adar-showcase-nav-prev {
+		left: 5px;
+	}
+
+	.adar-showcase-nav-next {
+		right: 5px;
+	}
+}
+
+@media (max-width: 640px) {
+	.adar-showcase-nav {
+		width: 36px;
+		height: 36px;
+	}
+
+	.adar-showcase-all-icon {
+		width: 54px;
+		height: 54px;
+		margin-bottom: 12px;
+	}
+
+	.adar-showcase-all-title {
+		font-size: 16px;
+	}
+
+	.adar-showcase-all-text {
+		font-size: 11px;
+	}
+}
+
+/* =========================================================
+   YENİ ETİKETİ - sade düz rozet
+   Animasyon, filter, clip-path, gradient yok.
+   ========================================================= */
+
+html body [data-adar-showcase-root] [data-qa="product-new"] {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: auto !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	height: auto !important;
+	min-height: 0 !important;
+	max-height: none !important;
+	margin: 0 0 0 5px !important;
+	padding: 4px 9px !important;
+	border: 0 !important;
+	border-radius: 4px !important;
+	background: #0084d6 !important;
+	box-shadow: none !important;
+	filter: none !important;
+	clip-path: none !important;
+	-webkit-clip-path: none !important;
+	color: transparent !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	pointer-events: none !important;
+}
+
+html body [data-adar-showcase-root] [data-qa="product-new"]::before {
+	content: "YENİ" !important;
+	position: static !important;
+	transform: none !important;
+	animation: none !important;
+	background: transparent !important;
+	color: #fff !important;
+	font-family: "Montserrat", Arial, sans-serif !important;
+	font-size: 11px !important;
+	line-height: 1 !important;
+	font-weight: 700 !important;
+	letter-spacing: .3px !important;
+	white-space: nowrap !important;
+	text-shadow: none !important;
+}
+
+html body [data-adar-showcase-root] [data-qa="product-new"]::after {
+	content: none !important;
+}
+
+@media (max-width: 640px) {
+
+	html body [data-adar-showcase-root] [data-qa="product-new"] {
+		margin-left: 3px !important;
+		padding: 3px 7px !important;
+	}
+
+	html body [data-adar-showcase-root] [data-qa="product-new"]::before {
+		font-size: 9px !important;
+	}
+
+}
+
+/* =========================================================
+   MOBİL - ÜRÜN BAŞLIĞI TAM GÖRÜNSÜN
+   Kart kodundaki h-[60px] + line-clamp-4 başlığı kesiyordu.
+   Yalnız bu vitrinde ve 1024px altında geçerli; masaüstü aynı kalır.
+   Kartlar eşit yükseklikte kalır, fiyat satırı kartın dibine oturur.
+   Kart uzadığı için oklar da yazının üstüne binmesin diye
+   ürün resminin ortasına alınır (--adar-nav-top, JS ölçer).
+   ========================================================= */
+
+@media (max-width: 1023px) {
+
+	[data-adar-showcase-root] [data-toggle="product"] .line-clamp-4 {
+		display: block !important;
+		height: auto !important;
+		max-height: none !important;
+		overflow: visible !important;
+		-webkit-line-clamp: unset !important;
+		line-clamp: unset !important;
+		overflow-wrap: anywhere;
+	}
+
+	[data-adar-showcase-root] [data-toggle="product"] .text-sm.flex.flex-col.gap-1+div {
+		margin-top: auto;
+	}
+
+	/* Renk Seçenekleri satırı olmayan kartta aynı yer boş bırakılır; fiyatlar aynı hizada kalır. */
+	[data-adar-showcase-root] [data-toggle="product"] .text-sm.flex.flex-col.gap-1+div:last-child {
+		margin-bottom: 40px;
+	}
+
+	.adar-showcase-nav {
+		top: var(--adar-nav-top, 50%);
+	}
+
+}
+
+
+/* ==================================== */
+
+
+/* =========================================================
+       ADAR GÖRSEL BLOĞU
+       ========================================================= */
+
+.adar-category-showcase {
+	width: 100%;
+}
+
+
+/* =========================================================
+       ÜST BAŞLIK
+       ========================================================= */
+
+.adar-category-showcase .adar-image-title {
+	color: #111111;
+	transition:
+		color .3s ease,
+		text-shadow .3s ease;
+}
+
+.adar-category-showcase .adar-image-title.is-dark-background {
+	color: #ffffff;
+	text-shadow:
+		0 2px 10px rgba(0, 0, 0, .35),
+		0 1px 3px rgba(0, 0, 0, .25);
+}
+
+.adar-category-showcase .adar-image-title.is-light-background {
+	color: #111111;
+	text-shadow:
+		0 1px 8px rgba(255, 255, 255, .30);
+}
+
+
+/* =========================================================
+       TÜMÜNÜ KEŞFET BUTONU
+       ========================================================= */
+
+.adar-category-showcase .adar-discover-btn {
+	position: relative;
+	z-index: 1;
+
+	overflow: hidden;
+
+	background: #d7192d !important;
+	border-color: #d7192d !important;
+	color: #ffffff !important;
+
+	transform: scale(1);
+	transform-origin: left center;
+
+	box-shadow:
+		0 4px 14px rgba(0, 0, 0, .10);
+
+	transition:
+		transform .32s cubic-bezier(.22, .61, .36, 1),
+		background-color .25s ease,
+		border-color .25s ease,
+		box-shadow .3s ease !important;
+}
+
+
+/* Cam yansıması */
+.adar-category-showcase .adar-discover-btn::before {
+	content: "";
+
+	position: absolute;
+	z-index: 2;
+
+	top: -60%;
+	left: -75%;
+
+	width: 40%;
+	height: 220%;
+
+	pointer-events: none;
+
+	opacity: 0;
+
+	background: linear-gradient(110deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, .10) 25%,
+			rgba(255, 255, 255, .75) 50%,
+			rgba(255, 255, 255, .15) 75%,
+			rgba(255, 255, 255, 0) 100%);
+
+	filter: blur(1px);
+
+	transform: rotate(12deg);
+
+	transition:
+		left .65s ease,
+		opacity .18s ease;
+}
+
+
+/*
+     * Buton içindeki yazı ve ikon cam efektinin
+     * üzerinde kalır.
+     */
+.adar-category-showcase .adar-discover-btn>* {
+	position: relative;
+	z-index: 3;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+
+	.adar-category-showcase .adar-discover-btn:hover,
+	.adar-category-showcase .adar-discover-btn:focus,
+	.adar-category-showcase .adar-discover-btn:active {
+
+		background: #d7192d !important;
+		border-color: #d7192d !important;
+		color: #ffffff !important;
+
+		transform: scale(1.15);
+
+		box-shadow:
+			0 10px 28px rgba(0, 0, 0, .20),
+			0 0 18px rgba(215, 25, 45, .22);
+	}
+
+	.adar-category-showcase .adar-discover-btn:hover::before {
+		left: 145%;
+		opacity: 1;
+	}
+}
+
+
+/* =========================================================
+       MARKA KARTLARI
+       ========================================================= */
+
+.adar-category-showcase .adar-brand-list {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+
+	gap: 10px;
+
+	width: 100%;
+}
+
+
+.adar-category-showcase .adar-brand-item {
+	position: relative;
+	z-index: 1;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	max-width: 140px;
+
+	padding: 8px 8px 7px;
+
+	background: rgba(255, 255, 255, .85);
+
+	border: 2px solid transparent;
+	border-radius: var(--radius-custom, 12px);
+
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+
+	box-shadow:
+		0 4px 16px rgba(0, 0, 0, .06);
+
+	overflow: hidden;
+
+	transform: translateZ(0) scale(1);
+
+	transition:
+		transform .32s cubic-bezier(.22, .61, .36, 1),
+		background-color .25s ease,
+		border-color .25s ease,
+		box-shadow .3s ease;
+}
+
+
+/* =========================================================
+       MARKA GÖRSELİ
+       ========================================================= */
+
+.adar-category-showcase .adar-brand-image {
+	position: relative;
+	z-index: 2;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	aspect-ratio: 1 / 1;
+
+	background: rgba(255, 255, 255, .60);
+
+	border-radius:
+		calc(var(--radius-custom, 12px) - 4px);
+
+	overflow: hidden;
+
+	transition:
+		background-color .25s ease,
+		transform .3s ease;
+}
+
+
+.adar-category-showcase .adar-brand-image img {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	padding: 8px;
+
+	object-fit: contain;
+
+	transform: scale(1);
+
+	transition:
+		transform .35s ease;
+}
+
+
+/* =========================================================
+       MARKA ADI
+       ========================================================= */
+
+.adar-category-showcase .adar-brand-name {
+	position: relative;
+	z-index: 3;
+
+	display: block;
+
+	width: 100%;
+
+	margin-top: 6px;
+
+	color: #171717;
+
+	font-size: 15px;
+	font-weight: 400;
+
+	line-height: 1.2;
+
+	/*
+         * Eski tasarımdaki geniş harf aralığını azalttık.
+         */
+	letter-spacing: .5px;
+
+	text-align: center;
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	transition:
+		color .25s ease,
+		font-weight .25s ease,
+		letter-spacing .25s ease;
+}
+
+
+/* =========================================================
+       MARKA CAM YANSIMA EFEKTİ
+       ========================================================= */
+
+.adar-category-showcase .adar-brand-item::before {
+	content: "";
+
+	position: absolute;
+	z-index: 5;
+
+	top: -50%;
+	left: -90%;
+
+	width: 45%;
+	height: 200%;
+
+	pointer-events: none;
+
+	opacity: 0;
+
+	background: linear-gradient(110deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, .12) 25%,
+			rgba(255, 255, 255, .75) 50%,
+			rgba(255, 255, 255, .16) 75%,
+			rgba(255, 255, 255, 0) 100%);
+
+	filter: blur(2px);
+
+	transform: rotate(12deg);
+
+	transition:
+		left .65s ease,
+		opacity .2s ease;
+}
+
+
+.adar-category-showcase .adar-brand-item::after {
+	content: "";
+
+	position: absolute;
+	inset: 0;
+
+	z-index: 0;
+
+	pointer-events: none;
+
+	border-radius: inherit;
+
+	background:
+		linear-gradient(145deg,
+			rgba(255, 255, 255, .38) 0%,
+			rgba(255, 255, 255, .08) 34%,
+			rgba(255, 255, 255, 0) 60%);
+
+	opacity: .75;
+
+	transition:
+		opacity .25s ease;
+}
+
+
+/* =========================================================
+       MARKA HOVER
+       ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+	.adar-category-showcase .adar-brand-item:hover {
+		z-index: 20;
+
+		background: rgba(255, 255, 255, 1);
+
+		border-color: #d7192d;
+
+		transform:
+			translateZ(0) scale(1.15);
+
+		box-shadow:
+			0 14px 32px rgba(0, 0, 0, .16),
+			0 0 0 1px rgba(215, 25, 45, .15);
+
+		animation:
+			adarBrandBorderBreath 1.35s ease-in-out infinite;
+	}
+
+
+	.adar-category-showcase .adar-brand-item:hover::before {
+		left: 150%;
+		opacity: 1;
+	}
+
+
+	.adar-category-showcase .adar-brand-item:hover::after {
+		opacity: 1;
+	}
+
+
+	.adar-category-showcase .adar-brand-item:hover .adar-brand-image {
+		background: #ffffff;
+	}
+
+
+	.adar-category-showcase .adar-brand-item:hover .adar-brand-image img {
+		transform: scale(1.04);
+	}
+
+
+	.adar-category-showcase .adar-brand-item:hover .adar-brand-name {
+		color: #d7192d;
+
+		font-weight: 700;
+
+		letter-spacing: .25px;
+	}
+
+}
+
+
+/* =========================================================
+       KLAVYE / FOCUS
+       ========================================================= */
+
+.adar-category-showcase .adar-brand-item:focus-visible {
+	outline: none;
+
+	background: #ffffff;
+
+	border-color: #d7192d;
+
+	transform: scale(1.08);
+
+	box-shadow:
+		0 12px 28px rgba(0, 0, 0, .14),
+		0 0 0 3px rgba(215, 25, 45, .12);
+}
+
+
+.adar-category-showcase .adar-brand-item:focus-visible .adar-brand-name {
+	color: #d7192d;
+	font-weight: 700;
+}
+
+
+/* =========================================================
+       NEFES ALAN KIRMIZI ÇERÇEVE
+       ========================================================= */
+
+@keyframes adarBrandBorderBreath {
+
+	0%,
+	100% {
+		border-color:
+			rgba(215, 25, 45, .75);
+
+		box-shadow:
+			0 14px 32px rgba(0, 0, 0, .15),
+			0 0 0 0 rgba(215, 25, 45, 0);
+	}
+
+	50% {
+		border-color:
+			rgba(215, 25, 45, 1);
+
+		box-shadow:
+			0 16px 36px rgba(0, 0, 0, .18),
+			0 0 0 5px rgba(215, 25, 45, .14);
+	}
+
+}
+
+
+/* =========================================================
+       TABLET
+       ========================================================= */
+
+@media (max-width: 1024px) {
+
+	.adar-category-showcase .adar-brand-list {
+		gap: 8px;
+	}
+
+	.adar-category-showcase .adar-brand-item {
+		max-width: 112px;
+
+		padding:
+			7px 7px 6px;
+	}
+
+	.adar-category-showcase .adar-brand-image img {
+		padding: 7px;
+	}
+
+	.adar-category-showcase .adar-brand-name {
+		margin-top: 5px;
+
+		font-size: 13px;
+
+		letter-spacing: .35px;
+	}
+
+}
+
+
+/* =========================================================
+       MOBİL
+       ========================================================= */
+
+@media (max-width: 640px) {
+
+	.adar-category-showcase .adar-brand-list {
+		gap: 5px;
+	}
+
+
+	.adar-category-showcase .adar-brand-item {
+		min-width: 0;
+		max-width: 72px;
+
+		padding:
+			5px 5px 5px;
+
+		border-width: 1.5px;
+		border-radius: 9px;
+
+		backdrop-filter: blur(5px);
+		-webkit-backdrop-filter: blur(5px);
+	}
+
+
+	.adar-category-showcase .adar-brand-image {
+		border-radius: 6px;
+	}
+
+
+	.adar-category-showcase .adar-brand-image img {
+		padding: 4px;
+	}
+
+
+	.adar-category-showcase .adar-brand-name {
+		margin-top: 4px;
+
+		font-size: 10px;
+
+		letter-spacing: .1px;
+	}
+
+
+	/*
+         * Mobilde hover olmadığı için
+         * dokunma anında geri bildirim.
+         */
+	.adar-category-showcase .adar-brand-item:active {
+		z-index: 20;
+
+		background: #ffffff;
+
+		border-color: #d7192d;
+
+		transform: scale(1.08);
+	}
+
+
+	.adar-category-showcase .adar-brand-item:active .adar-brand-name {
+
+		color: #d7192d;
+		font-weight: 700;
+	}
+
+
+	/*
+         * TÜMÜNÜ KEŞFET
+         * mobil dokunma efekti.
+         */
+	.adar-category-showcase .adar-discover-btn:active {
+		background: #d7192d !important;
+		border-color: #d7192d !important;
+		color: #ffffff !important;
+
+		transform: scale(1.07);
+
+		box-shadow:
+			0 7px 20px rgba(0, 0, 0, .16);
+	}
+
+}
+
+
+/* =========================================================
+       HAREKET AZALTMA TERCİHİ
+       ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+	.adar-category-showcase .adar-brand-item,
+	.adar-category-showcase .adar-brand-item::before,
+	.adar-category-showcase .adar-brand-image img,
+	.adar-category-showcase .adar-brand-name,
+	.adar-category-showcase .adar-discover-btn,
+	.adar-category-showcase .adar-discover-btn::before {
+
+		transition: none !important;
+		animation: none !important;
+	}
+
+}
+
+
+
+/* ==================================== */
+
+
+.adar-wide-feature {
+	position: relative;
+	width: 100vw;
+	max-width: 100vw;
+
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+
+	/* Alttaki İstatistiklerimiz bölümüyle mesafe */
+	margin-bottom: 64px;
+
+	box-sizing: border-box;
+}
+
+.adar-wide-feature-inner {
+	width: 100%;
+
+	background: #000;
+	color: #fff;
+
+	/* Görsel siyah alanın içinde kalsın */
+	padding: 12px;
+
+	box-sizing: border-box;
+
+	/* Siyah şerit köşesiz */
+	border-radius: 0;
+
+	overflow: hidden;
+}
+
+.adar-feature-row {
+	width: 100%;
+
+	display: flex;
+	align-items: stretch;
+
+	box-sizing: border-box;
+}
+
+
+/* ========================================= */
+/* GÖRSEL */
+/* ========================================= */
+
+.adar-feature-image {
+	flex: 0 0 54%;
+	max-width: 54%;
+
+	position: relative;
+
+	overflow: hidden;
+
+	/* Sadece görsel hafif oval */
+	border-radius: 14px;
+}
+
+.adar-feature-image picture {
+	display: flex;
+
+	width: 100%;
+	height: 100%;
+}
+
+.adar-feature-image img {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	object-fit: cover;
+}
+
+
+/* ========================================= */
+/* YAZI ALANI */
+/* ========================================= */
+
+.adar-feature-content {
+	flex: 1;
+
+	min-width: 0;
+
+	display: flex;
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: flex-start;
+
+	padding:
+		50px clamp(40px, 5vw, 90px);
+
+	box-sizing: border-box;
+}
+
+.adar-feature-content-inner {
+	width: 100%;
+	max-width: 570px;
+}
+
+.adar-feature-title {
+	font-size: clamp(32px, 3vw, 52px);
+
+	font-weight: 600;
+
+	line-height: 1.05;
+
+	margin-bottom: 24px;
+}
+
+.adar-feature-text {
+	font-size: 16px;
+
+	font-weight: 300;
+
+	line-height: 1.55;
+
+	margin-bottom: 30px;
+}
+
+
+/* ========================================= */
+/* BUTON */
+/* ========================================= */
+
+.adar-feature-button {
+	position: relative;
+
+	display: inline-flex;
+
+	align-items: center;
+	justify-content: center;
+
+	gap: 12px;
+
+	overflow: hidden;
+
+	background: #d7192d !important;
+	border-color: #d7192d !important;
+	color: #fff !important;
+
+	transition:
+		transform .25s ease,
+		box-shadow .25s ease,
+		background-color .25s ease !important;
+}
+
+
+/* Hover olduğunda siyaha dönmez */
+.adar-feature-button:hover,
+.adar-feature-button:focus,
+.adar-feature-button:active {
+	background: #d7192d !important;
+	border-color: #d7192d !important;
+	color: #fff !important;
+
+	transform: translateY(-2px);
+
+	box-shadow:
+		0 8px 22px rgba(215, 25, 45, .30);
+}
+
+
+/* Buton yansıma efekti */
+.adar-feature-button::before {
+	content: "";
+
+	position: absolute;
+
+	top: -50%;
+	left: -70%;
+
+	width: 45%;
+	height: 200%;
+
+	background: linear-gradient(90deg,
+			transparent,
+			rgba(255, 255, 255, .12),
+			rgba(255, 255, 255, .65),
+			rgba(255, 255, 255, .12),
+			transparent);
+
+	transform: skewX(-22deg);
+
+	pointer-events: none;
+}
+
+
+.adar-feature-button:hover::before {
+	animation: adarButtonShine .75s ease forwards;
+}
+
+
+@keyframes adarButtonShine {
+
+	0% {
+		left: -70%;
+	}
+
+	100% {
+		left: 135%;
+	}
+
+}
+
+
+/* Yazı ve ikon efektin üstünde kalsın */
+.adar-feature-button>* {
+	position: relative;
+	z-index: 2;
+}
+
+
+/* ========================================= */
+/* TABLET / MOBİL */
+/* ========================================= */
+
+@media (max-width: 1023px) {
+
+	.adar-wide-feature {
+		margin-bottom: 40px;
+	}
+
+	.adar-wide-feature-inner {
+		padding: 8px;
+
+		border-radius: 0;
+	}
+
+	.adar-feature-row {
+		flex-direction: column;
+	}
+
+	.adar-feature-image {
+		flex: none;
+
+		width: 100%;
+		max-width: 100%;
+
+		border-radius: 10px;
+	}
+
+	.adar-feature-content {
+		width: 100%;
+
+		padding: 30px 20px 34px;
+	}
+
+	.adar-feature-content-inner {
+		max-width: none;
+	}
+
+	.adar-feature-title {
+		font-size: 30px;
+
+		margin-bottom: 16px;
+	}
+
+	.adar-feature-text {
+		font-size: 14px;
+
+		margin-bottom: 22px;
+	}
+
+}
+
+
+
+/* ==================================== */
+
+
+@keyframes adarCategoryClickPulse {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(.65);
+	}
+
+	30% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.08);
+	}
+
+	60% {
+		opacity: .55;
+		transform: translate(-50%, -50%) scale(.92);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+
+/* ==================================================
+	   SLIDE
+	   ================================================== */
+
+.adar-category-slide {
+	position: relative;
+	height: auto;
+	display: flex;
+	overflow: visible !important;
+}
+
+
+/* ==================================================
+	   CARD
+	   ================================================== */
+
+.adar-category-card {
+	position: relative;
+	display: flex;
+	width: 100%;
+	height: 100%;
+
+	overflow: hidden;
+
+	border-radius: inherit;
+
+	transition:
+		box-shadow .35s ease,
+		transform .35s ease;
+}
+
+
+/*
+	 * KIRMIZI ÇERÇEVE
+	 *
+	 * Görselin üzerinde ayrı layer olarak durur.
+	 * Bu nedenle üst / alt / sağ / sol eşit görünür.
+	 */
+.adar-category-card::before {
+	content: "";
+
+	position: absolute;
+	inset: 0;
+
+	z-index: 20;
+
+	border: 2px solid transparent;
+	border-radius: inherit;
+
+	pointer-events: none;
+
+	transition:
+		border-color .25s ease;
+}
+
+
+.adar-category-card:hover::before {
+	border-color: #0084d6;
+}
+
+
+/*
+	 * Hover gölgesi
+	 */
+.adar-category-card:hover {
+	box-shadow:
+		0 10px 30px rgba(0, 0, 0, .16),
+		0 4px 12px rgba(0, 0, 0, .08);
+}
+
+
+/* ==================================================
+	   IMAGE
+	   ================================================== */
+
+.adar-category-card-image {
+	position: relative;
+	z-index: 0;
+
+	transition:
+		transform .55s cubic-bezier(.2, .7, .2, 1),
+		filter .4s ease;
+}
+
+
+.adar-category-card:hover .adar-category-card-image {
+	transform: scale(1.045);
+}
+
+
+/* ==================================================
+	   DEFAULT TITLE
+	   Hover yapılmadan önce sadece bu görünür.
+	   ================================================== */
+
+.adar-category-static-title {
+	position: absolute;
+
+	top: 16px;
+	left: 16px;
+
+	z-index: 8;
+
+	max-width: calc(100% - 32px);
+
+	padding: 7px 11px;
+
+	border-radius: 6px;
+
+	background: rgba(0, 0, 0, .58);
+
+	backdrop-filter: blur(7px);
+	-webkit-backdrop-filter: blur(7px);
+
+	color: #fff;
+
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.25;
+
+	box-shadow:
+		0 4px 12px rgba(0, 0, 0, .12);
+
+	opacity: 1;
+	transform: translateY(0);
+
+	transition:
+		opacity .25s ease,
+		transform .3s ease;
+
+	pointer-events: none;
+}
+
+
+.adar-category-card:hover .adar-category-static-title {
+	opacity: 0;
+	transform: translateY(-8px);
+}
+
+
+/* ==================================================
+	   HOVER CONTENT
+	   ================================================== */
+
+.adar-category-content {
+	position: absolute;
+
+	left: 2px;
+	right: 2px;
+	bottom: 2px;
+
+	z-index: 7;
+
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+
+	gap: 20px;
+
+	padding:
+		28px 20px 18px;
+
+	color: #fff;
+
+	background:
+		linear-gradient(to top,
+			rgba(0, 0, 0, .88) 0%,
+			rgba(0, 0, 0, .62) 48%,
+			rgba(0, 0, 0, 0) 100%);
+
+	opacity: 0;
+
+	transform:
+		translateY(100%);
+
+	transition:
+		transform .42s cubic-bezier(.22, .75, .25, 1),
+		opacity .32s ease;
+
+	pointer-events: none;
+}
+
+
+.adar-category-card:hover .adar-category-content {
+	opacity: 1;
+
+	transform:
+		translateY(0);
+}
+
+
+.adar-category-title {
+	font-size: 18px;
+	line-height: 1.2;
+	font-weight: 600;
+
+	color: #fff;
+}
+
+
+.adar-category-discover {
+	display: block;
+
+	margin-top: 6px;
+
+	font-size: 12px;
+	line-height: 1.4;
+	font-weight: 400;
+
+	color:
+		rgba(255, 255, 255, .86);
+}
+
+
+/* ==================================================
+	   SMALL HOVER ARROW
+	   ================================================== */
+
+.adar-category-small-arrow {
+	flex: 0 0 auto;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 42px;
+	height: 42px;
+
+	border-radius: 999px;
+
+	background:
+		#0084d6;
+
+	color:
+		#fff;
+
+	transform:
+		translateX(-5px);
+
+	box-shadow:
+		0 6px 16px rgba(0, 0, 0, .20);
+
+	transition:
+		transform .35s ease,
+		box-shadow .35s ease;
+}
+
+
+.adar-category-card:hover .adar-category-small-arrow {
+	transform:
+		translateX(0);
+
+	box-shadow:
+		0 8px 20px rgba(0, 0, 0, .25);
+}
+
+
+/* ==================================================
+	   DARK HOVER OVERLAY
+	   ================================================== */
+
+.adar-category-card::after {
+	content: "";
+
+	position: absolute;
+
+	inset: 2px;
+
+	z-index: 2;
+
+	background:
+		rgba(0, 0, 0, 0);
+
+	transition:
+		background .3s ease;
+
+	pointer-events: none;
+}
+
+
+.adar-category-card:hover::after {
+	background:
+		rgba(0, 0, 0, .025);
+}
+
+
+.adar-category-card.is-clicked::after {
+	background:
+		rgba(0, 0, 0, .20);
+}
+
+
+/* ==================================================
+	   CLICK EFFECT
+	   ================================================== */
+
+.adar-category-click-effect {
+	position: absolute;
+
+	left: 50%;
+	top: 50%;
+
+	z-index: 30;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 88px;
+	height: 88px;
+
+	border-radius: 999px;
+
+	background:
+		rgba(0, 132, 214, .96);
+
+	box-shadow:
+		0 0 0 10px rgba(0, 132, 214, .15),
+		0 12px 34px rgba(0, 0, 0, .22);
+
+	opacity: 0;
+
+	transform:
+		translate(-50%, -50%) scale(.65);
+
+	pointer-events: none;
+}
+
+
+.adar-category-card.is-clicked .adar-category-click-effect {
+	animation:
+		adarCategoryClickPulse .55s ease-in-out forwards;
+}
+
+
+/* ==================================================
+	   RED SLIDER NAVIGATION BUTTONS
+	   ================================================== */
+
+.adar-category-slider-container {
+	position: relative;
+}
+
+
+.adar-category-nav {
+	position: absolute;
+
+	top: 50%;
+
+	z-index: 40;
+
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+
+	width: 46px;
+	height: 46px;
+
+	margin-top: 0 !important;
+
+	border-radius: 999px;
+
+	background:
+		#0084d6;
+
+	color:
+		#fff;
+
+	box-shadow:
+		0 7px 20px rgba(0, 0, 0, .18);
+
+	transform:
+		translateY(-50%);
+
+	cursor: pointer;
+
+	transition:
+		background .25s ease,
+		transform .25s ease,
+		box-shadow .25s ease,
+		opacity .25s ease;
+}
+
+
+.adar-category-nav:hover {
+	background:
+		#A80D27;
+
+	box-shadow:
+		0 10px 26px rgba(0, 0, 0, .24);
+}
+
+
+.adar-category-nav:active {
+	transform:
+		translateY(-50%) scale(.92);
+}
+
+
+.adar-category-nav::after {
+	display: none !important;
+}
+
+
+.adar-category-prev {
+	left: -23px;
+}
+
+
+.adar-category-next {
+	right: -23px;
+}
+
+
+.adar-category-nav.swiper-button-disabled {
+	opacity: .32;
+
+	pointer-events: none;
+}
+
+
+/* ==================================================
+	   TRACKPAD / DESKTOP
+	   ================================================== */
+
+.adar-category-swiper {
+	cursor: grab;
+
+	touch-action: pan-y;
+}
+
+
+.adar-category-swiper:active {
+	cursor: grabbing;
+}
+
+
+/* ==================================================
+	   MOBILE
+	   ================================================== */
+
+@media (max-width: 767px) {
+
+	.adar-category-static-title {
+		top: 10px;
+		left: 10px;
+
+		max-width:
+			calc(100% - 20px);
+
+		font-size: 13px;
+
+		padding:
+			6px 9px;
+	}
+
+
+	.adar-category-content {
+		padding:
+			20px 14px 14px;
+	}
+
+
+	.adar-category-title {
+		font-size: 14px;
+	}
+
+
+	.adar-category-discover {
+		font-size: 11px;
+	}
+
+
+	.adar-category-small-arrow {
+		width: 34px;
+		height: 34px;
+	}
+
+
+	.adar-category-click-effect {
+		width: 68px;
+		height: 68px;
+	}
+
+
+	.adar-category-nav {
+		width: 38px;
+		height: 38px;
+	}
+
+
+	.adar-category-prev {
+		left: 5px;
+	}
+
+
+	.adar-category-next {
+		right: 5px;
+	}
+
+}
+
+
+/*
+	 * Touch cihazda klasik hover olmadığı için
+	 * kart başlığı görünür kalır.
+	 */
+@media (hover: none) {
+
+	.adar-category-static-title {
+		opacity: 1;
+		transform: none;
+	}
+
+}
+
+
+
+/* ==================================== */
+
+
+
+/* =========================================================
+	   ADAR YOUTUBE BÖLÜMÜ
+	   ========================================================= */
+
+#adar-youtube-section-611 {
+	position: relative !important;
+	width: 100vw !important;
+	max-width: 100vw !important;
+
+	margin-left: calc(50% - 50vw) !important;
+	margin-right: calc(50% - 50vw) !important;
+
+	padding: 12px 0 0 !important;
+
+	background: #2f2f31 !important;
+
+	overflow: hidden !important;
+	box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+	   PLAYER
+	   ========================================================= */
+
+#adar-youtube-player-shell-611 {
+	position: relative !important;
+
+	width: 100% !important;
+	max-width: none !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	background: #000 !important;
+
+	overflow: hidden !important;
+	box-sizing: border-box !important;
+}
+
+
+#adar-youtube-player-611 {
+	position: absolute !important;
+
+	inset: 0 !important;
+
+	width: 100% !important;
+	height: 100% !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	background: #000 !important;
+}
+
+
+#adar-youtube-player-611 iframe {
+	position: absolute !important;
+
+	inset: 0 !important;
+
+	width: 100% !important;
+	height: 100% !important;
+
+	max-width: none !important;
+	max-height: none !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	display: block !important;
+
+	border: 0 !important;
+}
+
+
+/* Shorts videolarında YouTube'un videonun içine çizdiği ince
+	   ilerleme çizgisini, iframe'i alttan taşırıp kırparak gizler. */
+
+#adar-youtube-player-611 {
+	height: calc(100% + 8px) !important;
+}
+
+
+/* =========================================================
+	   MASAÜSTÜ
+	   ========================================================= */
+
+@media (min-width: 1024px) {
+
+	#adar-youtube-player-shell-611 {
+		height: clamp(460px,
+				32vw,
+				680px) !important;
+
+		max-height: 680px !important;
+	}
+
+}
+
+
+/* =========================================================
+	   TABLET
+	   ========================================================= */
+
+@media (min-width: 641px) and (max-width: 1023px) {
+
+	#adar-youtube-section-611 {
+		padding-top: 10px !important;
+	}
+
+	#adar-youtube-player-shell-611 {
+		height: auto !important;
+		aspect-ratio: 16 / 9 !important;
+	}
+
+}
+
+
+/* =========================================================
+	   MOBİL
+	   ========================================================= */
+
+@media (max-width: 640px) {
+
+	#adar-youtube-section-611 {
+		padding-top: 6px !important;
+	}
+
+	#adar-youtube-player-shell-611 {
+		height: auto !important;
+		aspect-ratio: 16 / 9 !important;
+	}
+
+}
+
+
+/* =========================================================
+	   PLAYLIST SAĞ PANEL
+	   ========================================================= */
+
+#adar-youtube-playlist-panel-611 {
+	position: absolute !important;
+
+	top: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+
+	width: 430px !important;
+	max-width: 38vw !important;
+
+	z-index: 50 !important;
+
+	display: flex !important;
+	flex-direction: column !important;
+
+	background: rgba(18, 18, 18, 0.985) !important;
+
+	border-left:
+		1px solid rgba(255, 255, 255, .12) !important;
+
+	box-shadow:
+		-14px 0 35px rgba(0, 0, 0, .42) !important;
+
+	transform: translateX(100%) !important;
+
+	opacity: 0 !important;
+	visibility: hidden !important;
+	pointer-events: none !important;
+
+	transition:
+		transform .28s ease,
+		opacity .28s ease,
+		visibility .28s ease !important;
+
+	box-sizing: border-box !important;
+}
+
+
+#adar-youtube-playlist-panel-611.is-open {
+	transform: translateX(0) !important;
+
+	opacity: 1 !important;
+	visibility: visible !important;
+	pointer-events: auto !important;
+}
+
+
+/* =========================================================
+	   PANEL HEADER
+	   ========================================================= */
+
+#adar-youtube-playlist-header-611 {
+	width: 100% !important;
+
+	min-height: 66px !important;
+
+	display: flex !important;
+	align-items: center !important;
+	justify-content: space-between !important;
+
+	gap: 12px !important;
+
+	padding: 12px 14px !important;
+
+	background: #171717 !important;
+	color: #fff !important;
+
+	border-bottom:
+		1px solid rgba(255, 255, 255, .10) !important;
+
+	box-sizing: border-box !important;
+
+	flex: 0 0 auto !important;
+}
+
+
+#adar-youtube-playlist-header-title-611 {
+	display: flex !important;
+	flex-direction: column !important;
+
+	gap: 4px !important;
+
+	min-width: 0 !important;
+}
+
+
+#adar-youtube-playlist-header-title-611 strong {
+	font-size: 15px !important;
+	font-weight: 700 !important;
+
+	line-height: 1.25 !important;
+
+	color: #fff !important;
+}
+
+
+#adar-youtube-playlist-header-title-611 span {
+	font-size: 11px !important;
+
+	color:
+		rgba(255, 255, 255, .62) !important;
+}
+
+
+/* =========================================================
+	   KAPAT
+	   ========================================================= */
+
+#adar-youtube-playlist-close-611 {
+	width: 36px !important;
+	height: 36px !important;
+
+	flex: 0 0 36px !important;
+
+	display: inline-flex !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	padding: 0 !important;
+
+	background:
+		rgba(255, 255, 255, .08) !important;
+
+	color: #fff !important;
+
+	border:
+		1px solid rgba(255, 255, 255, .12) !important;
+
+	border-radius: 50% !important;
+
+	cursor: pointer !important;
+
+	transition:
+		background-color .2s ease,
+		transform .2s ease !important;
+}
+
+
+#adar-youtube-playlist-close-611:hover {
+	background:
+		rgba(255, 255, 255, .17) !important;
+
+	transform: scale(1.04) !important;
+}
+
+
+#adar-youtube-playlist-close-611 svg {
+	width: 16px !important;
+	height: 16px !important;
+}
+
+
+/* =========================================================
+	   PLAYLIST LİSTESİ
+	   ========================================================= */
+
+#adar-youtube-playlist-list-611 {
+	width: 100% !important;
+
+	flex: 1 1 auto !important;
+
+	overflow-y: auto !important;
+	overflow-x: hidden !important;
+
+	padding: 8px !important;
+
+	box-sizing: border-box !important;
+
+	scrollbar-width: thin;
+
+	scrollbar-color:
+		rgba(255, 255, 255, .25) transparent;
+}
+
+
+#adar-youtube-playlist-list-611::-webkit-scrollbar {
+	width: 7px;
+}
+
+
+#adar-youtube-playlist-list-611::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+
+#adar-youtube-playlist-list-611::-webkit-scrollbar-thumb {
+	background:
+		rgba(255, 255, 255, .24);
+
+	border-radius: 999px;
+}
+
+
+/* =========================================================
+	   YÜKLENİYOR
+	   ========================================================= */
+
+#adar-youtube-playlist-loading-611 {
+	display: flex !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	min-height: 140px !important;
+
+	padding: 24px !important;
+
+	color:
+		rgba(255, 255, 255, .65) !important;
+
+	font-size: 12px !important;
+
+	text-align: center !important;
+}
+
+
+/* =========================================================
+	   VIDEO KARTI
+	   ========================================================= */
+
+.adar-youtube-playlist-item-611 {
+	width: 100% !important;
+
+	display: grid !important;
+
+	grid-template-columns:
+		130px minmax(0, 1fr) !important;
+
+	align-items: center !important;
+
+	gap: 11px !important;
+
+	padding: 7px !important;
+	margin: 0 0 6px !important;
+
+	background: transparent !important;
+
+	color: #fff !important;
+
+	border:
+		1px solid transparent !important;
+
+	border-radius: 9px !important;
+
+	text-align: left !important;
+
+	cursor: pointer !important;
+
+	box-sizing: border-box !important;
+
+	transition:
+		background-color .18s ease,
+		border-color .18s ease !important;
+}
+
+
+.adar-youtube-playlist-item-611:hover {
+	background:
+		rgba(255, 255, 255, .08) !important;
+
+	border-color:
+		rgba(255, 255, 255, .08) !important;
+}
+
+
+.adar-youtube-playlist-item-611.is-active {
+	background:
+		rgba(224, 62, 45, .15) !important;
+
+	border-color:
+		rgba(224, 62, 45, .72) !important;
+}
+
+
+/* =========================================================
+	   THUMBNAIL
+	   ========================================================= */
+
+.adar-youtube-playlist-thumb-611 {
+	position: relative !important;
+
+	width: 130px !important;
+
+	aspect-ratio: 16 / 9 !important;
+
+	overflow: hidden !important;
+
+	border-radius: 7px !important;
+
+	background: #000 !important;
+}
+
+
+.adar-youtube-playlist-thumb-611 img {
+	width: 100% !important;
+	height: 100% !important;
+
+	display: block !important;
+
+	object-fit: cover !important;
+}
+
+
+.adar-youtube-playlist-number-611 {
+	position: absolute !important;
+
+	left: 5px !important;
+	bottom: 5px !important;
+
+	min-width: 23px !important;
+	height: 23px !important;
+
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+
+	padding: 0 5px !important;
+
+	background:
+		rgba(0, 0, 0, .82) !important;
+
+	color: #fff !important;
+
+	font-size: 10px !important;
+	font-weight: 700 !important;
+
+	border-radius: 5px !important;
+}
+
+
+/* =========================================================
+	   VIDEO BAŞLIK BÖLÜMÜ
+	   ========================================================= */
+
+.adar-youtube-playlist-info-611 {
+	min-width: 0 !important;
+
+	display: flex !important;
+	flex-direction: column !important;
+
+	gap: 5px !important;
+}
+
+
+.adar-youtube-playlist-title-611 {
+	display: -webkit-box !important;
+
+	-webkit-box-orient: vertical !important;
+	-webkit-line-clamp: 3 !important;
+
+	overflow: hidden !important;
+
+	color: #fff !important;
+
+	font-size: 12px !important;
+	font-weight: 600 !important;
+
+	line-height: 1.4 !important;
+}
+
+
+.adar-youtube-playlist-author-611 {
+	display: block !important;
+
+	color:
+		rgba(255, 255, 255, .52) !important;
+
+	font-size: 10px !important;
+
+	line-height: 1.25 !important;
+}
+
+
+/* =========================================================
+	   İLERLEME ÇUBUĞU (kendi sarma çubuğumuz)
+	   ========================================================= */
+
+#adar-youtube-seekbar-611 {
+	position: relative !important;
+
+	width: 100% !important;
+
+	display: flex !important;
+	align-items: center !important;
+
+	gap: 12px !important;
+
+	padding: 8px 20px 0 !important;
+
+	background: #2f2f31 !important;
+
+	color:
+		rgba(255, 255, 255, .78) !important;
+
+	font-size: 12px !important;
+	font-weight: 500 !important;
+	font-variant-numeric: tabular-nums !important;
+
+	box-sizing: border-box !important;
+}
+
+
+#adar-youtube-seek-track-611 {
+	position: relative !important;
+
+	flex: 1 1 auto !important;
+
+	height: 28px !important;
+
+	cursor: pointer !important;
+
+	touch-action: none !important;
+
+	outline: none !important;
+
+	-webkit-tap-highlight-color: transparent !important;
+}
+
+
+#adar-youtube-seek-track-611::before {
+	content: '' !important;
+
+	position: absolute !important;
+
+	left: 0 !important;
+	right: 0 !important;
+	top: 50% !important;
+
+	height: 6px !important;
+
+	transform: translateY(-50%) !important;
+
+	background:
+		rgba(255, 255, 255, .22) !important;
+
+	border-radius: 999px !important;
+}
+
+
+#adar-youtube-seek-fill-611 {
+	position: absolute !important;
+
+	left: 0 !important;
+	top: 50% !important;
+
+	width: 0 !important;
+	height: 6px !important;
+
+	transform: translateY(-50%) !important;
+
+	background: #E03E2D !important;
+
+	border-radius: 999px !important;
+
+	pointer-events: none !important;
+}
+
+
+#adar-youtube-seek-thumb-611 {
+	position: absolute !important;
+
+	left: 0 !important;
+	top: 50% !important;
+
+	width: 14px !important;
+	height: 14px !important;
+
+	margin: -7px 0 0 -7px !important;
+
+	background: #fff !important;
+
+	border-radius: 50% !important;
+
+	box-shadow:
+		0 1px 4px rgba(0, 0, 0, .45) !important;
+
+	pointer-events: none !important;
+}
+
+
+#adar-youtube-seek-track-611:focus-visible {
+	box-shadow:
+		0 0 0 2px rgba(255, 255, 255, .55) !important;
+
+	border-radius: 6px !important;
+}
+
+
+.adar-youtube-seek-time-611 {
+	flex: 0 0 auto !important;
+
+	min-width: 40px !important;
+
+	text-align: center !important;
+}
+
+
+.adar-youtube-seek-btn-611 {
+	flex: 0 0 auto !important;
+
+	width: 36px !important;
+	height: 36px !important;
+
+	display: inline-flex !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	padding: 0 !important;
+	margin: 0 !important;
+
+	background: transparent !important;
+
+	color: #fff !important;
+
+	border: 0 !important;
+
+	border-radius: 50% !important;
+
+	cursor: pointer !important;
+
+	transition:
+		background-color .2s ease !important;
+}
+
+
+.adar-youtube-seek-btn-611:hover {
+	background:
+		rgba(255, 255, 255, .14) !important;
+}
+
+
+.adar-youtube-seek-btn-611 svg {
+	width: 24px !important;
+	height: 24px !important;
+
+	display: block !important;
+
+	pointer-events: none !important;
+}
+
+
+.adar-youtube-seek-btn-611.adar-youtube-seek-btn-main-611 {
+	background:
+		rgba(255, 255, 255, .12) !important;
+}
+
+
+.adar-youtube-seek-btn-611 .is-hidden {
+	display: none !important;
+}
+
+
+:fullscreen#adar-youtube-section-611 {
+	display: flex !important;
+	flex-direction: column !important;
+
+	width: 100vw !important;
+	height: 100vh !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	background: #000 !important;
+}
+
+
+:fullscreen#adar-youtube-section-611 #adar-youtube-player-shell-611 {
+	flex: 1 1 auto !important;
+
+	height: auto !important;
+	max-height: none !important;
+	min-height: 0 !important;
+
+	aspect-ratio: auto !important;
+}
+
+
+:fullscreen#adar-youtube-section-611 #adar-youtube-seekbar-611 {
+	background: #111 !important;
+
+	padding-bottom: 8px !important;
+}
+
+
+:fullscreen#adar-youtube-section-611 #adar-youtube-actionbar-611 {
+	display: none !important;
+}
+
+
+#adar-youtube-section-611.is-fake-fs {
+	position: fixed !important;
+
+	top: 0 !important;
+	left: 0 !important;
+	right: auto !important;
+	bottom: auto !important;
+
+	inset: 0 !important;
+
+	display: flex !important;
+	flex-direction: column !important;
+
+	width: 100% !important;
+	max-width: none !important;
+	height: 100% !important;
+	max-height: none !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+
+	border: 0 !important;
+
+	overflow: hidden !important;
+
+	z-index: 2147483647 !important;
+
+	background: #000 !important;
+}
+
+
+#adar-youtube-section-611.is-fake-fs #adar-youtube-player-shell-611 {
+	flex: 1 1 auto !important;
+
+	height: auto !important;
+	max-height: none !important;
+	min-height: 0 !important;
+
+	aspect-ratio: auto !important;
+}
+
+
+#adar-youtube-section-611.is-fake-fs #adar-youtube-seekbar-611 {
+	background: #111 !important;
+
+	padding-bottom: 8px !important;
+}
+
+
+#adar-youtube-section-611.is-fake-fs #adar-youtube-actionbar-611 {
+	display: none !important;
+}
+
+
+@media (max-width: 640px) {
+
+	#adar-youtube-seekbar-611 {
+		gap: 4px !important;
+
+		padding: 6px 8px 0 !important;
+
+		font-size: 10px !important;
+	}
+
+	.adar-youtube-seek-time-611 {
+		min-width: 32px !important;
+	}
+
+	.adar-youtube-seek-btn-611 {
+		width: 32px !important;
+		height: 32px !important;
+	}
+
+	.adar-youtube-seek-btn-611 svg {
+		width: 22px !important;
+		height: 22px !important;
+	}
+
+	#adar-youtube-seek-mute-611 {
+		display: none !important;
+	}
+
+}
+
+
+/* =========================================================
+	   ALT AKSİYON ŞERİDİ
+	   ========================================================= */
+
+#adar-youtube-actionbar-611 {
+	position: relative !important;
+
+	width: 100% !important;
+
+	min-height: 64px !important;
+
+	display: flex !important;
+
+	align-items: center !important;
+	justify-content: space-between !important;
+
+	gap: 12px !important;
+
+	padding: 10px 20px !important;
+
+	background: #2f2f31 !important;
+
+	border-top:
+		1px solid rgba(255, 255, 255, .08) !important;
+
+	box-sizing: border-box !important;
+}
+
+
+#adar-youtube-actionbar-left-611 {
+	display: flex !important;
+
+	align-items: center !important;
+
+	gap: 9px !important;
+
+	color:
+		rgba(255, 255, 255, .78) !important;
+
+	font-size: 12px !important;
+	font-weight: 500 !important;
+}
+
+
+#adar-youtube-actionbar-left-611 svg {
+	width: 18px !important;
+	height: 18px !important;
+}
+
+
+#adar-youtube-actionbar-right-611 {
+	display: flex !important;
+
+	align-items: center !important;
+	justify-content: flex-end !important;
+
+	gap: 10px !important;
+}
+
+
+/* =========================================================
+	   AKSİYON BUTONLARI
+	   ========================================================= */
+
+.adar-youtube-action-button-611 {
+	position: relative !important;
+
+	display: inline-flex !important;
+
+	align-items: center !important;
+	justify-content: center !important;
+
+	gap: 9px !important;
+
+	min-height: 40px !important;
+
+	padding: 9px 15px !important;
+
+	background:
+		rgba(0, 0, 0, .72) !important;
+
+	color: #fff !important;
+
+	font-size: 12px !important;
+	font-weight: 600 !important;
+
+	line-height: 1.2 !important;
+
+	border:
+		1px solid rgba(255, 255, 255, .12) !important;
+
+	border-radius: 999px !important;
+
+	text-decoration: none !important;
+
+	box-sizing: border-box !important;
+
+	box-shadow:
+		0 4px 14px rgba(0, 0, 0, .20) !important;
+
+	cursor: pointer !important;
+
+	transition:
+		background-color .2s ease,
+		border-color .2s ease,
+		transform .2s ease !important;
+}
+
+
+.adar-youtube-action-button-611:hover {
+	background:
+		rgba(0, 0, 0, .95) !important;
+
+	border-color:
+		rgba(255, 255, 255, .25) !important;
+
+	transform:
+		translateY(-1px) !important;
+
+	color: #fff !important;
+}
+
+
+.adar-youtube-action-button-611.is-active {
+	background: #E03E2D !important;
+	border-color: #E03E2D !important;
+}
+
+
+.adar-youtube-action-button-611 span {
+	white-space: nowrap !important;
+}
+
+
+#adar-youtube-playlist-button-611 svg {
+	width: 19px !important;
+	height: 19px !important;
+}
+
+
+#adar-youtube-channel-button-611 svg {
+	width: 28px !important;
+	height: 20px !important;
+
+	flex: 0 0 auto !important;
+}
+
+
+/* =========================================================
+	   TABLET
+	   ========================================================= */
+
+@media (min-width: 641px) and (max-width: 1023px) {
+
+	#adar-youtube-playlist-panel-611 {
+		width: 380px !important;
+		max-width: 52vw !important;
+	}
+
+	.adar-youtube-playlist-item-611 {
+		grid-template-columns:
+			105px minmax(0, 1fr) !important;
+	}
+
+	.adar-youtube-playlist-thumb-611 {
+		width: 105px !important;
+	}
+
+	#adar-youtube-actionbar-611 {
+		padding: 9px 14px !important;
+	}
+
+}
+
+
+/* =========================================================
+	   MOBİL
+	   ========================================================= */
+
+@media (max-width: 640px) {
+
+	#adar-youtube-playlist-panel-611 {
+		width: 100% !important;
+		max-width: 100% !important;
+
+		border-left: 0 !important;
+	}
+
+	#adar-youtube-playlist-header-611 {
+		min-height: 54px !important;
+
+		padding: 9px 10px !important;
+	}
+
+	.adar-youtube-playlist-item-611 {
+		grid-template-columns:
+			105px minmax(0, 1fr) !important;
+	}
+
+	.adar-youtube-playlist-thumb-611 {
+		width: 105px !important;
+	}
+
+	#adar-youtube-actionbar-611 {
+		flex-direction: column !important;
+
+		align-items: stretch !important;
+
+		gap: 8px !important;
+
+		padding: 8px 10px !important;
+	}
+
+	#adar-youtube-actionbar-left-611 {
+		justify-content: center !important;
+
+		font-size: 10px !important;
+	}
+
+	#adar-youtube-actionbar-right-611 {
+		width: 100% !important;
+
+		justify-content: center !important;
+
+		flex-wrap: wrap !important;
+
+		gap: 7px !important;
+	}
+
+	.adar-youtube-action-button-611 {
+		min-height: 34px !important;
+
+		padding: 7px 10px !important;
+
+		font-size: 10px !important;
+	}
+
+	#adar-youtube-playlist-button-611 svg {
+		width: 17px !important;
+		height: 17px !important;
+	}
+
+	#adar-youtube-channel-button-611 svg {
+		width: 23px !important;
+		height: auto !important;
+	}
+
+}
+
+
+
+/* ==================================== */
+
+
+/* =========================================================
+	   FOOTER SOSYAL MEDYA İKONLARI (MENU_CUSTOM_4)
+
+	   Hover  : ikon hafifçe yukarı kalkar, büyür ve arkasında
+	            yumuşak bir yuvarlak ışıma belirir. Renk değişmez.
+	   Tıklama: ikon büyür (basılı tutunca).
+
+	   Sadece transform ve renk geçişi kullanır, sayfayı yormaz.
+	   ========================================================= */
+
+footer a.rounded-full[data-toggle="tooltip"] {
+	background-color: rgba(255, 255, 255, 0);
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		transform .22s cubic-bezier(.2, .8, .2, 1),
+		background-color .22s ease;
+}
+
+/* Hover: yalnızca fareli cihazlarda (dokunmatikte takılı kalmasın) */
+@media (hover: hover) {
+
+	footer a.rounded-full[data-toggle="tooltip"]:hover {
+		transform: translateY(-3px) scale(1.15);
+		background-color: rgba(255, 255, 255, .14);
+	}
+
+}
+
+/* Klavye ile odaklanma */
+footer a.rounded-full[data-toggle="tooltip"]:focus-visible {
+	transform: translateY(-3px) scale(1.15);
+	background-color: rgba(255, 255, 255, .14);
+	outline: 2px solid rgba(255, 255, 255, .6);
+	outline-offset: 2px;
+}
+
+/* Tıklama / basılı tutma: büyür */
+footer a.rounded-full[data-toggle="tooltip"]:active {
+	transform: translateY(-2px) scale(1.35);
+	background-color: rgba(255, 255, 255, .22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	footer a.rounded-full[data-toggle="tooltip"] {
+		transition: none;
+	}
+
+}
+
+
+/* ==================================== */
+
+
+.txmhohvco {
+	width: 100% !important;
+	height: auto !important;
+	font-size: 12px !important;
+	line-height: 30px !important;
+	color: #3b3734 !important;
+	text-align: center !important;
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	gap: 4px !important;
+	background: #f0f0f0 !important;
+	padding: 10px !important;
+	position: relative !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	transition: all 0.5s ease !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.tixmhohvco {
+	height: 22px !important;
+	transition: all 0.5s ease !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+}
+
+.tlxmhohvco {
+	height: 100% !important;
+	max-height: 100% !important;
+	object-fit: scale-down !important;
+}
+
+.txmhohvco:hover .tsxmhohvco {
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+.txmhohvco:hover .tixmhohvco {
+	visibility: hidden !important;
+	opacity: 0 !important;
+}
+
+.tsxmhohvco {
+	position: absolute !important;
+	inset: 0 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 4px !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	transition: all 0.5s ease !important;
+	color: #3b3734 !important;
+}
+
+.taxmhohvco {
+	color: inherit !important;
+	font-weight: 600 !important;
+	text-decoration: none !important;
+	transition: all 0.3s ease !important;
+}
+
+/* =========================================================
+   ADAR FLOATING WHATSAPP BUTTON (Sabit Kayan WhatsApp Butonu)
+   ========================================================= */
+.adar-floating-whatsapp-btn {
+	background-color: #25D366 !important;
+	background: #25D366 !important;
+	color: #ffffff !important;
+	border: 0 !important;
+	outline: none !important;
+	box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45) !important;
+	display: inline-flex !important;
+	align-items: center !important;
+}
+
+.adar-floating-whatsapp-btn:hover {
+	background-color: #20bd5a !important;
+	background: #20bd5a !important;
+	box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6) !important;
+}

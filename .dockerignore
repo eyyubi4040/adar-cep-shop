@@ -1,0 +1,21 @@
+# Git
+.git
+.github
+
+# Dependencies & Build artifacts (rebuilt inside Docker)
+node_modules
+dist
+
+# Temporary & Archive files
+*.zip
+*.tar.gz
+*.log
+.DS_Store
+
+# Documentation & IDE
+.vscode
+.idea
+README.md
+.oxlintrc.json
+upload_to_gcs.ts
+baslat.bat
