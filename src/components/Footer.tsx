@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory }) => {
               <div className="flex items-center">
                 <a href="/" className="inline-block">
                   <img
-                    src="/adarcepshoplogo.png"
+                    src="/adarcepshoplogo.png?v=20261114v3"
                     alt="Adar Cep Shop Kırşehir"
                     className="h-10 sm:h-12 w-auto object-contain brightness-0 invert"
                   />

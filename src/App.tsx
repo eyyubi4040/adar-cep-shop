@@ -22,7 +22,7 @@ export function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   // Dedicated Brand Showcase Page state with URL hash routing support
   const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
     if (typeof window !== 'undefined' && window.location.hash.startsWith('#marka/')) {

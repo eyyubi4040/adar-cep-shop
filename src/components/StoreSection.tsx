@@ -31,7 +31,7 @@ export const StoreSection: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <img
-                  src="/adarcepshoplogo.png"
+                  src="/adarcepshoplogo.png?v=20261114v3"
                   alt="Adar Cep Shop Logo"
                   className="h-9 w-auto object-contain"
                 />

@@ -2626,6 +2626,7 @@ html [data-qa="account-dropdown"] .adar-plus-rozet {
 }
 
 @media (min-width: 640px) {
+
 	#hero-slider-644 .hero-video video,
 	#hero-slider-644 video {
 		object-fit: cover !important;

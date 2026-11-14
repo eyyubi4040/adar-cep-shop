@@ -190,7 +190,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="flex items-center py-1 cursor-pointer"
                 >
                   <img
-                    src="/adarcepshoplogo.png"
+                    src="/adarcepshoplogo.png?v=20261114v3"
                     alt="Adar Cep Shop - Kırşehir Sıfır & 2. El Cep Telefonu ve Aksesuar"
                     className="h-10 sm:h-12 w-auto max-w-[220px] sm:max-w-[260px] object-contain"
                   />
@@ -424,7 +424,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-200 mb-4">
                   <img
-                    src="/adarcepshoplogo.png"
+                    src="/adarcepshoplogo.png?v=20261114v3"
                     alt="Adar Cep Shop"
                     className="h-9 w-auto object-contain"
                   />
