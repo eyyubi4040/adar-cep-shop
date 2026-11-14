@@ -33,7 +33,7 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
       badge: 'Sıfır & 2. El Garantili',
       tagline: 'iPhone 18 Pro Max, 17 Pro, 16 ve 15 Serisi',
       desc: 'A20 Pro ve A19 Pro çipli en yeni Apple iPhone modelleri. Sıfır kapalı kutu ve 40 nokta donanım onaylı 6-12 ay mağaza garantili temiz 2. el cihazlar Kırşehir mağazamızda.',
-      image: '/images/brands/brand_apple.jpg',
+      image: '/images/brands/brand_apple.jpg?v=20261114v4',
       fallbackImage: '/images/banners/banner-phones.jpg',
       models: ['iPhone 18 Pro Max', 'iPhone 18 Pro', 'iPhone 17 Pro Max', 'iPhone 16 Pro', 'iPhone 15'],
       catId: 'sifir-telefon',
@@ -164,10 +164,13 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
                   <div
                     className={`absolute inset-0 transition-opacity duration-500 ${
                       isActive
-                        ? 'bg-gradient-to-t from-black/95 via-black/50 to-black/20 opacity-100'
+                        ? 'bg-gradient-to-t from-black/95 via-black/80 to-black/35 opacity-100'
                         : 'bg-black/65 group-hover:bg-black/45 opacity-100'
                     }`}
                   />
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent pointer-events-none" />
+                  )}
 
                   {/* Red Top Accent Bar */}
                   <div
@@ -212,11 +215,11 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
                         </span>
                       </div>
 
-                      {/* Bottom Info & Action Area */}
-                      <div className="space-y-3 sm:space-y-4">
+                      {/* Bottom Info & Action Area with High-Contrast Frosted Glass Card */}
+                      <div className="space-y-3 sm:space-y-3.5 max-w-2xl bg-[#091124]/85 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/20 shadow-2xl">
                         <div>
-                          <div className="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold mb-1">
-                            <Sparkles className="w-3.5 h-3.5" />
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/60 border border-amber-400/40 text-amber-300 text-xs font-bold mb-2">
+                            <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                             <span>{b.tagline}</span>
                           </div>
 
@@ -226,7 +229,7 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
                             </h3>
                           </div>
 
-                          <p className="text-xs sm:text-sm text-gray-200 line-clamp-2 sm:line-clamp-3 leading-relaxed mt-1 max-w-2xl drop-shadow-xs">
+                          <p className="text-xs sm:text-sm text-gray-100 font-normal leading-relaxed mt-1.5 drop-shadow-sm line-clamp-2 sm:line-clamp-3">
                             {b.desc}
                           </p>
                         </div>
@@ -248,9 +251,9 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
                                     handleGoToVitrin(b.catId);
                                   }
                                 }}
-                                className="text-[11px] sm:text-xs bg-white/15 hover:bg-primary backdrop-blur-md border border-white/20 hover:border-primary px-2.5 py-1 rounded-lg font-semibold text-white transition-all cursor-pointer flex items-center gap-1"
+                                className="text-[11px] sm:text-xs bg-white/20 hover:bg-primary border border-white/25 hover:border-primary px-2.5 py-1 rounded-lg font-semibold text-white transition-all cursor-pointer flex items-center gap-1 shadow-xs"
                               >
-                                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
                                 <span>{model}</span>
                               </button>
                             ))}
