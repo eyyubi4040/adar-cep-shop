@@ -21,6 +21,7 @@ export function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Dedicated Brand Showcase Page state with URL hash routing support
   const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
@@ -94,6 +95,8 @@ export function App() {
         onSearch={handleSearch}
         searchQuery={searchQuery}
         onResetHome={handleBackToHome}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
 
       <main className="flex-1">
@@ -171,7 +174,7 @@ export function App() {
       />
 
       {/* 14. FLOATING WHATSAPP & PHONE ACTION BUTTON */}
-      <FloatingContact />
+      <FloatingContact hide={isMobileMenuOpen || Boolean(selectedProduct)} />
     </div>
   );
 }

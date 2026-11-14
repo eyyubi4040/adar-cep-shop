@@ -3,11 +3,18 @@ import { Phone, X, ChevronUp, MapPin } from 'lucide-react';
 import { WhatsAppIcon } from './BrandLogos';
 import { storeInfo } from '../data/storeInfo';
 
-export const FloatingContact: React.FC = () => {
+interface FloatingContactProps {
+  hide?: boolean;
+}
+
+export const FloatingContact: React.FC<FloatingContactProps> = ({ hide = false }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Hide button when mobile menu or modal is open
+  if (hide) return null;
+
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
+    <div className="adar-floating-whatsapp-container fixed bottom-6 right-6 z-[999] flex flex-col items-end">
 
       {/* Expanded Popup Menu */}
       {isOpen && (

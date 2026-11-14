@@ -23,6 +23,8 @@ interface HeaderProps {
   onSearch: (query: string) => void;
   searchQuery: string;
   onResetHome?: () => void;
+  isMobileMenuOpen?: boolean;
+  setIsMobileMenuOpen?: (open: boolean) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -30,12 +32,31 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenProductModal,
   onSearch,
   searchQuery,
-  onResetHome
+  onResetHome,
+  isMobileMenuOpen: propIsMobileMenuOpen,
+  setIsMobileMenuOpen: propSetIsMobileMenuOpen
 }) => {
+  const [internalMobileMenuOpen, setInternalMobileMenuOpen] = useState(false);
+  const isMobileMenuOpen = propIsMobileMenuOpen !== undefined ? propIsMobileMenuOpen : internalMobileMenuOpen;
+  const setIsMobileMenuOpen = propSetIsMobileMenuOpen || setInternalMobileMenuOpen;
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Sync body scroll & attribute when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.setAttribute('data-mobile-menu-open', 'true');
+    } else {
+      document.body.style.overflow = '';
+      document.body.removeAttribute('data-mobile-menu-open');
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.removeAttribute('data-mobile-menu-open');
+    };
+  }, [isMobileMenuOpen]);
 
   // Live search preview results
   const liveSearchResults = searchQuery.trim().length > 1
@@ -398,8 +419,8 @@ export const Header: React.FC<HeaderProps> = ({
             MOBILE DRAWER MENU
             ======================================================== */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden bg-black/60 flex">
-            <div className="w-4/5 max-w-sm bg-white h-full overflow-y-auto p-4 flex flex-col justify-between">
+          <div className="fixed inset-0 z-[10000] lg:hidden bg-black/60 flex animate-in fade-in duration-200">
+            <div className="w-4/5 max-w-sm bg-white h-full overflow-y-auto p-4 flex flex-col justify-between shadow-2xl relative z-10">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-200 mb-4">
                   <img

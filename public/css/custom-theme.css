@@ -5800,3 +5800,12 @@ footer a.rounded-full[data-toggle="tooltip"]:active {
 	background: #20bd5a !important;
 	box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6) !important;
 }
+
+/* Mobilde çekmece menü açıkken WhatsApp butonunu gizle */
+body[data-mobile-menu-open="true"] .adar-floating-whatsapp-container,
+body[data-mobile-menu-open="true"] .adar-floating-whatsapp-btn {
+	display: none !important;
+	opacity: 0 !important;
+	visibility: hidden !important;
+	pointer-events: none !important;
+}
