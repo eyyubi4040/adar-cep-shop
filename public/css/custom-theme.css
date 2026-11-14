@@ -2594,9 +2594,7 @@ html [data-qa="account-dropdown"] .adar-plus-rozet {
 
 #hero-slider-644 .adar-hero-frame>picture>img,
 #hero-slider-644 .adar-hero-frame picture img,
-#hero-slider-644 .adar-hero-frame img,
-#hero-slider-644 .hero-video video,
-#hero-slider-644 video {
+#hero-slider-644 .adar-hero-frame img {
 	position: absolute !important;
 	inset: 0 !important;
 	display: block !important;
@@ -2609,6 +2607,30 @@ html [data-qa="account-dropdown"] .adar-plus-rozet {
 	object-fit: cover !important;
 	object-position: center right;
 	background: #0a0f1d !important;
+}
+
+#hero-slider-644 .hero-video video,
+#hero-slider-644 video {
+	position: absolute !important;
+	inset: 0 !important;
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-width: 100% !important;
+	min-height: 100% !important;
+	max-width: none !important;
+	max-height: none !important;
+	object-fit: contain !important;
+	object-position: center 10% !important;
+	background: #0a0f1d !important;
+}
+
+@media (min-width: 640px) {
+	#hero-slider-644 .hero-video video,
+	#hero-slider-644 video {
+		object-fit: cover !important;
+		object-position: center right !important;
+	}
 }
 
 #hero-slider-644 .adar-hero-frame img[src*="ad.jpeg"] {

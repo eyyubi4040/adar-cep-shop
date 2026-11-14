@@ -53,3 +53,21 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Responsive Hero Video Presentation:
+   Mobile: full contain & centered horizontally with upper offset so phone is completely visible.
+   Desktop: cover & pinned to the right. */
+.adar-hero-video {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: center 10% !important;
+}
+
+@media (min-width: 640px) {
+  .adar-hero-video {
+    object-fit: cover !important;
+    object-position: center right !important;
+  }
+}

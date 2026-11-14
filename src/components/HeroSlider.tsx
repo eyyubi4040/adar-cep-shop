@@ -248,10 +248,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                             loop
                             muted={isMuted}
                             playsInline
-                            className="w-full h-full block object-cover transition-transform duration-1000"
+                            className="adar-hero-video w-full h-full block transition-transform duration-1000"
                             style={{
-                              objectFit: 'cover',
-                              objectPosition: 'center right',
                               width: '100%',
                               height: '100%'
                             }}
