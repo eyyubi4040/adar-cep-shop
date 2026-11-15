@@ -66,7 +66,7 @@ export const XiaomiLogo: React.FC<LogoProps> = ({ className = 'h-6 w-auto', mono
       fill={monochrome ? 'currentColor' : '#FF6900'}
     />
     {/* Inner 'mi' mark */}
-    <g fill={monochrome ? '#000000' : '#FFFFFF'}>
+    <g fill={monochrome ? '#080e1e' : '#FFFFFF'}>
       {/* M outer arch */}
       <path d="M26 31h12c1.1 0 2 .9 2 2v34c0 1.1-.9 2-2 2h-8c-1.1 0-2-.9-2-2V45h-2v22c0 1.1-.9 2-2 2h-8c-1.1 0-2-.9-2-2V33c0-1.1.9-2 2-2h8z" opacity="0" />
       {/* Geometric Mi icon */}

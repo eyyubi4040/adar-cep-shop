@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import { Smartphone, CheckCircle, HelpCircle, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { storeInfo } from '../data/storeInfo';
-import { BrandLogo, WhatsAppWhiteIcon } from './BrandLogos';
+import { BrandLogo, AppleLogo, SamsungLogo, XiaomiLogo, OppoLogo, WhatsAppWhiteIcon } from './BrandLogos';
+
+const brandGlowColors: Record<string, string> = {
+  Apple: 'rgba(255, 255, 255, 0.08)',
+  Samsung: 'rgba(20, 40, 160, 0.28)',
+  Xiaomi: 'rgba(255, 105, 0, 0.22)',
+  Oppo: 'rgba(5, 176, 84, 0.22)'
+};
 
 const modelsByBrand: Record<string, string[]> = {
   Apple: [
+    'iPhone 18 Pro Max',
+    'iPhone 18 Pro',
+    'iPhone 17 Pro Max',
+    'iPhone 17 Pro',
     'iPhone 16 Pro Max',
     'iPhone 16 Pro',
     'iPhone 16 Plus',
@@ -89,6 +100,37 @@ export const TradeInCalculator: React.FC = () => {
     `• Kutu Durumu: ${boxStatus}\n\n` +
     `Cihazım için güncel nakit değerleme teklifinizi öğrenebilir miyim?`
   );
+
+  const renderBrandWatermark = () => {
+    switch (brand) {
+      case 'Apple':
+        return (
+          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,255,255,0.08)]">
+            <AppleLogo className="w-52 h-52 sm:w-64 sm:h-64 object-contain" monochrome />
+          </div>
+        );
+      case 'Samsung':
+        return (
+          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-10deg] drop-shadow-[0_0_25px_rgba(20,40,160,0.25)]">
+            <SamsungLogo className="w-60 h-28 sm:w-72 sm:h-32 object-contain" monochrome />
+          </div>
+        );
+      case 'Xiaomi':
+        return (
+          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,105,0,0.25)]">
+            <XiaomiLogo className="w-44 h-44 sm:w-56 sm:h-56 object-contain" monochrome />
+          </div>
+        );
+      case 'Oppo':
+        return (
+          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(5,176,84,0.25)]">
+            <OppoLogo className="w-56 h-24 sm:w-68 sm:h-28 object-contain" monochrome />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div id="degerleme" className="w-full flex flex-wrap folder-banner py-10 sm:py-16 bg-slate-50/70 border-t border-slate-200/80 relative">
@@ -253,9 +295,23 @@ export const TradeInCalculator: React.FC = () => {
                   backgroundImage: 'linear-gradient(145deg, #080e1e 0%, #0c1836 55%, #132b5c 100%)',
                   color: '#ffffff'
                 }}
-                className="lg:col-span-5 p-6 sm:p-8 rounded-3xl shadow-2xl border border-blue-900/50 flex flex-col justify-between relative overflow-hidden"
+                className="lg:col-span-5 p-6 sm:p-8 rounded-3xl shadow-2xl border border-blue-900/50 flex flex-col justify-between relative overflow-hidden group"
               >
-                <div className="absolute top-0 right-0 w-56 h-56 bg-[#0084d6]/15 rounded-full blur-3xl pointer-events-none"></div>
+                {/* Dynamic Brand Ambient Aura Glow */}
+                <div
+                  className="absolute -top-12 -right-12 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-all duration-700"
+                  style={{
+                    background: brandGlowColors[brand] || 'rgba(0, 132, 214, 0.15)'
+                  }}
+                />
+
+                {/* Dynamic Brand Watermark Logo on Card Background */}
+                <div
+                  key={brand}
+                  className="absolute -right-4 top-8 sm:-right-6 sm:top-10 w-60 h-60 sm:w-72 sm:h-72 pointer-events-none z-0 flex items-center justify-center select-none overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95"
+                >
+                  {renderBrandWatermark()}
+                </div>
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between pb-3.5 border-b border-white/10 mb-4">
