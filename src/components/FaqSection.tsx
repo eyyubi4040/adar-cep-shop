@@ -32,7 +32,7 @@ export const FaqSection: React.FC = () => {
   return (
     <div id="sss" className="w-full flex flex-wrap folder-banner py-8 sm:py-12 bg-white">
       <div className="w-full px-2 sm:px-4 max-w-[1000px] mx-auto">
-        
+
         {/* Title */}
         <div className="w-full mb-8 text-center">
           <div className="block-title">
@@ -65,9 +65,8 @@ export const FaqSection: React.FC = () => {
                     <span>{faq.q}</span>
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180 text-primary' : ''
-                    }`}
+                    className={`w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-primary' : ''
+                      }`}
                   />
                 </button>
 

@@ -18,8 +18,7 @@ import {
   RotateCcw,
   Store
 } from 'lucide-react';
-import { AppleLogo, WhatsAppIcon } from './BrandLogos';
-import { storeInfo } from '../data/storeInfo';
+import { AppleLogo } from './BrandLogos';
 
 interface HeroSliderProps {
   onSelectCategory: (categoryId: string) => void;
@@ -133,7 +132,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
     }
   ];
 
-  // Auto advance slides every 7 seconds (pauses on hover or when modal is open)
+  // Auto advance slides every 7 seconds
   useEffect(() => {
     if (isPaused || isFilmModalOpen) return;
     const timer = setInterval(() => {
@@ -142,7 +141,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
     return () => clearInterval(timer);
   }, [isPaused, isFilmModalOpen, slides.length]);
 
-  // Handle video playback when switching slides or scenes
+  // Handle video playback
   useEffect(() => {
     Object.entries(videoRefs.current).forEach(([idxStr, vidEl]) => {
       const idx = Number(idxStr);
@@ -176,7 +175,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  // Touch Swipe Handlers for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -205,20 +203,20 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
 
   return (
     <div id="relation-644" className="w-full flex flex-wrap folder-slider">
-      <div className="w-full bg-form px-2 sm:px-4 pt-3 sm:pt-4" data-toggle="slider">
+      <div className="w-full px-2 sm:px-4 pt-3 sm:pt-4" data-toggle="slider">
         <div className="w-full relative text-white max-w-[1448px] mx-auto">
 
-          {/* Main Slider Track Container with Vibrant Blue Glowing Border */}
+          {/* Main Slider Track Container with Modern Luxury Tech Border & Ambient Shadow */}
           <div
             id="hero-slider-644"
-            className="w-full rounded-custom overflow-hidden relative group select-none bg-[#0a0f1d] border-2 border-[#0084d6] ring-2 ring-[#0084d6]/30 shadow-[0_0_25px_rgba(0,132,214,0.25)]"
+            className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative group select-none bg-[#080d1a] border border-slate-800 shadow-2xl shadow-blue-950/40"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Sliding Track: All slides side by side with smooth transition */}
+            {/* Sliding Track */}
             <div
               className="flex w-full transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -231,12 +229,12 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                     key={slide.id}
                     className="w-full shrink-0 relative flex flex-wrap"
                   >
-                    {/* Slide Frame (Fill container completely edge to edge) */}
-                    <div className="adar-hero-frame w-full flex flex-wrap relative overflow-hidden rounded-custom bg-[#0a0f1d] aspect-[4/3] sm:aspect-[2.6/1] min-h-[360px] sm:min-h-[440px] border border-white/10">
+                    {/* Slide Frame */}
+                    <div className="adar-hero-frame w-full flex flex-wrap relative overflow-hidden bg-[#080d1a] aspect-[4/3] sm:aspect-[2.6/1] min-h-[360px] sm:min-h-[460px]">
 
-                      {/* Background Banner Image or Video - Full Edge-to-Edge Cover */}
+                      {/* Video or Image */}
                       {slide.video ? (
-                        <div className="hero-video absolute inset-0 w-full h-full block overflow-hidden bg-[#0a0f1d]">
+                        <div className="hero-video absolute inset-0 w-full h-full block overflow-hidden bg-[#080d1a]">
                           <video
                             ref={(el) => {
                               videoRefs.current[idx] = el;
@@ -256,7 +254,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                           />
                         </div>
                       ) : (
-                        <picture className="absolute inset-0 w-full h-full block overflow-hidden bg-[#0a0f1d]">
+                        <picture className="absolute inset-0 w-full h-full block overflow-hidden bg-[#080d1a]">
                           <img
                             src={slide.image}
                             alt={slide.title}
@@ -273,27 +271,25 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                         </picture>
                       )}
 
-                      {/* Explicit Linear Gradient Overlay:
-                          Desktop: Left-to-right fade for text column.
-                          Mobile: Soft bottom-up fade only, keeping top 70% completely clear for the photo/video! */}
+                      {/* Soft Cinematic Gradients */}
                       <div
                         className="absolute inset-0 z-[1] pointer-events-none hidden sm:block"
                         style={{
                           background: slide.id === 0
-                            ? 'linear-gradient(90deg, rgba(8,12,24,0.94) 0%, rgba(8,12,24,0.78) 36%, rgba(8,12,24,0.2) 60%, transparent 82%)'
-                            : 'linear-gradient(90deg, rgba(8,12,24,0.96) 0%, rgba(8,12,24,0.86) 42%, rgba(8,12,24,0.45) 70%, transparent 100%)'
+                            ? 'linear-gradient(90deg, rgba(6,10,22,0.95) 0%, rgba(6,10,22,0.82) 38%, rgba(6,10,22,0.2) 64%, transparent 85%)'
+                            : 'linear-gradient(90deg, rgba(6,10,22,0.96) 0%, rgba(6,10,22,0.85) 44%, rgba(6,10,22,0.3) 72%, transparent 100%)'
                         }}
                       />
                       <div
                         className="absolute inset-0 z-[1] pointer-events-none block sm:hidden"
                         style={{
-                          background: 'linear-gradient(to top, rgba(8,12,24,0.95) 0%, rgba(8,12,24,0.75) 40%, rgba(8,12,24,0.2) 65%, transparent 85%)'
+                          background: 'linear-gradient(to top, rgba(6,10,22,0.96) 0%, rgba(6,10,22,0.8) 42%, rgba(6,10,22,0.15) 70%, transparent 88%)'
                         }}
                       />
 
                       {/* Mute/Sound Toggle for Slides with Video */}
                       {slide.video && (
-                        <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
+                        <div className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 flex items-center gap-2">
                           <button
                             type="button"
                             onClick={(e) => {
@@ -301,12 +297,12 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                               setIsMuted(!isMuted);
                             }}
                             aria-label={isMuted ? 'Sesi Aç' : 'Sesi Kapat'}
-                            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-1.5 sm:gap-2 transition-all shadow-md cursor-pointer hover:border-[#0084d6]"
+                            className="p-1.5 sm:px-3.5 sm:py-1.5 rounded-full bg-slate-950/70 hover:bg-slate-900/90 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-1.5 sm:gap-2 transition-all shadow-md cursor-pointer hover:border-[#0084d6]"
                             title={isMuted ? 'Videoyu Sesli Oynat' : 'Sesi Kapat'}
                           >
                             {isMuted ? (
                               <>
-                                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-300" />
+                                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300" />
                                 <span className="hidden sm:inline text-[11px] font-medium">Sesi Aç</span>
                               </>
                             ) : (
@@ -319,20 +315,18 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                         </div>
                       )}
 
-                      {/* Slide Content Layer:
-                          On Mobile: Bottom-anchored with concise essentials so visual is unobstructed.
-                          On Desktop: Vertically centered full-feature presentation. */}
-                      <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center px-4 sm:px-12 md:px-16 pb-10 sm:pb-0 max-w-2xl">
+                      {/* Slide Content Layer */}
+                      <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center px-5 sm:px-12 md:px-16 pb-12 sm:pb-0 max-w-2xl">
 
-                        {/* Badges Row with Brand Vector Icons */}
-                        <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-3 flex-wrap">
-                          <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 sm:px-3 sm:py-1 rounded shadow-xs">
+                        {/* Badges Row */}
+                        <div className="inline-flex items-center gap-2 mb-2 sm:mb-3.5 flex-wrap">
+                          <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                             {slide.badgeIcon}
                             <span>{slide.badge}</span>
                           </span>
 
                           {slide.video && (
-                            <span className="hidden sm:inline-flex items-center gap-1.5 bg-black/70 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full border border-white/20 shadow-xs">
+                            <span className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full border border-white/15 shadow-xs">
                               {slide.videoBrandIcon}
                               <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -342,31 +336,25 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                             </span>
                           )}
 
-                          <span className="text-[11px] text-gray-300 font-medium hidden sm:inline-block">
-                            Adar Cep Shop Kırşehir
+                          <span className="text-[11px] text-slate-300 font-medium hidden sm:inline-block">
+                            Kırşehir Mağaza Güvencesiyle
                           </span>
                         </div>
 
                         {/* Title */}
-                        <h1
-                          className="text-base sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight mb-1 sm:mb-3 drop-shadow-lg"
-                          style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.9)' }}
-                        >
+                        <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[44px] font-black text-white leading-tight tracking-tight mb-2 sm:mb-3">
                           {slide.title}
                         </h1>
 
-                        {/* Subtitle - Desktop only to keep mobile visual clean and visible */}
-                        <p
-                          className="hidden sm:block text-xs sm:text-base text-gray-200 font-normal leading-relaxed mb-3 sm:mb-4 max-w-xl drop-shadow-md line-clamp-2 sm:line-clamp-3"
-                          style={{ textShadow: '0 1px 6px rgba(0,0,0,0.85)' }}
-                        >
+                        {/* Subtitle */}
+                        <p className="hidden sm:block text-xs sm:text-sm md:text-base text-slate-300 font-normal leading-relaxed mb-4 sm:mb-5 max-w-xl line-clamp-2 sm:line-clamp-3">
                           {slide.subtitle}
                         </p>
 
-                        {/* Interactive Scene Switcher with Tailored Icons - Desktop only to avoid clutter on mobile */}
+                        {/* Interactive Scene Switcher */}
                         {slide.scenes && (
-                          <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-3 sm:mb-5">
-                            <span className="text-[11px] text-gray-300 font-medium mr-1 hidden sm:inline-block">
+                          <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-4 sm:mb-6">
+                            <span className="text-[11px] text-slate-400 font-medium mr-1.5">
                               Sahne:
                             </span>
                             {slide.scenes.map((sc) => (
@@ -377,9 +365,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                                   e.stopPropagation();
                                   setActiveScenes((prev) => ({ ...prev, [idx]: sc.src }));
                                 }}
-                                className={`text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${currentVideoSrc === sc.src
-                                  ? 'bg-white text-black font-bold border-white shadow-xs scale-105'
-                                  : 'bg-black/60 text-gray-300 hover:text-white border-white/20 hover:border-white/40'
+                                className={`text-[10px] sm:text-[11px] px-3 py-1 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${currentVideoSrc === sc.src
+                                  ? 'bg-white text-slate-950 font-bold border-white shadow-sm scale-105'
+                                  : 'bg-slate-950/60 text-slate-300 hover:text-white border-white/15 hover:border-white/40'
                                   }`}
                               >
                                 {sc.icon}
@@ -389,11 +377,11 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                           </div>
                         )}
 
-                        {/* Action Buttons Row with Professional Icons */}
-                        <div className="flex items-center gap-2 sm:gap-3 mt-1 sm:mt-0">
+                        {/* Action Buttons Row */}
+                        <div className="flex items-center gap-2.5 sm:gap-3 mt-1 sm:mt-0">
                           <button
                             onClick={() => handleCtaClick(slide.categoryId)}
-                            className="bg-primary hover:bg-[#006cb3] text-white text-xs sm:text-sm font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-custom transition-all shadow-md flex items-center gap-1.5 sm:gap-2 cursor-pointer group/btn"
+                            className="bg-gradient-to-r from-[#0084d6] to-[#006cb3] hover:from-[#0092ed] hover:to-[#007ec9] text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl transition-all shadow-lg shadow-[#0084d6]/30 flex items-center gap-2 cursor-pointer active:scale-95 group/btn"
                           >
                             <span>{slide.ctaText}</span>
                             <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover/btn:translate-x-1" />
@@ -406,7 +394,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                                 e.stopPropagation();
                                 setIsFilmModalOpen(true);
                               }}
-                              className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 text-xs sm:text-sm font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-custom transition-all flex items-center gap-1.5 sm:gap-2 shadow-sm cursor-pointer group/film"
+                              className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-bold px-3.5 py-2.5 sm:px-5 sm:py-3 rounded-xl transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 group/film"
                               title="Apple Resmi Lansman Tanıtım Filmini İzle"
                             >
                               <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
@@ -425,33 +413,54 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
               })}
             </div>
 
-            {/* Slider Navigation Arrows (Always visible, Glassmorphic & Elevated) */}
+            {/* Slider Navigation Arrows */}
             <button
               onClick={prevSlide}
               aria-label="Önceki Slayt"
-              className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-11 rounded-full bg-black/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
+              style={{
+                top: '50%',
+                transform: 'translateY(-50%)'
+              }}
+              className="absolute left-2 sm:left-4 z-20 w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-slate-950/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
             >
-              <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
+              <ChevronLeft className="w-3.5 h-3.5 sm:w-5 sm:h-5 transition-transform group-hover/arrow:-translate-x-0.5" />
             </button>
             <button
               onClick={nextSlide}
               aria-label="Sonraki Slayt"
-              className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-11 rounded-full bg-black/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
+              style={{
+                top: '50%',
+                transform: 'translateY(-50%)'
+              }}
+              className="absolute right-2 sm:right-4 z-20 w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-slate-950/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
             >
-              <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:translate-x-0.5" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 transition-transform group-hover/arrow:translate-x-0.5" />
             </button>
 
-            {/* Slide Pagination Dots */}
-            <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/40 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/15">
-              {slides.map((s, idx) => (
-                <button
-                  key={s.id}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`h-2.5 rounded-full transition-all cursor-pointer ${currentSlide === idx ? 'w-8 bg-[#0084d6]' : 'w-2.5 bg-white/60 hover:bg-white'
+            {/* Slide Pagination Capsule (Centered with mathematical precision) */}
+            <div
+              style={{
+                left: '50%',
+                transform: 'translateX(-50%)'
+              }}
+              className="absolute bottom-2.5 sm:bottom-4 z-20 flex items-center gap-1 sm:gap-1.5 bg-slate-950/70 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/20 shadow-lg"
+            >
+              {slides.map((s, idx) => {
+                const isActive = currentSlide === idx;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => setCurrentSlide(idx)}
+                    style={{
+                      backgroundColor: isActive ? '#0084d6' : 'rgba(255, 255, 255, 0.45)'
+                    }}
+                    className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      isActive ? 'w-5 sm:w-7 shadow-xs shadow-blue-500/50' : 'w-1.5 sm:w-2 hover:bg-white/80'
                     }`}
-                  aria-label={`Slayt ${idx + 1}`}
-                />
-              ))}
+                    aria-label={`Slayt ${idx + 1}`}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -464,10 +473,10 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
           onClick={() => setIsFilmModalOpen(false)}
         >
           <div
-            className="relative w-full max-w-4xl bg-[#111827] border border-white/15 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-4xl bg-slate-900 border border-white/15 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header with Authentic Apple Logo */}
+            {/* Modal Header */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-black/50 border-b border-white/10">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white p-1.5 border border-white/10 shadow-xs">
@@ -477,14 +486,14 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                   <h3 className="text-white text-sm sm:text-base font-bold flex items-center gap-2">
                     Apple iPhone 18 Pro & Pro Max — Resmi Lansman Tanıtım Filmi
                   </h3>
-                  <p className="text-gray-400 text-[11px]">
+                  <p className="text-slate-400 text-[11px]">
                     Apple Resmi Tanıtım Videosu • 02:52 • Orijinal Ses ve Görüntü
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsFilmModalOpen(false)}
-                className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-all cursor-pointer"
+                className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-all cursor-pointer"
                 aria-label="Kapat"
               >
                 <X className="w-5 h-5" />
@@ -499,24 +508,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                 autoPlay
                 className="w-full h-full object-contain"
               />
-            </div>
-
-            {/* Modal Footer */}
-            <div className="px-4 sm:px-6 py-3.5 bg-[#0d131f] border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-              <div className="text-xs text-gray-300 max-w-xl">
-                <span className="text-white font-semibold">Cihaz Özellikleri:</span> A20 Pro Çip • Titanyum Kasa • 48MP Pro Periskop Kamera • 2 Yıl Türkiye Garantili • Kırşehir Adar Cep Shop Mağazamızda Hemen Teslim
-              </div>
-              <a
-                href={`https://wa.me/${storeInfo.whatsapp}?text=${encodeURIComponent(
-                  'Merhaba Adar Cep Shop, web sitenizdeki Apple iPhone 18 Pro tanıtım videosunu izledim. Bu cihazın fiyatı ve stok durumu hakkında bilgi alabilir miyim?'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#25D366] hover:bg-[#20ba59] text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2 shadow-md cursor-pointer ml-auto"
-              >
-                <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
-                <span>WhatsApp ile Fiyat & Bilgi Al</span>
-              </a>
             </div>
           </div>
         </div>

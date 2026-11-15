@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Filter, ArrowRight, ShieldCheck, Sparkles, Smartphone, Check } from 'lucide-react';
+import { Sparkles, Smartphone, Check } from 'lucide-react';
 import type { Product } from '../types';
 import { ProductCard } from './ProductCard';
 
@@ -52,54 +52,59 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
   }, [products, selectedCategory, selectedBrand, selectedCondition, searchQuery]);
 
   return (
-    <div id="vitrin" className="w-full flex flex-wrap folder-showcase py-6 sm:py-10 bg-[#f8f9fa]">
-      <div className="w-full px-2 sm:px-4 max-w-[1448px] mx-auto">
+    <div id="vitrin" className="w-full flex flex-wrap folder-showcase py-8 sm:py-14 bg-slate-50/70 border-t border-slate-200/80">
+      <div className="w-full px-3 sm:px-6 max-w-[1448px] mx-auto">
 
         {/* ========================================================
-            SHOWCASE HEADER (Block-title styling)
+            SHOWCASE HEADER
             ======================================================== */}
-        <div className="w-full flex flex-wrap items-center justify-between gap-4 mb-4 border-b border-gray-200 pb-3">
-          <div className="block-title">
-            <h2 className="title text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-              En Yeni Ürünler & Modeller
+        <div className="w-full flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200/80">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0084d6] text-xs font-bold uppercase tracking-wider mb-2 border border-blue-100">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Güncel Mağaza Vitrini</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Öne Çıkan Modeller & Aksesuarlar
             </h2>
-            <div className="subtitle text-xs sm:text-sm text-gray-500 mt-1">
-              Kırşehir mağazamızdaki güncel sıfır, 2. el cihazlar ve telefon aksesuarları.{' '}
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Kırşehir mağazamızdaki garantili sıfır, 2. el cihazlar ve orijinal koruyucu aksesuarlar.{' '}
               <button
                 onClick={() => {
                   onSelectCategory('all');
                   setSelectedBrand('all');
                   setSelectedCondition('all');
                 }}
-                className="adar-see-all text-primary font-semibold hover:underline cursor-pointer"
+                className="text-[#0084d6] font-semibold hover:underline cursor-pointer"
               >
-                Tümünü İnceleyin →
+                Filtreleri Sıfırla →
               </button>
-            </div>
+            </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               {filteredProducts.length} Model Listelendi
             </span>
           </div>
         </div>
 
         {/* ========================================================
-            TAB BUTTONS (Showcase categories strip)
+            TAB PILLS (Category Strip)
             ======================================================== */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2.5 mb-5">
           {tabs.map((tab) => {
             const isActive = selectedCategory === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => onSelectCategory(tab.id)}
-                className={`px-4 py-2 rounded-custom text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
-                  ? 'bg-primary text-white shadow-xs'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-                  }`}
+                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'bg-[#0084d6] text-white shadow-md shadow-[#0084d6]/25 scale-102'
+                    : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                }`}
               >
                 {tab.label}
               </button>
@@ -108,21 +113,22 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         </div>
 
         {/* ========================================================
-            SUB-FILTERS (Brand & Condition Badges)
+            SUB-FILTERS (Brand & Condition Segmented Toolbar)
             ======================================================== */}
-        <div className="w-full bg-white border border-gray-200 rounded-custom p-3 mb-6 flex flex-wrap items-center justify-between gap-3 shadow-2xs text-xs">
+        <div className="w-full bg-white border border-slate-200/90 rounded-2xl p-3.5 mb-8 flex flex-wrap items-center justify-between gap-4 shadow-xs text-xs">
 
           {/* Brand Filter Pills */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-            <span className="text-gray-400 font-bold uppercase text-[10px] me-1 shrink-0">Marka:</span>
+            <span className="text-slate-400 font-bold uppercase text-[10px] me-1 shrink-0 tracking-wider">Marka:</span>
             {brands.map((brand) => (
               <button
                 key={brand}
                 onClick={() => setSelectedBrand(brand)}
-                className={`px-2.5 py-1 rounded text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${selectedBrand === brand
-                  ? 'bg-dark text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  selectedBrand === brand
+                    ? 'bg-slate-900 text-white shadow-2xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
+                }`}
               >
                 {brand === 'all' ? 'Tüm Markalar' : brand}
               </button>
@@ -130,26 +136,29 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
           </div>
 
           {/* Condition Filter Pills */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <span className="text-gray-400 font-bold uppercase text-[10px] me-1">Durum:</span>
+          <div className="flex items-center gap-1.5 shrink-0 bg-slate-100/90 p-1 rounded-xl">
+            <span className="text-slate-400 font-bold uppercase text-[10px] px-2 shrink-0 tracking-wider">Durum:</span>
             <button
               onClick={() => setSelectedCondition('all')}
-              className={`px-2 py-0.5 rounded text-xs font-semibold transition-colors cursor-pointer ${selectedCondition === 'all' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                selectedCondition === 'all' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               Hepsi
             </button>
             <button
               onClick={() => setSelectedCondition('sifir')}
-              className={`px-2 py-0.5 rounded text-xs font-semibold transition-colors cursor-pointer ${selectedCondition === 'sifir' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                selectedCondition === 'sifir' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               Sıfır
             </button>
             <button
               onClick={() => setSelectedCondition('ikinci-el')}
-              className={`px-2 py-0.5 rounded text-xs font-semibold transition-colors cursor-pointer ${selectedCondition === 'ikinci-el' ? 'bg-purple-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                selectedCondition === 'ikinci-el' ? 'bg-purple-700 text-white shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
             >
               2. El
             </button>
@@ -158,13 +167,13 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
 
         {/* Active Search Notification */}
         {searchQuery && (
-          <div className="w-full mb-4 p-3 bg-sky-50 border border-sky-200 rounded-custom text-xs flex items-center justify-between text-sky-950">
+          <div className="w-full mb-6 p-3.5 bg-blue-50 border border-blue-200/80 rounded-xl text-xs flex items-center justify-between text-blue-950">
             <span>
               <strong>"{searchQuery}"</strong> araması için <strong>{filteredProducts.length}</strong> sonuç bulundu.
             </span>
             <button
               onClick={() => onSelectCategory('all')}
-              className="text-primary font-bold underline cursor-pointer"
+              className="text-[#0084d6] font-bold hover:underline cursor-pointer"
             >
               Aramayı Temizle
             </button>
@@ -172,10 +181,10 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         )}
 
         {/* ========================================================
-            PRODUCTS GRID (Card Styling - NO PRICES)
+            PRODUCTS GRID
             ======================================================== */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-5">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -185,11 +194,11 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
             ))}
           </div>
         ) : (
-          <div className="w-full bg-white rounded-custom border border-gray-200 p-12 text-center my-6">
-            <Smartphone className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h3 className="text-base font-bold text-gray-800 mb-1">Aradığınız Kriterde Model Bulunamadı</h3>
-            <p className="text-xs text-gray-500 mb-4">
-              Filtreleri sıfırlayarak mağazamızdaki diğer sıfır, 2. el telefon ve orijinal telefon aksesuarlarını görebilirsiniz.
+          <div className="w-full bg-white rounded-3xl border border-slate-200 p-12 text-center my-6 shadow-xs">
+            <Smartphone className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <h3 className="text-base font-bold text-slate-800 mb-1">Aradığınız Kriterde Model Bulunamadı</h3>
+            <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
+              Filtreleri sıfırlayarak mağazamızdaki diğer sıfır, 2. el telefon ve orijinal telefon aksesuarlarını inceleyebilirsiniz.
             </p>
             <button
               onClick={() => {
@@ -197,7 +206,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                 setSelectedBrand('all');
                 setSelectedCondition('all');
               }}
-              className="bg-primary hover:bg-[#006cb3] text-white text-xs font-bold px-4 py-2 rounded-custom transition cursor-pointer"
+              className="bg-[#0084d6] hover:bg-[#006cb3] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer shadow-md shadow-[#0084d6]/20"
             >
               Tüm Modelleri Göster
             </button>
