@@ -52,31 +52,44 @@ export const SamsungLogo: React.FC<LogoProps> = ({ className = 'h-5 w-auto', mon
   </svg>
 );
 
-// 3. Xiaomi Logo (Famous Orange Squircle with 'mi')
-export const XiaomiLogo: React.FC<LogoProps> = ({ className = 'h-6 w-auto', monochrome = false }) => (
-  <svg
-    viewBox="0 0 100 100"
-    className={className}
-    aria-label="Xiaomi"
-  >
-    <rect
-      width="100"
-      height="100"
-      rx="28"
-      fill={monochrome ? 'currentColor' : '#FF6900'}
-    />
-    {/* Inner 'mi' mark */}
-    <g fill={monochrome ? '#080e1e' : '#FFFFFF'}>
-      {/* M outer arch */}
-      <path d="M26 31h12c1.1 0 2 .9 2 2v34c0 1.1-.9 2-2 2h-8c-1.1 0-2-.9-2-2V45h-2v22c0 1.1-.9 2-2 2h-8c-1.1 0-2-.9-2-2V33c0-1.1.9-2 2-2h8z" opacity="0" />
-      {/* Geometric Mi icon */}
-      <rect x="22" y="28" width="11" height="44" rx="4" />
-      <path d="M33 28h26c4.4 0 8 3.6 8 8v36h-11V42c0-1.7-1.3-3-3-3H44v33H33V28z" />
-      <rect x="44" y="47" width="11" height="25" rx="3" />
-      <rect x="67" y="28" width="11" height="44" rx="4" />
-    </g>
-  </svg>
-);
+// 3. Xiaomi Logo (Official Kenya Hara Superellipse Vector)
+export const XiaomiLogo: React.FC<LogoProps> = ({ className = 'h-6 w-auto', monochrome = false }) => {
+  if (monochrome) {
+    // In monochrome/watermark mode: single compound path with evenodd rule so "mi" letters are transparent cutouts
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        className={className}
+        fill="currentColor"
+        aria-label="Xiaomi"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M12 0C8.016 0 4.756.255 2.493 2.516.23 4.776 0 8.033 0 12.012c0 3.98.23 7.235 2.494 9.497C4.757 23.77 8.017 24 12 24c3.983 0 7.243-.23 9.506-2.491C23.77 19.247 24 15.99 24 12.012c0-3.984-.233-7.243-2.502-9.504C19.234.252 15.978 0 12 0zM4.906 7.405h5.624c1.47 0 3.007.068 3.764.827.746.746.827 2.233.83 3.676v4.54a.15.15 0 0 1-.152.147h-1.947a.15.15 0 0 1-.152-.148V11.83c-.002-.806-.048-1.634-.464-2.051-.358-.36-1.026-.441-1.72-.458H7.158a.15.15 0 0 0-.151.147v6.98a.15.15 0 0 1-.152.148H4.906a.15.15 0 0 1-.15-.148V7.554a.15.15 0 0 1 .15-.149zm12.131 0h1.949a.15.15 0 0 1 .15.15v8.892a.15.15 0 0 1-.15.148h-1.949a.15.15 0 0 1-.151-.148V7.554a.15.15 0 0 1 .151-.149zM8.92 10.948h2.046c.083 0 .15.066.15.147v5.352a.15.15 0 0 1-.15.148H8.92a.15.15 0 0 1-.152-.148v-5.352a.15.15 0 0 1 .152-.147Z"
+        />
+      </svg>
+    );
+  }
+
+  // Full-color mode: official Xiaomi Orange (#FF6900) superellipse with pure white (#FFFFFF) 'mi'
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      aria-label="Xiaomi"
+    >
+      <path
+        fill="#FF6900"
+        d="M12 0C8.016 0 4.756.255 2.493 2.516.23 4.776 0 8.033 0 12.012c0 3.98.23 7.235 2.494 9.497C4.757 23.77 8.017 24 12 24c3.983 0 7.243-.23 9.506-2.491C23.77 19.247 24 15.99 24 12.012c0-3.984-.233-7.243-2.502-9.504C19.234.252 15.978 0 12 0z"
+      />
+      <path
+        fill="#FFFFFF"
+        d="M4.906 7.405h5.624c1.47 0 3.007.068 3.764.827.746.746.827 2.233.83 3.676v4.54a.15.15 0 0 1-.152.147h-1.947a.15.15 0 0 1-.152-.148V11.83c-.002-.806-.048-1.634-.464-2.051-.358-.36-1.026-.441-1.72-.458H7.158a.15.15 0 0 0-.151.147v6.98a.15.15 0 0 1-.152.148H4.906a.15.15 0 0 1-.15-.148V7.554a.15.15 0 0 1 .15-.149zm12.131 0h1.949a.15.15 0 0 1 .15.15v8.892a.15.15 0 0 1-.15.148h-1.949a.15.15 0 0 1-.151-.148V7.554a.15.15 0 0 1 .151-.149zM8.92 10.948h2.046c.083 0 .15.066.15.147v5.352a.15.15 0 0 1-.15.148H8.92a.15.15 0 0 1-.152-.148v-5.352a.15.15 0 0 1 .152-.147Z"
+      />
+    </svg>
+  );
+};
 
 // 4. Spigen Logo (Iconic Orange Geometric Slash + Typography)
 export const SpigenLogo: React.FC<LogoProps> = ({ className = 'h-5 w-auto', monochrome = false }) => (
