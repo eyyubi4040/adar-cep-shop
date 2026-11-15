@@ -105,25 +105,37 @@ export const TradeInCalculator: React.FC = () => {
     switch (brand) {
       case 'Apple':
         return (
-          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,255,255,0.08)]">
+          <div
+            style={{ color: 'rgba(255, 255, 255, 0.16)' }}
+            className="transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,255,255,0.12)]"
+          >
             <AppleLogo className="w-52 h-52 sm:w-64 sm:h-64 object-contain" monochrome />
           </div>
         );
       case 'Samsung':
         return (
-          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-10deg] drop-shadow-[0_0_25px_rgba(20,40,160,0.25)]">
-            <SamsungLogo className="w-60 h-28 sm:w-72 sm:h-32 object-contain" monochrome />
+          <div
+            style={{ color: 'rgba(255, 255, 255, 0.16)' }}
+            className="transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(20,40,160,0.25)]"
+          >
+            <SamsungLogo className="w-56 h-28 sm:w-68 sm:h-34 object-contain" monochrome />
           </div>
         );
       case 'Xiaomi':
         return (
-          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,105,0,0.25)]">
+          <div
+            style={{ color: 'rgba(255, 255, 255, 0.16)' }}
+            className="transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(255,105,0,0.25)]"
+          >
             <XiaomiLogo className="w-44 h-44 sm:w-56 sm:h-56 object-contain" monochrome />
           </div>
         );
       case 'Oppo':
         return (
-          <div className="text-white/[0.12] transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(5,176,84,0.25)]">
+          <div
+            style={{ color: 'rgba(255, 255, 255, 0.16)' }}
+            className="transition-all duration-700 transform rotate-[-8deg] drop-shadow-[0_0_25px_rgba(5,176,84,0.25)]"
+          >
             <OppoLogo className="w-56 h-24 sm:w-68 sm:h-28 object-contain" monochrome />
           </div>
         );
@@ -184,11 +196,10 @@ export const TradeInCalculator: React.FC = () => {
                               ? { backgroundColor: '#0084d6', color: '#ffffff', borderColor: '#0084d6' }
                               : { backgroundColor: '#f8fafc', color: '#334155', borderColor: '#e2e8f0' }
                           }
-                          className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95 border ${
-                            isSelected
+                          className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95 border ${isSelected
                               ? 'shadow-md shadow-[#0084d6]/30 ring-2 ring-[#0084d6]/25 font-black'
                               : 'hover:bg-slate-100'
-                          }`}
+                            }`}
                         >
                           <BrandLogo brand={b} className="h-4 w-auto" monochrome={isSelected} />
                           <span>{b}</span>
@@ -273,11 +284,10 @@ export const TradeInCalculator: React.FC = () => {
                               ? { backgroundColor: '#0f172a', color: '#ffffff', borderColor: '#0f172a' }
                               : { backgroundColor: '#f8fafc', color: '#334155', borderColor: '#e2e8f0' }
                           }
-                          className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer text-center active:scale-95 border ${
-                            isSelected
+                          className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer text-center active:scale-95 border ${isSelected
                               ? 'shadow-md shadow-slate-900/30 font-black ring-2 ring-slate-900/20'
                               : 'hover:bg-slate-100'
-                          }`}
+                            }`}
                         >
                           {status}
                         </button>
@@ -299,7 +309,7 @@ export const TradeInCalculator: React.FC = () => {
               >
                 {/* Dynamic Brand Ambient Aura Glow */}
                 <div
-                  className="absolute -top-12 -right-12 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-all duration-700"
+                  className="absolute -top-16 -right-10 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-all duration-700"
                   style={{
                     background: brandGlowColors[brand] || 'rgba(0, 132, 214, 0.15)'
                   }}
@@ -308,7 +318,7 @@ export const TradeInCalculator: React.FC = () => {
                 {/* Dynamic Brand Watermark Logo on Card Background */}
                 <div
                   key={brand}
-                  className="absolute -right-4 top-8 sm:-right-6 sm:top-10 w-60 h-60 sm:w-72 sm:h-72 pointer-events-none z-0 flex items-center justify-center select-none overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95"
+                  className="absolute -right-3 -top-6 sm:-right-4 sm:-top-8 w-60 h-60 sm:w-72 sm:h-72 pointer-events-none z-0 flex items-center justify-center select-none overflow-hidden transition-all duration-500 animate-in fade-in zoom-in-95"
                 >
                   {renderBrandWatermark()}
                 </div>
