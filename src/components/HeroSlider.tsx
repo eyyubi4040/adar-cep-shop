@@ -48,6 +48,7 @@ interface SlideItem {
 
 export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isFilmModalOpen, setIsFilmModalOpen] = useState(false);
@@ -132,12 +133,24 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
     }
   ];
 
-  // Auto advance slides every 7 seconds
+  // Auto advance slides with smooth 7-second progress bar
   useEffect(() => {
     if (isPaused || isFilmModalOpen) return;
+
+    const intervalMs = 50;
+    const durationMs = 7000;
+    const step = (intervalMs / durationMs) * 100;
+
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000);
+      setProgress((prev) => {
+        if (prev >= 100) {
+          setCurrentSlide((curr) => (curr + 1) % slides.length);
+          return 0;
+        }
+        return prev + step;
+      });
+    }, intervalMs);
+
     return () => clearInterval(timer);
   }, [isPaused, isFilmModalOpen, slides.length]);
 
@@ -169,10 +182,12 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setProgress(0);
   };
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
+    setProgress(0);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -202,267 +217,299 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
   };
 
   return (
-    <div id="relation-644" className="w-full flex flex-wrap folder-slider">
-      <div className="w-full px-2 sm:px-4 pt-3 sm:pt-4" data-toggle="slider">
-        <div className="w-full relative text-white max-w-[1448px] mx-auto">
+    <section
+      id="hero-slider"
+      className="w-full relative bg-[#060a16] overflow-hidden select-none group border-b border-slate-900/60"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Sliding Track - Full Bleed 100vw */}
+      <div
+        className="flex w-full transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
+        {slides.map((slide, idx) => {
+          const currentVideoSrc = activeScenes[idx] || slide.video;
+          const isActive = currentSlide === idx;
 
-          {/* Main Slider Track Container with Modern Luxury Tech Border & Ambient Shadow */}
-          <div
-            id="hero-slider-644"
-            className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative group select-none bg-[#080d1a] border border-slate-800 shadow-2xl shadow-blue-950/40"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {/* Sliding Track */}
+          return (
             <div
-              className="flex w-full transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              key={slide.id}
+              className="w-full shrink-0 relative flex flex-wrap"
             >
-              {slides.map((slide, idx) => {
-                const currentVideoSrc = activeScenes[idx] || slide.video;
+              {/* Grand Cinematic Frame - 640px+ on desktop, 480px on mobile */}
+              <div className="w-full relative overflow-hidden bg-[#060a16] h-[480px] sm:h-[540px] md:h-[600px] lg:h-[640px] xl:h-[680px]">
 
-                return (
-                  <div
-                    key={slide.id}
-                    className="w-full shrink-0 relative flex flex-wrap"
-                  >
-                    {/* Slide Frame */}
-                    <div className="adar-hero-frame w-full flex flex-wrap relative overflow-hidden bg-[#080d1a] aspect-[4/3] sm:aspect-[2.6/1] min-h-[360px] sm:min-h-[460px]">
+                {/* Video or Image Background with Ken-Burns Drift */}
+                {slide.video ? (
+                  <div className="absolute inset-0 w-full h-full block overflow-hidden bg-[#060a16]">
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[idx] = el;
+                      }}
+                      key={currentVideoSrc}
+                      src={currentVideoSrc}
+                      poster={slide.image}
+                      autoPlay
+                      loop
+                      muted={isMuted}
+                      playsInline
+                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${
+                        isActive ? 'scale-105' : 'scale-100'
+                      }`}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <picture className="absolute inset-0 w-full h-full block overflow-hidden bg-[#060a16]">
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${
+                        isActive ? 'scale-105' : 'scale-100'
+                      }`}
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: slide.id === 0 ? 'center 38%' : 'center right',
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      loading="eager"
+                    />
+                  </picture>
+                )}
 
-                      {/* Video or Image */}
-                      {slide.video ? (
-                        <div className="hero-video absolute inset-0 w-full h-full block overflow-hidden bg-[#080d1a]">
-                          <video
-                            ref={(el) => {
-                              videoRefs.current[idx] = el;
-                            }}
-                            key={currentVideoSrc}
-                            src={currentVideoSrc}
-                            poster={slide.image}
-                            autoPlay
-                            loop
-                            muted={isMuted}
-                            playsInline
-                            className="adar-hero-video w-full h-full block transition-transform duration-1000"
-                            style={{
-                              width: '100%',
-                              height: '100%'
-                            }}
-                          />
-                        </div>
+                {/* Cinematic Directional Vignette Mask (Desktop: Left dark, Right open for device) */}
+                <div
+                  className="absolute inset-0 z-[1] pointer-events-none hidden sm:block"
+                  style={{
+                    background:
+                      slide.id === 0
+                        ? 'linear-gradient(90deg, rgba(6,10,22,0.95) 0%, rgba(6,10,22,0.82) 42%, rgba(6,10,22,0.2) 68%, transparent 90%)'
+                        : 'linear-gradient(90deg, rgba(6,10,22,0.96) 0%, rgba(6,10,22,0.85) 45%, rgba(6,10,22,0.25) 72%, transparent 95%)'
+                  }}
+                />
+
+                {/* Mobile Vignette Mask (Bottom dark for text, Top open for phone visual) */}
+                <div
+                  className="absolute inset-0 z-[1] pointer-events-none block sm:hidden"
+                  style={{
+                    background:
+                      'linear-gradient(to top, rgba(6,10,22,0.98) 0%, rgba(6,10,22,0.82) 48%, rgba(6,10,22,0.2) 75%, transparent 100%)'
+                  }}
+                />
+
+                {/* Mute/Sound Toggle for Slides with Video */}
+                {slide.video && (
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-8 z-20 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMuted(!isMuted);
+                      }}
+                      aria-label={isMuted ? 'Sesi Aç' : 'Sesi Kapat'}
+                      className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-slate-950/70 hover:bg-slate-900/95 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-2 transition-all shadow-xl cursor-pointer hover:border-[#0084d6] active:scale-95"
+                      title={isMuted ? 'Videoyu Sesli Oynat' : 'Sesi Kapat'}
+                    >
+                      {isMuted ? (
+                        <>
+                          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300" />
+                          <span className="hidden sm:inline text-xs font-semibold">Sesi Aç</span>
+                        </>
                       ) : (
-                        <picture className="absolute inset-0 w-full h-full block overflow-hidden bg-[#080d1a]">
-                          <img
-                            src={slide.image}
-                            alt={slide.title}
-                            className={`w-full h-full block object-cover transition-transform duration-1000 ${currentSlide === idx ? 'scale-100' : 'scale-105'
+                        <>
+                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 animate-pulse" />
+                          <span className="hidden sm:inline text-xs font-semibold text-emerald-400">Ses Açık</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+
+                {/* Slide Content Layer (Grid aligned with 1448px site container) */}
+                <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center">
+                  <div className="w-full max-w-[1448px] mx-auto px-4 sm:px-8 lg:px-12 pb-20 sm:pb-0">
+                    <div className="max-w-2xl">
+
+                      {/* Badges Row */}
+                      <div className="inline-flex items-center gap-2 mb-2 sm:mb-4 flex-wrap">
+                        <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-md">
+                          {slide.badgeIcon}
+                          <span>{slide.badge}</span>
+                        </span>
+
+                        {slide.video && (
+                          <span className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15 shadow-sm">
+                            {slide.videoBrandIcon}
+                            <span className="relative flex h-2 w-2">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </span>
+                            <span>{slide.videoBadge || 'Resmi Tanıtım Videosu'}</span>
+                          </span>
+                        )}
+
+                        <span className="text-xs text-slate-300 font-medium hidden sm:inline-block">
+                          Kırşehir Mağaza Güvencesiyle
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white leading-[1.08] tracking-tight mb-2 sm:mb-3.5 drop-shadow-md">
+                        {slide.title}
+                      </h1>
+
+                      {/* Subtitle */}
+                      <p className="text-xs sm:text-sm md:text-base text-slate-200 font-normal leading-relaxed mb-4 sm:mb-6 max-w-xl line-clamp-2 sm:line-clamp-3 drop-shadow-sm">
+                        {slide.subtitle}
+                      </p>
+
+                      {/* Interactive Scene Switcher (Frosted Pills) */}
+                      {slide.scenes && (
+                        <div className="hidden sm:flex flex-wrap items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+                          <span className="text-xs text-slate-400 font-semibold mr-1">
+                            Lansman Sahnesi:
+                          </span>
+                          {slide.scenes.map((sc) => (
+                            <button
+                              key={sc.src}
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveScenes((prev) => ({ ...prev, [idx]: sc.src }));
+                                setProgress(0);
+                              }}
+                              className={`text-xs px-3.5 py-1.5 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${
+                                currentVideoSrc === sc.src
+                                  ? 'bg-white text-slate-950 font-bold border-white shadow-lg scale-105'
+                                  : 'bg-slate-950/65 text-slate-300 hover:text-white border-white/20 hover:border-white/50 backdrop-blur-md'
                               }`}
-                            style={{
-                              objectFit: 'cover',
-                              objectPosition: slide.id === 0 ? 'center 38%' : 'center right',
-                              width: '100%',
-                              height: '100%'
-                            }}
-                            loading="eager"
-                          />
-                        </picture>
+                            >
+                              {sc.icon}
+                              <span>{sc.label}</span>
+                            </button>
+                          ))}
+                        </div>
                       )}
 
-                      {/* Soft Cinematic Gradients */}
-                      <div
-                        className="absolute inset-0 z-[1] pointer-events-none hidden sm:block"
-                        style={{
-                          background: slide.id === 0
-                            ? 'linear-gradient(90deg, rgba(6,10,22,0.95) 0%, rgba(6,10,22,0.82) 38%, rgba(6,10,22,0.2) 64%, transparent 85%)'
-                            : 'linear-gradient(90deg, rgba(6,10,22,0.96) 0%, rgba(6,10,22,0.85) 44%, rgba(6,10,22,0.3) 72%, transparent 100%)'
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 z-[1] pointer-events-none block sm:hidden"
-                        style={{
-                          background: 'linear-gradient(to top, rgba(6,10,22,0.96) 0%, rgba(6,10,22,0.8) 42%, rgba(6,10,22,0.15) 70%, transparent 88%)'
-                        }}
-                      />
+                      {/* Action Buttons Row */}
+                      <div className="flex items-center gap-3 sm:gap-3.5 mt-1 sm:mt-0">
+                        <button
+                          onClick={() => handleCtaClick(slide.categoryId)}
+                          style={{
+                            background: 'linear-gradient(135deg, #0084d6 0%, #006cb3 100%)',
+                            color: '#ffffff'
+                          }}
+                          className="hover:brightness-110 text-white text-xs sm:text-sm font-bold px-5 py-3 sm:px-7 sm:py-3.5 rounded-xl transition-all shadow-xl shadow-blue-500/30 flex items-center gap-2 cursor-pointer active:scale-95 group/btn"
+                        >
+                          <span>{slide.ctaText}</span>
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                        </button>
 
-                      {/* Mute/Sound Toggle for Slides with Video */}
-                      {slide.video && (
-                        <div className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 flex items-center gap-2">
+                        {slide.fullFilm && (
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setIsMuted(!isMuted);
+                              setIsFilmModalOpen(true);
                             }}
-                            aria-label={isMuted ? 'Sesi Aç' : 'Sesi Kapat'}
-                            className="p-1.5 sm:px-3.5 sm:py-1.5 rounded-full bg-slate-950/70 hover:bg-slate-900/90 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-1.5 sm:gap-2 transition-all shadow-md cursor-pointer hover:border-[#0084d6]"
-                            title={isMuted ? 'Videoyu Sesli Oynat' : 'Sesi Kapat'}
+                            className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-bold px-4 py-3 sm:px-6 sm:py-3.5 rounded-xl transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 group/film"
+                            title="Apple Resmi Lansman Tanıtım Filmini İzle"
                           >
-                            {isMuted ? (
-                              <>
-                                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300" />
-                                <span className="hidden sm:inline text-[11px] font-medium">Sesi Aç</span>
-                              </>
-                            ) : (
-                              <>
-                                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 animate-pulse" />
-                                <span className="hidden sm:inline text-[11px] font-medium text-emerald-400">Ses Açık</span>
-                              </>
-                            )}
+                            <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
+                              <Play className="w-3 h-3 fill-white text-white translate-x-0.5" />
+                            </div>
+                            <span className="hidden xs:inline sm:inline">Tanıtım Filmi</span>
+                            <span className="inline xs:hidden sm:hidden">Film</span>
                           </button>
-                        </div>
-                      )}
-
-                      {/* Slide Content Layer */}
-                      <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center px-5 sm:px-12 md:px-16 pb-12 sm:pb-0 max-w-2xl">
-
-                        {/* Badges Row */}
-                        <div className="inline-flex items-center gap-2 mb-2 sm:mb-3.5 flex-wrap">
-                          <span className="inline-flex items-center gap-1.5 bg-[#0084d6] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
-                            {slide.badgeIcon}
-                            <span>{slide.badge}</span>
-                          </span>
-
-                          {slide.video && (
-                            <span className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900/80 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full border border-white/15 shadow-xs">
-                              {slide.videoBrandIcon}
-                              <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                              </span>
-                              <span>{slide.videoBadge || 'Resmi Tanıtım Videosu'}</span>
-                            </span>
-                          )}
-
-                          <span className="text-[11px] text-slate-300 font-medium hidden sm:inline-block">
-                            Kırşehir Mağaza Güvencesiyle
-                          </span>
-                        </div>
-
-                        {/* Title */}
-                        <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-[44px] font-black text-white leading-tight tracking-tight mb-2 sm:mb-3">
-                          {slide.title}
-                        </h1>
-
-                        {/* Subtitle */}
-                        <p className="hidden sm:block text-xs sm:text-sm md:text-base text-slate-300 font-normal leading-relaxed mb-4 sm:mb-5 max-w-xl line-clamp-2 sm:line-clamp-3">
-                          {slide.subtitle}
-                        </p>
-
-                        {/* Interactive Scene Switcher */}
-                        {slide.scenes && (
-                          <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-4 sm:mb-6">
-                            <span className="text-[11px] text-slate-400 font-medium mr-1.5">
-                              Sahne:
-                            </span>
-                            {slide.scenes.map((sc) => (
-                              <button
-                                key={sc.src}
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setActiveScenes((prev) => ({ ...prev, [idx]: sc.src }));
-                                }}
-                                className={`text-[10px] sm:text-[11px] px-3 py-1 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${currentVideoSrc === sc.src
-                                  ? 'bg-white text-slate-950 font-bold border-white shadow-sm scale-105'
-                                  : 'bg-slate-950/60 text-slate-300 hover:text-white border-white/15 hover:border-white/40'
-                                  }`}
-                              >
-                                {sc.icon}
-                                <span>{sc.label}</span>
-                              </button>
-                            ))}
-                          </div>
                         )}
-
-                        {/* Action Buttons Row */}
-                        <div className="flex items-center gap-2.5 sm:gap-3 mt-1 sm:mt-0">
-                          <button
-                            onClick={() => handleCtaClick(slide.categoryId)}
-                            className="bg-gradient-to-r from-[#0084d6] to-[#006cb3] hover:from-[#0092ed] hover:to-[#007ec9] text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl transition-all shadow-lg shadow-[#0084d6]/30 flex items-center gap-2 cursor-pointer active:scale-95 group/btn"
-                          >
-                            <span>{slide.ctaText}</span>
-                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover/btn:translate-x-1" />
-                          </button>
-
-                          {slide.fullFilm && (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIsFilmModalOpen(true);
-                              }}
-                              className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-bold px-3.5 py-2.5 sm:px-5 sm:py-3 rounded-xl transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 group/film"
-                              title="Apple Resmi Lansman Tanıtım Filmini İzle"
-                            >
-                              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
-                                <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-white text-white translate-x-0.5" />
-                              </div>
-                              <span className="hidden xs:inline sm:inline">Tanıtım Filmi</span>
-                              <span className="inline xs:hidden sm:hidden">Film</span>
-                            </button>
-                          )}
-
-                        </div>
                       </div>
+
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
 
-            {/* Slider Navigation Arrows */}
-            <button
-              onClick={prevSlide}
-              aria-label="Önceki Slayt"
-              style={{
-                top: '50%',
-                transform: 'translateY(-50%)'
-              }}
-              className="absolute left-2 sm:left-4 z-20 w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-slate-950/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
-            >
-              <ChevronLeft className="w-3.5 h-3.5 sm:w-5 sm:h-5 transition-transform group-hover/arrow:-translate-x-0.5" />
-            </button>
-            <button
-              onClick={nextSlide}
-              aria-label="Sonraki Slayt"
-              style={{
-                top: '50%',
-                transform: 'translateY(-50%)'
-              }}
-              className="absolute right-2 sm:right-4 z-20 w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-slate-950/50 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-lg cursor-pointer border border-white/20 hover:scale-105 active:scale-95 group/arrow"
-            >
-              <ChevronRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 transition-transform group-hover/arrow:translate-x-0.5" />
-            </button>
-
-            {/* Slide Pagination Capsule (Centered with mathematical precision) */}
-            <div
-              style={{
-                left: '50%',
-                transform: 'translateX(-50%)'
-              }}
-              className="absolute bottom-2.5 sm:bottom-4 z-20 flex items-center gap-1 sm:gap-1.5 bg-slate-950/70 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/20 shadow-lg"
-            >
-              {slides.map((s, idx) => {
-                const isActive = currentSlide === idx;
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => setCurrentSlide(idx)}
-                    style={{
-                      backgroundColor: isActive ? '#0084d6' : 'rgba(255, 255, 255, 0.45)'
-                    }}
-                    className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                      isActive ? 'w-5 sm:w-7 shadow-xs shadow-blue-500/50' : 'w-1.5 sm:w-2 hover:bg-white/80'
-                    }`}
-                    aria-label={`Slayt ${idx + 1}`}
-                  />
-                );
-              })}
+              </div>
             </div>
+          );
+        })}
+      </div>
+
+      {/* Subtle Bottom Ambient Gradient into next section */}
+      <div
+        className="absolute bottom-0 inset-x-0 h-10 z-[2] pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, transparent 0%, rgba(6,10,22,0.85) 100%)'
+        }}
+      />
+
+      {/* Floating Minimalist Chevrons */}
+      <button
+        onClick={prevSlide}
+        aria-label="Önceki Slayt"
+        style={{ top: '50%', transform: 'translateY(-50%)' }}
+        className="absolute left-3 sm:left-6 z-20 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
+      >
+        <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
+      </button>
+      <button
+        onClick={nextSlide}
+        aria-label="Sonraki Slayt"
+        style={{ top: '50%', transform: 'translateY(-50%)' }}
+        className="absolute right-3 sm:right-6 z-20 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
+      >
+        <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:translate-x-0.5" />
+      </button>
+
+      {/* Apple / Story Style Segmented Progress Bar */}
+      <div className="absolute bottom-4 sm:bottom-6 inset-x-0 z-20 pointer-events-auto">
+        <div className="max-w-[1448px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
+          
+          {/* Segmented Timeline */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-1 max-w-xs sm:max-w-md md:max-w-lg">
+            {slides.map((s, idx) => {
+              const isActive = currentSlide === idx;
+              const isPassed = currentSlide > idx;
+
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    setCurrentSlide(idx);
+                    setProgress(0);
+                  }}
+                  className="group/bar flex-1 py-2 cursor-pointer focus:outline-none"
+                  aria-label={`Slayt ${idx + 1}`}
+                >
+                  <div className="h-1 sm:h-1.5 w-full bg-white/25 rounded-full overflow-hidden transition-colors group-hover/bar:bg-white/40">
+                    <div
+                      className="h-full bg-[#0084d6] rounded-full"
+                      style={{
+                        width: isActive ? `${progress}%` : isPassed ? '100%' : '0%',
+                        transition: isActive ? 'width 50ms linear' : 'none'
+                      }}
+                    />
+                  </div>
+                </button>
+              );
+            })}
           </div>
+
+          {/* Slide Counter (e.g. 02 / 05) */}
+          <div className="flex items-center gap-1.5 text-xs text-slate-300 font-bold bg-black/45 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-md">
+            <span className="text-white">0{currentSlide + 1}</span>
+            <span className="text-slate-500">/</span>
+            <span className="text-slate-400">0{slides.length}</span>
+          </div>
+
         </div>
       </div>
 
@@ -512,6 +559,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
