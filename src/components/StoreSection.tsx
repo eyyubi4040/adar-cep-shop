@@ -1,9 +1,34 @@
-import React from 'react';
-import { MapPin, Phone, Clock, Navigation, Sparkles } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { MapPin, Phone, Clock, Navigation, Sparkles, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { storeInfo } from '../data/storeInfo';
 import { WhatsAppWhiteIcon, InstagramIcon } from './BrandLogos';
 
 export const StoreSection: React.FC = () => {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+    if (isMuted && !isPlaying) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div id="magaza" className="w-full flex flex-wrap folder-banner py-10 sm:py-16 bg-slate-50/70 border-t border-slate-200/80">
       <div className="w-full px-3 sm:px-6 max-w-[1448px] mx-auto">
@@ -27,11 +52,11 @@ export const StoreSection: React.FC = () => {
           </span>
         </div>
 
-        {/* 2-Column Grid: Store Info + Google Maps */}
+        {/* 3-Column Grid: Store Info + Live Video Tour Reel + Google Maps */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
 
           {/* Left Column: Store Details */}
-          <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-xl shadow-slate-200/40">
+          <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 flex flex-col justify-between shadow-xl shadow-slate-200/40">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <img
@@ -119,8 +144,68 @@ export const StoreSection: React.FC = () => {
 
           </div>
 
+          {/* Center Column: Live Store Reel Video Player */}
+          <div className="lg:col-span-4 bg-[#080e1e] border border-blue-900/50 rounded-3xl overflow-hidden shadow-xl shadow-slate-900/30 flex flex-col relative group min-h-[440px]">
+            {/* Header bar */}
+            <div className="p-3.5 bg-black/60 border-b border-white/10 flex items-center justify-between text-xs z-10 backdrop-blur-md">
+              <span className="font-bold text-white flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Kırşehir Mağaza Tanıtımı</span>
+              </span>
+              <span className="text-[11px] bg-white/10 text-sky-300 font-bold px-2.5 py-0.5 rounded-full border border-white/10">
+                01:16 • Video Turu
+              </span>
+            </div>
+
+            {/* Video container */}
+            <div className="relative flex-1 w-full min-h-[360px] bg-black flex items-center justify-center overflow-hidden">
+              <video
+                ref={videoRef}
+                src="/videos/adar-magaza-tanitim.mp4"
+                poster="/images/banners/adar-magaza-poster.jpg"
+                loop
+                muted={isMuted}
+                playsInline
+                autoPlay
+                className="w-full h-full object-cover"
+              />
+
+              {/* Subtle Dark Gradient at bottom of video */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/25 pointer-events-none" />
+
+              {/* Floating Bottom Bar Controls */}
+              <div className="absolute bottom-4 inset-x-4 flex items-center justify-between pointer-events-auto z-10 gap-2">
+                {/* Play / Pause button */}
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  className="bg-black/50 hover:bg-black/70 backdrop-blur-md text-white p-2.5 rounded-xl border border-white/20 transition cursor-pointer active:scale-95 flex items-center gap-1.5 text-xs font-bold"
+                  title={isPlaying ? 'Duraklat' : 'Oynat'}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
+                  <span className="hidden sm:inline">{isPlaying ? 'Duraklat' : 'Oynat'}</span>
+                </button>
+
+                {/* Sound Toggle (Mute/Unmute) */}
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  className={`text-white text-xs font-bold py-2.5 px-3.5 rounded-xl flex items-center gap-1.5 transition shadow-lg cursor-pointer active:scale-95 ${
+                    isMuted
+                      ? 'bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/25'
+                      : 'bg-[#0084d6] hover:bg-[#006cb3] shadow-blue-500/30'
+                  }`}
+                  title={isMuted ? 'Müziği ve Sesi Aç' : 'Sesi Kapat'}
+                >
+                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-emerald-300 animate-pulse" />}
+                  <span>{isMuted ? 'Sesi Aç' : 'Ses Açık'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Right Column: Interactive Map */}
-          <div className="lg:col-span-7 bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 min-h-[380px] flex flex-col">
+          <div className="lg:col-span-4 bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/40 min-h-[440px] flex flex-col">
             <div className="p-3.5 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-xs">
               <span className="font-bold text-slate-800 flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-[#0084d6]" />

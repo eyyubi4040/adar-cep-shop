@@ -49,8 +49,16 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isFilmModalOpen, setIsFilmModalOpen] = useState(false);
+  const [filmModalData, setFilmModalData] = useState<{
+    src: string;
+    title: string;
+    subtitle: string;
+    isVertical?: boolean;
+    icon?: React.ReactNode;
+  } | null>(null);
 
   const [activeScenes, setActiveScenes] = useState<Record<number, string>>({
+    0: '/videos/adar-magaza-tanitim.mp4',
     1: '/videos/iphone-18-showcase.mp4',
     2: '/videos/samsung-galaxy-s25-ultra.mp4'
   });
@@ -64,9 +72,13 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
       id: 0,
       badge: 'ADAR CEP SHOP KIRŞEHİR',
       badgeIcon: <Store className="w-3.5 h-3.5 text-sky-300" />,
+      videoBadge: 'Kırşehir Mağaza Tanıtım Filmi',
+      videoBrandIcon: <Store className="w-3.5 h-3.5 text-sky-300" />,
       title: 'Sıfır & 2. El Cep Telefonu ve Aksesuar Merkezi',
       subtitle: 'Apple, Samsung, Xiaomi sıfır ve garantili 2. el modeller, kaliteli kılıf ve koruyucu camlar Kırşehir mağazamızda.',
-      image: '/images/banners/ad.jpeg',
+      image: '/images/banners/adar-magaza-poster.jpg',
+      video: '/videos/adar-magaza-tanitim.mp4',
+      fullFilm: '/videos/adar-magaza-tanitim.mp4',
       ctaText: 'Modelleri İncele',
       categoryId: 'all'
     },
@@ -388,15 +400,32 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
+                              if (slide.id === 0) {
+                                setFilmModalData({
+                                  src: '/videos/adar-magaza-tanitim.mp4',
+                                  title: 'Adar Cep Shop Kırşehir — Mağaza & Vitrin Tanıtımı',
+                                  subtitle: 'Kırşehir Merkez Mağazamız • Orijinal Ses ve Müzik • 01:16',
+                                  isVertical: true,
+                                  icon: <Store className="w-5 h-5 text-sky-300" />
+                                });
+                              } else {
+                                setFilmModalData({
+                                  src: '/videos/iphone-18-intro-film.mp4',
+                                  title: 'Apple iPhone 18 Pro & Pro Max — Resmi Lansman Tanıtım Filmi',
+                                  subtitle: 'Apple Resmi Tanıtım Videosu • 02:52 • Orijinal Ses ve Görüntü',
+                                  isVertical: false,
+                                  icon: <AppleLogo className="w-5 h-5 text-white" monochrome />
+                                });
+                              }
                               setIsFilmModalOpen(true);
                             }}
                             className="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-bold px-4 py-3 sm:px-6 sm:py-3.5 rounded-xl transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95 group/film"
-                            title="Apple Resmi Lansman Tanıtım Filmini İzle"
+                            title={slide.id === 0 ? 'Kırşehir Mağaza Tanıtım Filmini İzle' : 'Apple Resmi Lansman Tanıtım Filmini İzle'}
                           >
                             <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover/film:scale-110">
                               <Play className="w-3 h-3 fill-white text-white translate-x-0.5" />
                             </div>
-                            <span className="hidden xs:inline sm:inline">Tanıtım Filmi</span>
+                            <span className="hidden xs:inline sm:inline">{slide.id === 0 ? 'Mağaza Filmi' : 'Tanıtım Filmi'}</span>
                             <span className="inline xs:hidden sm:hidden">Film</span>
                           </button>
                         )}
@@ -503,28 +532,28 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
         </div>
       </div>
 
-      {/* Apple Full Launch Film Lightbox Modal */}
+      {/* Dynamic Launch / Store Film Lightbox Modal */}
       {isFilmModalOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6"
           onClick={() => setIsFilmModalOpen(false)}
         >
           <div
-            className="relative w-full max-w-4xl bg-slate-900 border border-white/15 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+            className={`relative w-full ${filmModalData?.isVertical ? 'max-w-md' : 'max-w-4xl'} bg-slate-900 border border-white/15 rounded-3xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-black/50 border-b border-white/10">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-black/60 border-b border-white/10">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white p-1.5 border border-white/10 shadow-xs">
-                  <AppleLogo className="w-5 h-5 text-white" monochrome />
+                  {filmModalData?.icon || <AppleLogo className="w-5 h-5 text-white" monochrome />}
                 </div>
                 <div>
-                  <h3 className="text-white text-sm sm:text-base font-bold flex items-center gap-2">
-                    Apple iPhone 18 Pro & Pro Max — Resmi Lansman Tanıtım Filmi
+                  <h3 className="text-white text-xs sm:text-base font-bold flex items-center gap-2">
+                    {filmModalData?.title || 'Apple iPhone 18 Pro & Pro Max — Resmi Lansman Tanıtım Filmi'}
                   </h3>
                   <p className="text-slate-400 text-[11px]">
-                    Apple Resmi Tanıtım Videosu • 02:52 • Orijinal Ses ve Görüntü
+                    {filmModalData?.subtitle || 'Apple Resmi Tanıtım Videosu • 02:52 • Orijinal Ses ve Görüntü'}
                   </p>
                 </div>
               </div>
@@ -538,9 +567,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
             </div>
 
             {/* Modal Video Player */}
-            <div className="relative aspect-video bg-black flex items-center justify-center">
+            <div className={`relative ${filmModalData?.isVertical ? 'aspect-[9/16] max-h-[75vh]' : 'aspect-video'} bg-black flex items-center justify-center`}>
               <video
-                src="/videos/iphone-18-intro-film.mp4"
+                src={filmModalData?.src || '/videos/iphone-18-intro-film.mp4'}
                 controls
                 autoPlay
                 className="w-full h-full object-contain"
