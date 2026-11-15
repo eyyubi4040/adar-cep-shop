@@ -451,30 +451,30 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
         }}
       />
 
-      {/* Floating Minimalist Chevrons */}
+      {/* Desktop Floating Chevrons (Hidden on mobile so they never overlap text) */}
       <button
         onClick={prevSlide}
         aria-label="Önceki Slayt"
         style={{ top: '50%', transform: 'translateY(-50%)' }}
-        className="absolute left-3 sm:left-6 z-20 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
+        className="hidden sm:flex absolute left-4 lg:left-6 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
       >
-        <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
+        <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6 transition-transform group-hover/arrow:-translate-x-0.5" />
       </button>
       <button
         onClick={nextSlide}
         aria-label="Sonraki Slayt"
         style={{ top: '50%', transform: 'translateY(-50%)' }}
-        className="absolute right-3 sm:right-6 z-20 w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
+        className="hidden sm:flex absolute right-4 lg:right-6 z-20 w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-black/40 hover:bg-[#0084d6] text-white items-center justify-center backdrop-blur-md transition-all duration-300 shadow-2xl cursor-pointer border border-white/15 hover:scale-110 active:scale-95 group/arrow opacity-75 group-hover:opacity-100"
       >
-        <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover/arrow:translate-x-0.5" />
+        <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6 transition-transform group-hover/arrow:translate-x-0.5" />
       </button>
 
-      {/* Apple / Story Style Segmented Progress Bar */}
+      {/* Apple / Story Style Segmented Progress & Ergonomic Mobile Navigation */}
       <div className="absolute bottom-4 sm:bottom-6 inset-x-0 z-20 pointer-events-auto">
-        <div className="max-w-[1448px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
+        <div className="max-w-[1448px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Segmented Timeline */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-1 max-w-xs sm:max-w-md md:max-w-lg">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 flex-1 max-w-[200px] xs:max-w-xs sm:max-w-md md:max-w-lg">
             {slides.map((s, idx) => {
               const isActive = currentSlide === idx;
               const isPassed = currentSlide > idx;
@@ -503,11 +503,32 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
             })}
           </div>
 
-          {/* Slide Counter (e.g. 02 / 05) */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-300 font-bold bg-black/45 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 shadow-md">
-            <span className="text-white">0{currentSlide + 1}</span>
-            <span className="text-slate-500">/</span>
-            <span className="text-slate-400">0{slides.length}</span>
+          {/* Controls & Counter Strip */}
+          <div className="flex items-center gap-2">
+            {/* Mobile Thumb-Zone Arrow Buttons (Docked safely at the bottom, zero text overlap!) */}
+            <div className="flex sm:hidden items-center gap-1 bg-black/45 backdrop-blur-md p-0.5 rounded-full border border-white/10 shadow-md">
+              <button
+                onClick={prevSlide}
+                aria-label="Önceki Slayt"
+                className="w-7 h-7 rounded-full bg-white/10 active:bg-[#0084d6] text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={nextSlide}
+                aria-label="Sonraki Slayt"
+                className="w-7 h-7 rounded-full bg-white/10 active:bg-[#0084d6] text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Slide Counter (e.g. 02 / 05) */}
+            <div className="flex items-center gap-1.5 text-xs text-slate-300 font-bold bg-black/45 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1 rounded-full border border-white/10 shadow-md">
+              <span className="text-white">0{currentSlide + 1}</span>
+              <span className="text-slate-500">/</span>
+              <span className="text-slate-400">0{slides.length}</span>
+            </div>
           </div>
 
         </div>
