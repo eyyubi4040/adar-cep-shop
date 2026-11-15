@@ -161,8 +161,8 @@ export const StoreSection: React.FC = () => {
             <div className="relative flex-1 w-full min-h-[360px] bg-black flex items-center justify-center overflow-hidden">
               <video
                 ref={videoRef}
-                src="/videos/adar-magaza-tanitim.mp4"
-                poster="/images/banners/adar-magaza-poster.jpg"
+                src="/videos/adar-magaza-tanitim.mp4?v=clean"
+                poster="/images/banners/adar-magaza-poster.jpg?v=clean"
                 loop
                 muted={isMuted}
                 playsInline
