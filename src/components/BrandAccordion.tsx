@@ -33,7 +33,7 @@ export const BrandAccordion: React.FC<BrandAccordionProps> = ({ onSelectCategory
       badge: 'Sıfır & 2. El Garantili',
       tagline: 'iPhone 18 Pro Max, 17 Pro, 16 ve 15 Serisi',
       desc: 'A20 Pro ve A19 Pro çipli en yeni Apple iPhone modelleri. Sıfır kapalı kutu ve 40 nokta donanım onaylı 6-12 ay mağaza garantili temiz 2. el cihazlar Kırşehir mağazamızda.',
-      image: '/images/brands/brand_apple.jpg?v=20261114v5',
+      image: '/images/brands/brand_apple.jpg?v=20261115v18promax',
       fallbackImage: '/images/banners/banner-phones.jpg',
       models: ['iPhone 18 Pro Max', 'iPhone 18 Pro', 'iPhone 17 Pro Max', 'iPhone 16 Pro', 'iPhone 15'],
       catId: 'sifir-telefon',

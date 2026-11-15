@@ -45,7 +45,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
       badge: 'Sıfır & 2. El Garantili',
       tagline: 'iPhone 18 Pro Max, 18 Pro, 17 Pro, 16 ve 15 Serisi',
       desc: 'En yeni Apple A20 Pro işlemcili kapalı kutu iPhone 18 Pro Max ve 18 Pro modelleri ile 40 nokta donanım kontrolünden geçmiş garantili ikinci el cihazlar Kırşehir Adar Cep Shop güvencesiyle.',
-      bannerImage: '/images/brands/brand_apple.jpg',
+      bannerImage: '/images/brands/brand_apple.jpg?v=20261115v18promax',
       accentGradient: 'from-slate-950 via-gray-900 to-[#0c1836]',
       logoComponent: <AppleLogo className="h-8 sm:h-10 w-auto text-white" />
     },
