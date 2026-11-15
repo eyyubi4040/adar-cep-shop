@@ -3,8 +3,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Play,
-  Volume2,
-  VolumeX,
   X,
   Sparkles,
   ArrowRight,
@@ -50,7 +48,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
   const [isFilmModalOpen, setIsFilmModalOpen] = useState(false);
 
   const [activeScenes, setActiveScenes] = useState<Record<number, string>>({
@@ -255,7 +252,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                       poster={slide.image}
                       autoPlay
                       loop
-                      muted={isMuted}
+                      muted
                       playsInline
                       className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${
                         isActive ? 'scale-105' : 'scale-100'
@@ -305,34 +302,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                       'linear-gradient(to top, rgba(6,10,22,0.98) 0%, rgba(6,10,22,0.82) 48%, rgba(6,10,22,0.2) 75%, transparent 100%)'
                   }}
                 />
-
-                {/* Mute/Sound Toggle for Slides with Video */}
-                {slide.video && (
-                  <div className="absolute top-4 right-4 sm:top-6 sm:right-8 z-20 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsMuted(!isMuted);
-                      }}
-                      aria-label={isMuted ? 'Sesi Aç' : 'Sesi Kapat'}
-                      className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-slate-950/70 hover:bg-slate-900/95 backdrop-blur-md border border-white/20 text-white text-xs flex items-center gap-2 transition-all shadow-xl cursor-pointer hover:border-[#0084d6] active:scale-95"
-                      title={isMuted ? 'Videoyu Sesli Oynat' : 'Sesi Kapat'}
-                    >
-                      {isMuted ? (
-                        <>
-                          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300" />
-                          <span className="hidden sm:inline text-xs font-semibold">Sesi Aç</span>
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 animate-pulse" />
-                          <span className="hidden sm:inline text-xs font-semibold text-emerald-400">Ses Açık</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                )}
 
                 {/* Slide Content Layer (Grid aligned with 1448px site container) */}
                 <div className="absolute inset-0 z-[2] flex flex-col justify-end sm:justify-center">
