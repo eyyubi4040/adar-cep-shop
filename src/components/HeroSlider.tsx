@@ -58,7 +58,6 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
   } | null>(null);
 
   const [activeScenes, setActiveScenes] = useState<Record<number, string>>({
-    0: '/videos/adar-magaza-tanitim.mp4',
     1: '/videos/iphone-18-showcase.mp4',
     2: '/videos/samsung-galaxy-s25-ultra.mp4'
   });
@@ -72,13 +71,9 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
       id: 0,
       badge: 'ADAR CEP SHOP KIRŞEHİR',
       badgeIcon: <Store className="w-3.5 h-3.5 text-sky-300" />,
-      videoBadge: 'Kırşehir Mağaza Tanıtım Filmi',
-      videoBrandIcon: <Store className="w-3.5 h-3.5 text-sky-300" />,
       title: 'Sıfır & 2. El Cep Telefonu ve Aksesuar Merkezi',
       subtitle: 'Apple, Samsung, Xiaomi sıfır ve garantili 2. el modeller, kaliteli kılıf ve koruyucu camlar Kırşehir mağazamızda.',
-      image: '/images/banners/adar-magaza-poster.jpg',
-      video: '/videos/adar-magaza-tanitim.mp4',
-      fullFilm: '/videos/adar-magaza-tanitim.mp4',
+      image: '/images/banners/ad.jpeg',
       ctaText: 'Modelleri İncele',
       categoryId: 'all'
     },
@@ -266,9 +261,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                       loop
                       muted
                       playsInline
-                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${
-                        isActive ? 'scale-105' : 'scale-100'
-                      }`}
+                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${isActive ? 'scale-105' : 'scale-100'
+                        }`}
                       style={{
                         width: '100%',
                         height: '100%',
@@ -281,9 +275,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                     <img
                       src={slide.image}
                       alt={slide.title}
-                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${
-                        isActive ? 'scale-105' : 'scale-100'
-                      }`}
+                      className={`w-full h-full block object-cover transition-transform duration-[7000ms] ease-out ${isActive ? 'scale-105' : 'scale-100'
+                        }`}
                       style={{
                         objectFit: 'cover',
                         objectPosition: slide.id === 0 ? 'center 38%' : 'center right',
@@ -368,11 +361,10 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
                                 setActiveScenes((prev) => ({ ...prev, [idx]: sc.src }));
                                 setProgress(0);
                               }}
-                              className={`text-xs px-3.5 py-1.5 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${
-                                currentVideoSrc === sc.src
+                              className={`text-xs px-3.5 py-1.5 rounded-full border transition-all cursor-pointer flex items-center gap-1.5 ${currentVideoSrc === sc.src
                                   ? 'bg-white text-slate-950 font-bold border-white shadow-lg scale-105'
                                   : 'bg-slate-950/65 text-slate-300 hover:text-white border-white/20 hover:border-white/50 backdrop-blur-md'
-                              }`}
+                                }`}
                             >
                               {sc.icon}
                               <span>{sc.label}</span>
@@ -470,7 +462,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onSelectCategory }) => {
       {/* Apple / Story Style Segmented Progress & Ergonomic Mobile Navigation */}
       <div className="absolute bottom-4 sm:bottom-6 inset-x-0 z-20 pointer-events-auto">
         <div className="max-w-[1448px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-3 sm:gap-4">
-          
+
           {/* Segmented Timeline */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 flex-1 max-w-[200px] xs:max-w-xs sm:max-w-md md:max-w-lg">
             {slides.map((s, idx) => {
