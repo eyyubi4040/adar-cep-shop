@@ -76,6 +76,29 @@ async function main() {
   }
   if (fs.existsSync(imagesDir)) collect(imagesDir);
 
+  // 4. Videos directory recursively
+  const videosDir = "E:/projeler/adar-cep-shop/public/videos";
+  function collectVideos(dir: string) {
+    for (const item of fs.readdirSync(dir)) {
+      const full = path.join(dir, item);
+      if (fs.statSync(full).isDirectory()) {
+        collectVideos(full);
+      } else {
+        const rel = path.relative(videosDir, full).replace(/\\/g, "/");
+        const ext = path.extname(full).toLowerCase();
+        let mime = "video/mp4";
+        if (ext === ".webm") mime = "video/webm";
+
+        filesToUpload.push({
+          localPath: full,
+          remotePath: `${TARGET_FOLDER}/videos/${rel}`,
+          mimeType: mime,
+        });
+      }
+    }
+  }
+  if (fs.existsSync(videosDir)) collectVideos(videosDir);
+
   console.log(`Toplam yüklenecek dosya sayısı: ${filesToUpload.length}\n`);
 
   let successCount = 0;
